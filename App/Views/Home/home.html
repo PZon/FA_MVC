@@ -52,6 +52,7 @@
 <main>
  <article>
  <h2>Welcome to Finance Assitant</h2><hr class="mb-5">
+ 	{% block infotest %} {% endblock %}
  <div id="mainPage" class="container">
   <div class="row mb-3">
 	<div class="col-sm-12 col-md-7 ">
@@ -61,14 +62,14 @@
 	</div>
 	<div id="logForm" class="col-sm-12 col-md-4 pt-md-3 mb-md-5 ml-md-3 divBorder">
 	 <h4 class="mb-4">To use Finance Assistant please Log In</h4>
-		<form action="boot_statements.html?view=cm" method="post">
+		<form action="loginVerification.php" method="post">
 		  <div class="form-group">
-		   <label for="InputLogin">Login</label>
-			<input type="text" class="form-control" id="InputLogin" aria-describedby="InputLogin" placeholder="Enter Login" required>
+		   <label for="InputLogin">Your email</label>
+			<input type="email" class="form-control" id="InputLogin" aria-describedby="InputLogin" placeholder="example: name@host.eu" required>
 		  </div>
 		  <div class="form-group">
 			<label for="InputPassword">Password</label>
-			<input type="password" class="form-control" id="InputPassword"  aria-describedby="InputPassword" placeholder="Password" required>
+			<input type="password" class="form-control" id="InputPassword"  aria-describedby="InputPassword" placeholder="Password" name="pass" required>
 			<small id="passHelp" class="form-text text-warning">Never share your password with anyone else.</small>
 		  </div>
 		  <button type="submit" class="m-1 btn btn-warning">Log In</button>
@@ -76,7 +77,8 @@
 	 </div><br>
    </div><hr>
     <h4>*If you have not account, please register here: 
-    <a href="registerForm.html" title="Register Form" data-toggle="modal" data-target="#registerModal">Register Form</a></h4>	
+    <a href="registerForm.html" title="Register Form" data-toggle="modal" data-target="#registerModal">Register Form</a></h4>
+	<br><a href="register">tmp register link</a>	
 	<!--- Register MODAL -->
 	<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModal" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
@@ -90,14 +92,6 @@
 		  <div class="modal-body">
 			<form action="registerVerify.php">
 			  <div class="form-group">
-				<label for="name" class="col-form-label">Name:</label>
-				<input type="text" class="form-control" id="name" >
-			  </div>
-			  <div class="form-group">
-				<label for="surname" class="col-form-label">Surname:</label>
-				<input type="text" class="form-control" id="surname">
-			  </div>
-			  <div class="form-group">
 				<label for="nick" class="col-form-label">*User name:</label>
 				<input type="text" class="form-control" id="nick" required>
 			  </div>
@@ -107,12 +101,12 @@
 			  </div>
 			  <div class="form-group">
 				<label for="password1" class="col-form-label">*Password:</label>
-				<input type="password" class="form-control" id="password1" required>
+				<input type="password" class="form-control" id="password1" name="pass1" required>
 			  </div>
 			  <div class="form-group">
 				<label for="password2" class="col-form-label">*Repeat Password:</label>
-				<input type="password" class="form-control" id="password2" required>
-				<small id="registerHelp" class="form-text text-warning">Fields with * are required</small>
+				<input type="password" class="form-control" id="password2" name="pass1" required>
+				<small id="registerHelp" class="form-text text-warning">Fields marked * are required</small>
 			  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
