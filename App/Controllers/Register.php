@@ -7,7 +7,7 @@ use \App\Models\User;//tmp
 
 class Register extends \Core\Controller{
 
- public function registerAction(){						
+ public function registerAction(){					
 	View::renderTemplate('Register/register.html');
  }
  

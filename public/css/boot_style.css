@@ -196,5 +196,12 @@ table tr th, td{
  letter-spacing: 1px;
  font-size: 1.3em;
 }
+.success_info{
+	color:#88dd18;
+	text-shadow: 1px 1px #ccac77;
+}
+.error_reg{
+	color:red;
+}
 
 

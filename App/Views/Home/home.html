@@ -12,7 +12,7 @@
     </ol>
     <div class="carousel-inner">
       <div class="carousel-item active" data-interval="7000">
-	  <img src="img/money_1.jpg" class="d-block w-100" alt="image1">
+	  <img src="/img/money_1.jpg" class="d-block w-100" alt="image1">
         <div class="container">
           <div class="carousel-caption text-left">
             <h2>The budget is not just a collection of numbers, but an expression of our values and aspirations.</h2>
@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="carousel-item" data-interval="7000">
-	  <img src="img/money_2.jpg" class="d-block w-100" alt="image2">
+	  <img src="/img/money_2.jpg" class="d-block w-100" alt="image2">
         <div class="container">
           <div class="carousel-caption">
             <h2>When you're dressing on a budget, simplicity is key.</h2>
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="carousel-item" data-interval="7000">
-	  <img src="img/money_3.jpg" class="d-block w-100" alt="image3">
+	  <img src="/img/money_3.jpg" class="d-block w-100" alt="image3">
         <div class="container">
           <div class="carousel-caption text-right">
             <h2>A budget tells us what we can't afford, but it doesn't keep us from buying it.</h2>
@@ -52,7 +52,9 @@
 <main>
  <article>
  <h2>Welcome to Finance Assitant</h2><hr class="mb-5">
- 	{% block infotest %} {% endblock %}
+ 
+ 	{% block info_fp %} {% endblock %}
+	
  <div id="mainPage" class="container">
   <div class="row mb-3">
 	<div class="col-sm-12 col-md-7 ">
@@ -65,7 +67,7 @@
 		<form action="loginVerification.php" method="post">
 		  <div class="form-group">
 		   <label for="InputLogin">Your email</label>
-			<input type="email" class="form-control" id="InputLogin" aria-describedby="InputLogin" placeholder="example: name@host.eu" required>
+			<input type="email" class="form-control" id="InputLogin" aria-describedby="InputLogin" placeholder="name@host.eu" required>
 		  </div>
 		  <div class="form-group">
 			<label for="InputPassword">Password</label>
@@ -90,22 +92,22 @@
 			</button>
 		  </div>
 		  <div class="modal-body">
-			<form action="registerVerify.php">
+			<form action="/register/create" method="post">
 			  <div class="form-group">
-				<label for="nick" class="col-form-label">*User name:</label>
-				<input type="text" class="form-control" id="nick" required>
+				<label for="inputNick" class="col-form-label">*User name:</label>
+				<input type="text" class="form-control" id="inputNick" name="nick" placeholder="Username" required class="form-control">
 			  </div>
 			  <div class="form-group">
-				<label for="email" class="col-form-label">*Email:</label>
-				<input type="email" class="form-control" id="email" required>
+				<label for="inputEmail" class="col-form-label">*Email:</label>
+				<input type="email" class="form-control" id="inputEmail" required name="email" placeholder="name@host.com" class="form-control">
 			  </div>
 			  <div class="form-group">
 				<label for="password1" class="col-form-label">*Password:</label>
-				<input type="password" class="form-control" id="password1" name="pass1" required>
+				<input type="password" class="form-control" id="password1" name="pass1" placeholder="at least 8 characters with digit/s" required class="form-control">
 			  </div>
 			  <div class="form-group">
-				<label for="password2" class="col-form-label">*Repeat Password:</label>
-				<input type="password" class="form-control" id="password2" name="pass1" required>
+				<label for="password2" class="col-form-label">*Confirm password:</label>
+				<input type="password" class="form-control" id="password2" name="pass2" required placeholder="Re-enter password">
 				<small id="registerHelp" class="form-text text-warning">Fields marked * are required</small>
 			  </div>
 		  <div class="modal-footer">
@@ -120,7 +122,6 @@
  </div>
  </article>
 </main>
-  
 {% endblock %}
 
 
