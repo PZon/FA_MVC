@@ -11,14 +11,14 @@
 	<link rel="shortcut icon" href="img/favicon.ico"/>
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/swanky-purse/jquery-ui.css" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" href="css/boot_style.css" media=" screen, print" type="text/css"/>
+	<link rel="stylesheet" href="/css/boot_style.css" media=" screen, print" type="text/css"/>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"/>
 	<link href="https://fonts.googleapis.com/css?family=Diplomata+SC" rel="stylesheet"/>
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
 	crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<script	src="js/boot_scripts.js"></script>
+	<script	src="/js/boot_scripts.js"></script>
 	
 	<script>
 		jQuery(function($){
@@ -39,10 +39,10 @@
    <header>
 	<div id="top" class="row">
 		<div id="logo" class="d-none d-md-inline-block col-md-4 col-lg-2">
-		 <a href="" title="Main page"><i class="fas fa-donate"></i></a>
+		 <a href="/index.php" title="Main page"><i class="fas fa-donate"></i></a>
 		</div>
 		<div id="logo_sm" class="d-xs-block d-md-none col-sm-12">
-		 <a href="" title="Main page"><i class="fas fa-donate"></i></a>
+		 <a href="/index.php" title="Main page"><i class="fas fa-donate"></i></a>
 		</div>
 		<div id="logoTxt" class="d-none d-md-inline-block col-md-8 col-lg-6">
 			Finance<br />Assistant
@@ -56,7 +56,7 @@
  {% endblock %}
 <footer>
  <div class="f_one">
-	&copy; insert date from php!!! PZon: lesson 20
+	&copy; {{ "now"|date("Y") }} PZon: lesson 19
  </div>
 </footer>
 	
@@ -65,6 +65,7 @@
 </a>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
 <script	src="js/scrollTo.js"></script>
 <script>
 		$(document).ready(function(){
@@ -84,5 +85,7 @@
 		});
 	});
 </script>
+{%block js%}
+{%endblock%}
 </body>
 </html>	

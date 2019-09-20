@@ -17,10 +17,11 @@ class User extends \Core\Model{
  
  public function save(){
 	 
-	//$this->validate();
+	$this->validate();
 	
 	if(empty($this->errors)){	
 	 $pass_hash=password_hash($this->pass1, PASSWORD_DEFAULT);
+	 $nick=strtoupper($this->nick);
 	 //$token= new Token();
 	 //$hashed_token=$token->getHash();
 	 $hashed_token='hashed_token_tmp';
@@ -31,7 +32,7 @@ class User extends \Core\Model{
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
 	 
-	 $stmt->bindValue(':nick', $this->nick, PDO::PARAM_STR );
+	 $stmt->bindValue(':nick', $nick, PDO::PARAM_STR );
 	 $stmt->bindValue(':email', $this->email, PDO::PARAM_STR );
 	 $stmt->bindValue(':pass_hash', $pass_hash, PDO::PARAM_STR );
 	 $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR );
@@ -56,12 +57,12 @@ class User extends \Core\Model{
 	   }
 
        // Password
-    /*   if ($this->pass1 != $this->pass2) {
+       if ($this->pass1 != $this->pass2) {
            $this->errors[] = 'Password must match confirmation';
-       }*/
+       }
 	if(isset($this->pass1)){
-       if (strlen($this->pass1) < 6) {
-           $this->errors[] = 'Please enter at least 6 characters for the password';
+       if (strlen($this->pass1) < 8) {
+           $this->errors[] = 'Please enter at least 8 characters for the password';
        }
 
        if (preg_match('/.*[a-z]+.*/i', $this->pass1) == 0) {
@@ -79,7 +80,6 @@ class User extends \Core\Model{
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
 	 $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-	 //$stmt->bindParam(':email', $email, PDO::PARAM_STR);
 	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
 	 $stmt->execute();
 	 
