@@ -64,10 +64,10 @@
 	</div>
 	<div id="logForm" class="col-sm-12 col-md-4 pt-md-3 mb-md-5 ml-md-3 divBorder">
 	 <h4 class="mb-4">To use Finance Assistant please Log In</h4>
-		<form action="loginVerification.php" method="post">
+		<form action="/login/create" method="post">
 		  <div class="form-group">
 		   <label for="InputLogin">Your email</label>
-			<input type="email" class="form-control" id="InputLogin" aria-describedby="InputLogin" placeholder="name@host.eu" required>
+			<input type="email" class="form-control" id="InputLogin" aria-describedby="InputLogin" placeholder="name@host.eu" name="email" required>
 		  </div>
 		  <div class="form-group">
 			<label for="InputPassword">Password</label>
@@ -80,7 +80,6 @@
    </div><hr>
     <h4>*If you have not account, please register here: 
     <a href="registerForm.html" title="Register Form" data-toggle="modal" data-target="#registerModal">Register Form</a></h4>
-	<br><a href="register">tmp register link</a>	
 	<!--- Register MODAL -->
 	<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModal" aria-hidden="true">
 	  <div class="modal-dialog" role="document">

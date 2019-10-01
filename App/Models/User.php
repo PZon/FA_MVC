@@ -108,8 +108,8 @@ class User extends \Core\Model{
  
  public static function authenticate($email, $password){
 	 $user=static::findByEmail($email);
-	 if($user && $user->active){
-		if(password_verify($password, $user->password_hash)){
+	 if($user && $user->Active=='Y'){
+		if(password_verify($password, $user->Password)){
 			return $user;
 		}
 	 }
@@ -233,7 +233,7 @@ class User extends \Core\Model{
 	 $token= new Token($value);
 	 $hashed_token=$token->getHash();	
 	
-	$sql='UPDATE users SET activation_hash = null, active = 1 WHERE activation_hash = :hashed_token';
+	$sql='UPDATE users SET activation_hash = null, active = "Y" WHERE activation_hash = :hashed_token';
 	
 	$db=static::getDB();
 	$stmt=$db->prepare($sql);
