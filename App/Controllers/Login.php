@@ -15,8 +15,9 @@ class Login extends \Core\Controller{
 	
 	if($user){
 		Auth::login($user, $remember_me);
-		Flash::addMessage('Login successful');
-		$this->redirect(Auth::getReturnToPage());
+		//Flash::addMessage('Login successful');
+		//$this->redirect(Auth::getReturnToPage());
+		$this->redirect('/Login/VerifiedUser');//tmp
 	}else {
 	 View::renderTemplate('Home/home.html',
 		['email'=>$_POST['email'],
@@ -32,10 +33,13 @@ class Login extends \Core\Controller{
 	$this->redirect('/login/show-logout-info');
  }
  
- public function showLogoutInfo(){
-		
+ public function showLogoutInfo(){	
 	Flash::addMessage('Logout successful');
 	$this->redirect('/'); 
+ }
+ 
+  public function VerifiedUserAction(){
+	View::renderTemplate('Logged_in/success.html');
  }
 
  

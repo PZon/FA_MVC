@@ -9,7 +9,7 @@ class Auth{
 	
 	public static function login($user, $remember_me){
 		session_regenerate_id(true);
-		$_SESSION['user_id']=$user->id;
+		$_SESSION['idUser']=$user->idUser;
 		
 		if($remember_me) {
 			if($user->rememberLogin()){
@@ -50,8 +50,8 @@ class Auth{
 	}
 	
 	public static function getUser(){
-		if(isset($_SESSION['user_id'])){
-			return User::findById($_SESSION['user_id']);
+		if(isset($_SESSION['idUser'])){
+			return User::findById($_SESSION['idUser']);
 		}else{
 			return static::loginFromCookie();
 		}
