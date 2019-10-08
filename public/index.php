@@ -10,6 +10,7 @@ session_start();
 $router= new Core\Router();
 $router->add('{controller}/{action}');
 $router->add('',['controller'=>'Home', 'action'=>'index']);
+$router->add('login',['controller'=>'Home', 'action'=>'index']);
 $router->add('register',['controller'=>'Register', 'action'=>'register']);
 $router->add('logout',['controller'=>'Login', 'action'=>'destroy']);
 
