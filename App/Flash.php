@@ -4,11 +4,11 @@ namespace App;
 
 class Flash{
 	
-	const SUCCES ='success';
+	const SUCCESS ='success';
 	const INFO = 'info';
 	const WARNING = 'warning';
 	
-	public static function addMessage($message, $type='success'){
+	public static function addMessage($message, $type='warning'){
 	 if(! isset($_SESSION['flash_info'])){
 	   $_SESSION['flash_info']=[];
 	 }

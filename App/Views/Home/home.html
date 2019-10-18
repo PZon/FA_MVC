@@ -2,6 +2,7 @@
 
 {% block title %}MVC - Finance Assistant{% endblock %}
 
+
 {% block body %}
 <!-- Carousel -->
   <div id="myCarousel" class="carousel slide mb-3 d-none d-md-block" data-ride="carousel">
@@ -52,8 +53,11 @@
 <main>
  <article>
  <h2>Welcome to Finance Assitant</h2><hr class="mb-5">
- 
- 	{% block info_fp %} {% endblock %}
+ 	{% block info_fp %}	
+		{% for info in flash_info %}
+		<div class="alert alert-{{info.type}}">{{ info.body }}</div>
+		{% endfor %}
+	{% endblock %}
 	
  <div id="mainPage" class="container">
   <div class="row mb-3">
@@ -73,6 +77,9 @@
 			<label for="InputPassword">Password</label>
 			<input type="password" class="form-control" id="InputPassword"  aria-describedby="InputPassword" placeholder="Password" name="pass" required />
 			<small id="passHelp" class="form-text text-warning">Never share your password with anyone else.</small>
+			<label>
+			 <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked" {%endif%}  /> Remember me
+			</label>
 		  </div>
 		  <button type="submit" class="m-1 btn btn-warning">Log In</button>
 		</form>
