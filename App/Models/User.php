@@ -101,7 +101,7 @@ class User extends \Core\Model{
 	 $user=static::findByEmail($email);
 	 
 	 if($user){
-		 if($user->id != $ignore_id) return true;
+		 if($user->idUser != $ignore_id) return true;
 	 }else return false;
  }
  
@@ -119,17 +119,16 @@ class User extends \Core\Model{
 	$token = new Token();
 	$hashed_token=$token->getHash();
 	$this->remember_token=$token->getValue();
+
+	$this->expiry_timestamp=time()+60*60*24*1; //2days
 	
-	//$this->expiry_timestamp=time()+60*60*24*30; //30days
-	$this->expiry_timestamp=time()+60*60*24*2; //2days
-	
-	$sql='INSERT INTO remembered_logins VALUES (:token_hash, :user_id, :expires_at)';
+	$sql='INSERT INTO user_remembered_logins VALUES (:token_hash, :user_id, :expires_at)';
 	
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
 	 
 	 $stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR );
-	 $stmt->bindValue(':user_id', $this->id, PDO::PARAM_INT );
+	 $stmt->bindValue(':user_id', $this->idUser, PDO::PARAM_INT );
 	 $stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $this->expiry_timestamp), PDO::PARAM_STR );
 	 
 	 return $stmt->execute();
@@ -159,7 +158,7 @@ class User extends \Core\Model{
 	$stmt=$db->prepare($sql);
 	
 	$stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR );
-	$stmt->bindValue(':id', $this->id, PDO::PARAM_INT );
+	$stmt->bindValue(':id', $this->idUser, PDO::PARAM_INT );
 	$stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $expiry_timestamp), PDO::PARAM_STR );
 	
 	return $stmt->execute();
@@ -211,7 +210,7 @@ class User extends \Core\Model{
 	$stmt=$db->prepare($sql);
 	
 	$stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR );
-	$stmt->bindValue(':id', $this->id, PDO::PARAM_INT );
+	$stmt->bindValue(':id', $this->idUser, PDO::PARAM_INT );
 	
 	return $stmt->execute();
 	}

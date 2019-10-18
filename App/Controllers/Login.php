@@ -14,9 +14,8 @@ class Login extends \Core\Controller{
 	$remember_me = isset($_POST['remember_me']);
 	
 	if($user){
-		Auth::login($user, $remember_me);
-		//Flash::addMessage('Login successful');
-	$this->redirect(Auth::getReturnToPage());	
+	 Auth::login($user, $remember_me);
+	 $this->redirect(Auth::getReturnToPage());	
 	}else {
 	 View::renderTemplate('Home/home.html',
 		['email'=>$_POST['email'],
@@ -33,7 +32,7 @@ class Login extends \Core\Controller{
  }
  
  public function showLogoutInfo(){	
-	Flash::addMessage('Logout successful');
+	Flash::addMessage('Logout successful', Flash::WARNING);
 	$this->redirect('/'); 
  }
  

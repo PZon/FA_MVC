@@ -29,7 +29,7 @@ public static function getTemplate($template, $args = [])
 
             $twig = new \Twig_Environment($loader);
             $twig->addGlobal('current_user', \App\Auth::getUser());
-            //$twig->addGlobal('flash_infos', \App\Flash::getMessages());
+            $twig->addGlobal('flash_info', \App\Flash::getMessages());
         }
 
         return $twig->render($template, $args);

@@ -37,15 +37,12 @@ class Auth{
 	 static::forgetLogin();
 	}
 	
-	public static function isLoggedIn(){
-		return isset($_SESSION['idUser']);
-	}
-	
 	public static function rememberRequestedPage(){
 	 $_SESSION['returnTo']=$_SERVER['REQUEST_URI'];
 	}
 	
 	public static function getReturnToPage(){
+	// zmienic na widok statementu
 	  return $_SESSION['returnTo'] ?? '/Login/VerifiedUser?view=cm';
 	}
 	
