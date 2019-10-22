@@ -120,7 +120,7 @@ class User extends \Core\Model{
 	$hashed_token=$token->getHash();
 	$this->remember_token=$token->getValue();
 
-	$this->expiry_timestamp=time()+60*60*24*1; //2days
+	$this->expiry_timestamp=time()+60*60*24*2; //2days
 	
 	$sql='INSERT INTO user_remembered_logins VALUES (:token_hash, :user_id, :expires_at)';
 	
