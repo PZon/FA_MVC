@@ -76,14 +76,15 @@
 		  <div class="form-group">
 			<label for="InputPassword">Password</label>
 			<input type="password" class="form-control" id="InputPassword"  aria-describedby="InputPassword" placeholder="Password" name="pass" required />
-			<small id="passHelp" class="form-text text-warning">Never share your password with anyone else.</small>
 			<label>
 			 <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked" {%endif%}  /> Remember me
 			</label>
-		  </div>
+		  <br>
 		  <button type="submit" class="m-1 btn btn-warning">Log In</button>
-		</form>
-	 </div><br>
+		 </form>
+		</div>
+		<small id="passHelp" class="form-text text-warning"><a href="passResetForm.html" title="Password reset" data-toggle="modal" data-target="#passResetModal">Forgot password ?</a></small>
+	 </div>
    </div><hr>
     <h4>*If you have not account, please register here: 
     <a href="registerForm.html" title="Register Form" data-toggle="modal" data-target="#registerModal">Register Form</a></h4>
@@ -119,6 +120,31 @@
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			<button type="submit" class="btn btn-warning">Register</button>
+		  </div>
+		 </form></div>
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
+<!--- Password Reset MODAL -->
+	<div class="modal fade" id="passResetModal" tabindex="-1" role="dialog" aria-labelledby="passResetModal" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="passResetModalLabel">Password reset:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<form action="/passwords/requestReset" method="post">
+			  <div class="form-group">
+				<label for="inputEmail" class="col-form-label">*Email:</label>
+				<input type="email" class="form-control" id="inputEmail" required name="email" placeholder="name@host.com" class="form-control">
+			  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-warning">Send password reset</button>
 		  </div>
 		 </form></div>
 		</div>

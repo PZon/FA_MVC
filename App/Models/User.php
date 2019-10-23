@@ -151,14 +151,14 @@ class User extends \Core\Model{
 	 
 	 $expiry_timestamp=time()+60*60*2; //2hours
 	 
-	 $sql='UPDATE users SET password_reset_hash = :token_hash,
-			password_reset_exp = :expires_at WHERE id= :id';
+	 $sql='UPDATE users SET Password_reset_hash = :token_hash,
+			Password_reset_exp = :expires_at WHERE idUser= :idUser';
 			
 	$db=static::getDB();
 	$stmt=$db->prepare($sql);
 	
 	$stmt->bindValue(':token_hash', $hashed_token, PDO::PARAM_STR );
-	$stmt->bindValue(':id', $this->idUser, PDO::PARAM_INT );
+	$stmt->bindValue(':idUser', $this->idUser, PDO::PARAM_INT );
 	$stmt->bindValue(':expires_at', date('Y-m-d H:i:s', $expiry_timestamp), PDO::PARAM_STR );
 	
 	return $stmt->execute();
@@ -170,7 +170,7 @@ class User extends \Core\Model{
 	$text="Please click on the following URL to reset your password<br />: $url";
 	$html="Please click on the following URL to reset your password<br />: <a href=\"$url\">link</a>";
 	
-	Mail::send($this->email, 'Password reset', $text, $html);
+	Mail::send($this->Email, 'Password reset', $text, $html);
 	
  }
  
@@ -178,7 +178,7 @@ class User extends \Core\Model{
 	 $token= new Token($token);
 	 $hashed_token=$token->getHash();
 	 
-	 $sql='SELECT * FROM users WHERE password_reset_hash = :token_hash';
+	 $sql='SELECT * FROM users WHERE Password_reset_hash = :token_hash';
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
 	 $stmt->bindParam(':token_hash', $hashed_token, PDO::PARAM_STR);
@@ -204,13 +204,13 @@ class User extends \Core\Model{
 	   
 	   $sql='UPDATE users SET password_hash = :password_hash,
 			password_reset_hash=NULL, password_reset_exp=NULL
-			WHERE id= :id';
+			WHERE idUser= :idUser';
 			
 	$db=static::getDB();
 	$stmt=$db->prepare($sql);
 	
 	$stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR );
-	$stmt->bindValue(':id', $this->idUser, PDO::PARAM_INT );
+	$stmt->bindValue(':idUser', $this->idUser, PDO::PARAM_INT );
 	
 	return $stmt->execute();
 	}
