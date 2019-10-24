@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}MVC - Finance Assistant{% endblock %}
+
+ {%block js%}
+  <script src="/js/hideShowPassword.min.js"></script>
+  <script src="/js/app.js"></script>
+
+ <script>
+  $(document).ready(function(){
+   $('#formResetPass').validate({
+    rules:{
+	 pass1:{
+	  required: true,
+	  minlength: 6,
+	  validPassword: true
+	 },
+	 pass2:{
+	  equalTo: '#password1'
+	 },
+	}
+   });
+   
+   $('#password1').hideShowPassword({
+    show:false,
+	innerToggle:'focus'
+   });  
+  });	 
+ </script>
+	{%endblock%}
+
+{% block body %}
+<hr>
+<main>
+ <article>
+ <div id="mainPage" class="container">
+<!----->
+  <div class="row">
+   <div class="col-sm-12 ">
+    <h5>Welcome to Finance Assitant</h5>
+   </div>
+  </div>
+  <h6>Reset Password Form:</h6>
+   {%if user.errors is not empty %}
+   <div class="error_reg">
+   <h7>Errors:</h7>
+   <ul>
+     {%for error in user.errors%}
+	   <li>{{error}}</li>
+	 {%endfor%}
+   </ul>
+   </div>
+   {%endif%}
+   
+  <br>
+	<form action="/passwords/resetPassword" method="post" id="formResetPass">
+	<input type="hidden" name="token" value="{{token}}" />
+	 <div class="row justify-content-md-center">
+	  <div class="form-group col-md-4">
+		<label for="password1" class="col-form-label">* Password:</label>
+		<input type="password" class="form-control" id="password1" name="pass1" placeholder="at least 8 characters with digit/s" required class="form-control">
+	  </div>
+	 </div>
+	 <div class="row justify-content-md-center">
+	  <div class="form-group col-md-4">
+		<label for="password2" class="col-form-label">* Confirm password:</label>
+		<input type="password" class="form-control" id="password2" name="pass2" placeholder="Re-enter password" required>
+		<small id="passHelp" class="form-text text-warning">* indicates required fields </small>
+	  </div>
+	 </div>
+	 <!--div class="row justify-content-sm-center">
+	  <div class="g-recaptcha" data-sitekey="Page Key"></div>
+	 </div-->
+	 <div class="row justify-content-sm-center">
+	  <button type="submit" class="btn btn-warning col-sm-3 m-md-3">RESET PASSWORD</button>
+	 </div>
+	</form>
+
+<!--- end -->
+ </div>
+ </article>
+</main>
+  
+{% endblock %}
+
+

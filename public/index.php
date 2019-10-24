@@ -13,6 +13,8 @@ $router->add('',['controller'=>'Home', 'action'=>'index']);
 $router->add('login',['controller'=>'Home', 'action'=>'index']);
 $router->add('register',['controller'=>'Register', 'action'=>'register']);
 $router->add('logout',['controller'=>'Login', 'action'=>'destroy']);
+/************************************/
+$router->add('passwords/reset/{token:[\da-f]+}',['controller'=>'Passwords', 'action'=>'reset']);
 
 $router->dispatch($_SERVER['QUERY_STRING']);
 	
