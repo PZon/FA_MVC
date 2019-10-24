@@ -4,15 +4,14 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Flash;
 
 class Passwords extends \Core\Controller{
-	/*public function forgotAction(){
-		View::renderTemplate('Password/forgot.html');
-	}*/
 	
 	public function requestResetAction(){
-		User::sendPasswordReset($_POST['email']);
-		View::renderTemplate('Password/reset_requested.html');
+		User::sendPasswordReset($_POST['email']);//enebeled tmp;
+		Flash::addMessage('Check your email to finish password reset process', Flash::WARNING);
+	$this->redirect('/');
 	}
 	
 	public function resetAction(){
@@ -25,7 +24,7 @@ class Passwords extends \Core\Controller{
 	
 	public function resetPasswordAction(){
 		$token=$_POST['token'];
-		
+
 		$user=$this->getUserOrExit($token);
 	  
 		if($user->resetPassword($_POST['pass1'])){

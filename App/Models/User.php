@@ -22,10 +22,10 @@ class User extends \Core\Model{
 	if(empty($this->errors)){	
 	 $pass_hash=password_hash($this->pass1, PASSWORD_DEFAULT);
 	 $nick=strtoupper($this->nick);
-	 //$token= new Token();
-	 //$hashed_token=$token->getHash();
+	 $token= new Token();
+	 $hashed_token=$token->getHash();
 	 $hashed_token='hashed_token_tmp';
-	 //$this->activation_token = $token->getValue();
+	 $this->activation_token = $token->getValue();
 	 
 	 $sql='INSERT INTO users VALUES (NULL, :nick, :email, :pass_hash,NULL,NULL,:activation_hash,"N")';
 	 
@@ -165,12 +165,13 @@ class User extends \Core\Model{
  }
  
  protected function sendPasswordResetEmail(){
-	$url='http://'.$_SERVER['HTTP_HOST'].'/password/reset/'.$this->password_reset_token;
-	
-	$text="Please click on the following URL to reset your password<br />: $url";
-	$html="Please click on the following URL to reset your password<br />: <a href=\"$url\">link</a>";
+	$url='http://'.$_SERVER['HTTP_HOST'].'/passwords/reset/'.$this->password_reset_token;
+	echo $url;//echo tmp!!!;
+	$text=View::getTemplate('Password/reset_email.txt',['url'=>$url]);
+	$html=View::getTemplate('Password/reset_email.html',['url'=>$url]);
 	
 	Mail::send($this->Email, 'Password reset', $text, $html);
+	
 	
  }
  
@@ -188,7 +189,7 @@ class User extends \Core\Model{
 	 $user=$stmt->fetch();
 	 
 	 if($user){
-		 if(strtotime($user->password_reset_exp)>time()){
+		 if(strtotime($user->Password_reset_exp)>time()){
 			 return $user;
 		 }
 	 }
