@@ -46,5 +46,9 @@ class Passwords extends \Core\Controller{
 		  exit;
 	  }
 	}
+	
+	public function forgotAction(){
+		View::renderTemplate('Password/forgot.html');
+	}
 
 }//end class

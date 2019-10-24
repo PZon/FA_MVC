@@ -44,22 +44,22 @@ class User extends \Core\Model{
  
  public function validate(){
 	 
-	 if ($this->nick == '') {
+	 if ($this->Nick == '') {
            $this->errors[] = 'Name is required';
        }
 
        // email address
-       if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {
+       if (filter_var($this->Email, FILTER_VALIDATE_EMAIL) === false) {
            $this->errors[] = 'Invalid email';
        }
-	   if(static::emailExist($this->email, $this->id ?? null)){
+	   if(static::emailExist($this->Email, $this->idUser ?? null)){
 		   $this->errors[]='Email already taken';
 	   }
 
        // Password
-       if ($this->pass1 != $this->pass2) {
+     /*  if ($this->pass1 != $this->pass2) {
            $this->errors[] = 'Password must match confirmation';
-       }
+       }*/
 	if(isset($this->pass1)){
        if (strlen($this->pass1) < 8) {
            $this->errors[] = 'Please enter at least 8 characters for the password';
@@ -102,7 +102,8 @@ class User extends \Core\Model{
 	 
 	 if($user){
 		 if($user->idUser != $ignore_id) return true;
-	 }else return false;
+	 }
+	 return false;
  }
  
  public static function authenticate($email, $password){
@@ -203,8 +204,8 @@ class User extends \Core\Model{
 	if(empty($this->errors)){
 	   $password_hash=password_hash($this->pass1, PASSWORD_DEFAULT);
 	   
-	   $sql='UPDATE users SET password_hash = :password_hash,
-			password_reset_hash=NULL, password_reset_exp=NULL
+	   $sql='UPDATE users SET Password = :password_hash,
+			Password_reset_hash=NULL, Password_reset_exp=NULL
 			WHERE idUser= :idUser';
 			
 	$db=static::getDB();
