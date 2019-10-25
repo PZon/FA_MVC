@@ -28,7 +28,8 @@ class Passwords extends \Core\Controller{
 		$user=$this->getUserOrExit($token);
 	  
 		if($user->resetPassword($_POST['pass1'])){
-			View::renderTemplate('Password/reset_success.html');
+		 Flash::addMessage('Reset password success. You can now login with your new password', Flash::WARNING);
+			$this->redirect('/');	
 		}else{
 			View::renderTemplate('Password/reset.html',
 							['token'=>$token,
