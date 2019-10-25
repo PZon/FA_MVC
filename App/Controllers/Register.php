@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Auth;
+use \App\Flash;
 use \App\Models\User;//tmp
 
 class Register extends \Core\Controller{
@@ -14,7 +15,7 @@ class Register extends \Core\Controller{
  public function createAction(){
 	$user=new User($_POST);
    if($user->save()){
-	//tmp $user->sendActivationEmail(); 
+	$user->sendActivationEmail(); 
 	$this->redirect('/register/success');
 	exit();
    }else{
@@ -24,6 +25,16 @@ class Register extends \Core\Controller{
  
   public function successAction(){
 	View::renderTemplate('register/success.html');
+ }
+ 
+  public function activateAction(){
+	 User::activate($this->route_params['token']);
+	 $this->redirect('/register/activated');
+ }
+ 
+ public function activatedAction(){
+	Flash::addMessage('Your account has been actvivated.', Flash::WARNING);
+	$this->redirect('/');
  }
  
  

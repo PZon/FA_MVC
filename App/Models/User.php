@@ -21,10 +21,9 @@ class User extends \Core\Model{
 	
 	if(empty($this->errors)){	
 	 $pass_hash=password_hash($this->pass1, PASSWORD_DEFAULT);
-	 $nick=strtoupper($this->nick);
+	 $nick=strtoupper($this->Nick);
 	 $token= new Token();
 	 $hashed_token=$token->getHash();
-	 $hashed_token='hashed_token_tmp';
 	 $this->activation_token = $token->getValue();
 	 
 	 $sql='INSERT INTO users VALUES (NULL, :nick, :email, :pass_hash,NULL,NULL,:activation_hash,"N")';
@@ -33,7 +32,7 @@ class User extends \Core\Model{
 	 $stmt=$db->prepare($sql);
 	 
 	 $stmt->bindValue(':nick', $nick, PDO::PARAM_STR );
-	 $stmt->bindValue(':email', $this->email, PDO::PARAM_STR );
+	 $stmt->bindValue(':email', $this->Email, PDO::PARAM_STR );
 	 $stmt->bindValue(':pass_hash', $pass_hash, PDO::PARAM_STR );
 	 $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR );
 	 
@@ -56,10 +55,6 @@ class User extends \Core\Model{
 		   $this->errors[]='Email already taken';
 	   }
 
-       // Password
-     /*  if ($this->pass1 != $this->pass2) {
-           $this->errors[] = 'Password must match confirmation';
-       }*/
 	if(isset($this->pass1)){
        if (strlen($this->pass1) < 8) {
            $this->errors[] = 'Please enter at least 8 characters for the password';
@@ -167,7 +162,7 @@ class User extends \Core\Model{
  
  protected function sendPasswordResetEmail(){
 	$url='http://'.$_SERVER['HTTP_HOST'].'/passwords/reset/'.$this->password_reset_token;
-	echo $url;//echo tmp!!!;
+	echo $url.'- remove this echo from User obj methods!!!';//echo tmp!!!;
 	$text=View::getTemplate('Password/reset_email.txt',['url'=>$url]);
 	$html=View::getTemplate('Password/reset_email.html',['url'=>$url]);
 	
@@ -220,8 +215,8 @@ class User extends \Core\Model{
  }
  
   public function sendActivationEmail(){
-	$url='http://'.$_SERVER['HTTP_HOST'].'/signup/activate/'.$this->activation_token;
-	
+	$url='http://'.$_SERVER['HTTP_HOST'].'/register/activate/'.$this->activation_token;
+	echo $url.'- remove this echo from User obj methods!!!';//echo tmp!!!;
 	$text=View::getTemplate('Signup/activation_email.txt',['url'=>$url]);
 	$html=View::getTemplate('Signup/activation_email.html',['url'=>$url]);
 	
