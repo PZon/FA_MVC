@@ -1,0 +1,30 @@
+{% extends "base_loggedIn.html" %}
+
+{% block title %}User profile{% endblock %}
+
+{% block content %}
+<main>
+<div id="mainPage" class="container">
+ <div class="row mb-5">
+   <div class="col-sm-12">
+   <h5>
+    {% if current_user %}
+	  User profile: {{current_user.Nick}}    </h5><br />
+
+	<dl>
+		<dt>Name</dt>
+			<dd >{{current_user.Nick}}</dd>
+		<dt >Email</dt>
+			<dd >{{current_user.Email}}</dd>
+	</dl>
+	<a class="btn btn-warning" role="button" href="/profile/edit">Edit profile</a>
+	 {% else %}
+    {% endif %}
+
+   </div>
+  </div>
+ </div>
+</main>
+
+</div>
+{% endblock %}

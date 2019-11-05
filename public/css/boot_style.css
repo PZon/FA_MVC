@@ -209,4 +209,13 @@ table tr th, td{
 #passHelp{
 	margin-bottom: 5px;
 }
+dt{
+	font-family: 'Diplomata SC', cursive;
+	font-size: 17px;
+	text-decoration: underline;
+}
+dl{
+	font-family: 'Diplomata SC', cursive;
+	font-size: 15px;
+}
 
