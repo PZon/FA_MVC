@@ -211,11 +211,11 @@ table tr th, td{
 }
 dt{
 	font-family: 'Diplomata SC', cursive;
-	font-size: 17px;
+	font-size: 14px;
 	text-decoration: underline;
 }
-dl{
+dd{
 	font-family: 'Diplomata SC', cursive;
-	font-size: 15px;
+	font-size: 21px;
 }
 

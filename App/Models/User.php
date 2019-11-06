@@ -238,7 +238,7 @@ class User extends \Core\Model{
  } 
  
  public function updateProfile($data){
-	 $this->nick=$data['nick'];
+	 $this->nick=strtoupper($data['nick']);
 	 $this->email=$data['email'];
 	 
 	if($data['password']!=''){
