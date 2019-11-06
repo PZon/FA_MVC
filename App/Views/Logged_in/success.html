@@ -24,7 +24,124 @@
 	  </div>
     </div>
    </div>
+  </div><hr>
+  
+<div id="transBtns" class="row mt-5 justify-content-md-center">
+ <button type="button" class="m-1  btn btn-outline-success btn-lg col-md-5" data-toggle="modal" data-target="#addIncome">Add income</button>
+ 
+ <!--- Add income MODAL -->
+	<div class="modal fade" id="addIncome" tabindex="-1" role="dialog" aria-labelledby="addIncome" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="addIncomeLabel">Add income:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<form action="addTransactionVerify.php" method="post">
+			<input type="text" class="form-control" id="transactionType" value="I" name="transactionType" hidden>
+			 <div class="form-group">
+			  <label for="incomeDate" class="col-form-label">Date:</label>
+			  <input type="text" class="form-control" id="incomeDate" name="transactionDate" required>
+			 </div>
+			 <div class="form-group">
+				<label for="amountI" class="col-form-label">Amount:</label>
+				<input type="text" class="form-control" id="amountI" name="amount" required>
+			 </div>
+			 <div class="form-group">
+			  <label for="Category" class="col-form-label">Category:</label>
+			  <div class="input-group mb-3">
+				<select class="custom-select" id="selectCatI" name="Category" required>
+				<option value="0">Choose...</option>
+				 <?php
+				 foreach($catI as $row){
+				 echo "<option value=\"{$row['idCatI']}\">".$row['nameCatI']."</option>";
+				 }
+				 ?>
+				 </select>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="descriptionI" class="col-form-label">Description:</label>
+				<input type="text" class="form-control" id="descriptionI" maxlength="50" name="description" required>
+			  </div>
+
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-warning">Save income</button>
+		  </div>
+		  </form>
+		 </div> 
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
+<button type="button" class="m-1  btn btn-outline-danger btn-lg col-md-5" data-toggle="modal" data-target="#addExpense">Add expense</button>
+ <div class="modal fade" id="addExpense" tabindex="-1" role="dialog" aria-labelledby="addExpense" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="addExpenseLabel">Add expense:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+		  <form action="addTransactionVerify.php" method="post">
+			<input type="text" class="form-control" id="transactionType" value="E" name="transactionType"hidden>
+			  <div class="form-group">
+				<label for="expenseDate" class="col-form-label">Date:</label>
+				<input type="text" class="form-control" id="expenseDate" name="transactionDate">
+			  </div>
+			  <div class="form-group">
+				<label for="amountE" class="col-form-label">Amount:</label>
+				<input type="text" class="form-control" id="amountE" name="amount">
+			  </div>
+			  <div class="form-group">
+				<label for="payType" class="col-form-label">Payment Type:</label>
+				<div class="input-group">
+				 <select class="custom-select" id="PayType" name="payType" >
+				 <option value="0">Choose...</option>
+				 <?php
+				 foreach($catP as $row){
+				 echo "<option value=\"{$row['idCatPay']}\">".$row['nameCatPay']."</option>";
+				 }
+				 ?>
+				 </select>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="categoryE" class="col-form-label">Category:</label>
+				<div class="input-group">
+				  <select class="custom-select" id="selectCatE" name="Category"  required>
+					<option value="0">Choose...</option>
+					<?php
+					foreach($catE as $row){
+					echo "<option value=\"{$row['idCatE']}\">".$row['nameCatE']."</option>";
+					}
+					?>
+				  </select>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="descriptionE" class="col-form-label">Description:</label>
+				<input type="text" class="form-control" id="descriptionE" maxlength="50" name="description">
+			  </div>
+			
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-warning">Save expense</button>
+			  </div>
+		  </form>
+		  </div>
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
   </div>
+  
  </div>
 </main>
 
