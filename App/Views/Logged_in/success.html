@@ -55,11 +55,11 @@
 			  <div class="input-group mb-3">
 				<select class="custom-select" id="selectCatI" name="Category" required>
 				<option value="0">Choose...</option>
-				 <?php
-				 foreach($catI as $row){
-				 echo "<option value=\"{$row['idCatI']}\">".$row['nameCatI']."</option>";
-				 }
-				 ?>
+				 
+				 {% for catI in catsI %}
+				 <option value="{{catI.idCatI}}">{{catI.nameCatI}}</option>
+				 {% endfor %}
+				
 				 </select>
 				</div>
 			  </div>
@@ -78,6 +78,7 @@
 	  </div>
 	</div>
 <!--- end modal -->
+
 <button type="button" class="m-1  btn btn-outline-danger btn-lg col-md-5" data-toggle="modal" data-target="#addExpense">Add expense</button>
  <div class="modal fade" id="addExpense" tabindex="-1" role="dialog" aria-labelledby="addExpense" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
@@ -104,11 +105,9 @@
 				<div class="input-group">
 				 <select class="custom-select" id="PayType" name="payType" >
 				 <option value="0">Choose...</option>
-				 <?php
-				 foreach($catP as $row){
-				 echo "<option value=\"{$row['idCatPay']}\">".$row['nameCatPay']."</option>";
-				 }
-				 ?>
+				 {% for catP in catsP %}
+				 <option value="{{catP.idCatPay}}">{{catP.nameCatPay}}</option>
+				 {% endfor %}
 				 </select>
 				</div>
 			  </div>
@@ -117,11 +116,9 @@
 				<div class="input-group">
 				  <select class="custom-select" id="selectCatE" name="Category"  required>
 					<option value="0">Choose...</option>
-					<?php
-					foreach($catE as $row){
-					echo "<option value=\"{$row['idCatE']}\">".$row['nameCatE']."</option>";
-					}
-					?>
+					{% for catE in catsE %}
+					<option value="{{catE.idCatE}}">{{catE.nameCatE}}</option>
+					{% endfor %}
 				  </select>
 				</div>
 			  </div>
