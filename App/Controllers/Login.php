@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Models\Transaction;
 use \App\Auth;
 use \App\Flash;
 
@@ -37,7 +38,11 @@ class Login extends \Core\Controller{
  }
  
   public function VerifiedUser(){
-	View::renderTemplate('Logged_in/success.html');
+	$view=$_GET['view'];
+	$incomeCat=Transaction::getIncomeCat();
+	$expenseCat=Transaction::getExpenseCat();
+	$paymentCat=Transaction::getPayCat();
+	View::renderTemplate('Logged_in/success.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat]);
 	//$this->redirect('/Login/show-logout-info');
  }
 
