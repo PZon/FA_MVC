@@ -4,7 +4,6 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
-use \App\Models\User;
 use \App\Models\Transaction;
 
 class Income extends \Core\Controller{
@@ -23,7 +22,6 @@ class Income extends \Core\Controller{
 	$this->redirect('/income/addIncome');
 	exit();
    }else{
-	 Flash::addMessage('Dupa', Flash::WARNING);
 	View::renderTemplate('Transaction/addIncome.html',['income'=>$income,'catsI'=>$this->incomeCat]);  
    }
  }
