@@ -6,6 +6,8 @@ use PDO;
 use \Core\View;
 
 class Transaction extends \Core\Model{
+
+ public $errors=[];
  public function __construct($data=[]){
 	foreach($data as $key=>$value){
 		$this->$key=$value;
@@ -52,75 +54,53 @@ class Transaction extends \Core\Model{
 }
  
  public function saveTransaction(){
-	 $userId=$_SESSION['idUser'];
-	 $transactionType=$_POST['transactionType'];
-	 $transactionDate=filter_input(INPUT_POST,'transactionDate',FILTER_SANITIZE_STRING);
+	 
+  $this->validateTransaction();
+  
+  if(empty($this->errors)){
+   	 $transactionDate=filter_input(INPUT_POST,'transactionDate',FILTER_SANITIZE_STRING);
 	 $amount=filter_input(INPUT_POST,'amount',FILTER_SANITIZE_STRING);
-	 $category=$_POST['Category'];
 	 $description=filter_input(INPUT_POST,'description',FILTER_SANITIZE_STRING);
-	 if($transactionType=='E') {
-	 $payType=filter_input(INPUT_POST,'payType',FILTER_SANITIZE_STRING);
-	}
+	 $userId=$_SESSION['idUser'];
 	
-	$formValidation=true;
+	 if($this->transactionType=='I'){	
+	  $query='INSERT INTO income VALUES (NULL, :userId, :category, :transactionDate, :amount, :description )';
+	 }else if($this->transactionType=='E'){
+	  $query='INSERT INTO expenses VALUES (NULL, :userId, :category, :payType, :transactionDate, :amount, :description )';
+	 }
+	 
+	$db=static::getDB();
+	$stmt=$db->prepare($query);	  
 	
-	if(is_numeric($amount)==false){
-	$formValidation=false;
-	$_SESSION['addTransError']='ERROR: Incorrect amount, Use (dot) . (not comma ,) to write decimals' ;
-    if($transactionType=='I'){
-	  header('Location: transaction.php?type=I');
-	 }
-	else if($transactionType=='E'){
-		 header('Location: transaction.php?type=E');
-	 }
-	 exit();
+	 
+    $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+    $stmt->bindValue(':category', $this->Category, PDO::PARAM_INT);
+    $stmt->bindValue(':transactionDate', 			  $transactionDate, PDO::PARAM_STR);
+    $stmt->bindValue(':amount', $amount, PDO::        PARAM_STR);
+    $stmt->bindValue(':description', $description,        PDO::PARAM_STR);
+	if(isset($this->payType)){
+	 $stmt->bindValue(':payType', $this->payType, PDO::PARAM_INT);
 	}
-	
-	if(!is_string($description)){
-	$formValidation=false;
-	$_SESSION['addTransError']='ERROR: In description you can use just alphanumeric characters';
-    if($transactionType=='I')header('Location: transaction.php?type=I');
-	else header('Location: transaction.php?type=E');
-	 exit();
-	}
- 
-	if($category==0){
-	$formValidation=false;
-	$_SESSION['addTransError']='ERROR: Category type must be chosen';
-    if($transactionType=='I')header('Location: transaction.php?type=I');
-	else header('Location: transaction.php?type=E');
-	exit();
-	}
- 
-	if(isset($_POST['payType'])){
-	 if($payType==0){
-		$formValidation=false;
-		$_SESSION['addTransError']='ERROR: Payment type must be chosen';
-	 header('Location: transaction.php?type=E');
-	 exit(); 
-	 }
-	}
-	
-	if($formValidation==true){
-	 if($transactionType=='I'){	
-	  $query=$_DB->prepare('INSERT INTO income VALUES (NULL, :userId, :category, :transactionDate, :amount, :description )');
-	 }else if($transactionType=='E'){
-	  $query=$_DB->prepare('INSERT INTO expenses VALUES (NULL, :userId, :category, :payType, :transactionDate, :amount, :description )'); 
-	  $query->bindValue(':payType', $payType, PDO::PARAM_STR);
-	 }
-    $query->bindValue(':userId', $userId, PDO::PARAM_STR);
-    $query->bindValue(':category', $category, PDO::PARAM_INT);
-    $query->bindValue(':transactionDate', $transactionDate, PDO::PARAM_STR);
-    $query->bindValue(':amount', $amount, PDO::PARAM_STR);
-    $query->bindValue(':description', $description, PDO::PARAM_STR);
-    $query->execute();
-
-    $_SESSION['addTransError']='Transaction added successfully';
-    if($transactionType=='I')header('Location: transaction.php?type=I');
-    else header('Location: transaction.php?type=E');
+    return $stmt->execute();
    }
- }//end function;	
+   return false;
+ }//end method;	
  
- 
+ public function validateTransaction(){
+
+	if($this->transactionDate=='' || $this->amount=='' || $this->Category==0 || $this->description=''){
+		$this->errors[] = 'All fields are required';
+	}else if ($this->transactionType=='E'&& $this->   payType==0){
+		$this->errors[] = 'All fields are required';
+	}
+	
+	if(is_numeric($this->amount)==false){
+		$this->errors[] = 'Incorrect amount, Use (dot) . (not comma ,) to write decimals' ;
+	}
+	
+	if(!is_string($this->description)){
+		$this->errors[] = 'In description you can use just alphanumeric characters';
+	}
+ }
  
 }//end class
