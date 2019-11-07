@@ -1,0 +1,62 @@
+{% extends "base_loggedIn.html" %}
+
+{% block title %}Add Income{% endblock %}
+
+{% block content %}
+<main>
+<div id="mainPage" class="container">
+ <div class="row mb-3">
+   <div class="col-sm-12">
+   <h5>
+    {% if current_user %}
+	  Welcome to Finance Assitant: {{current_user.Nick}}<br />
+	 {% else %}
+    {% endif %}
+    </h5>
+   </div>
+  </div><hr>
+<!--- just edit above -->   
+  <h5>Add Income</h5><br>
+	<form action="addTransactionVerify.php" method="post">
+	 <input type="text" class="form-control" id="transactionType" value="I" name="transactionType" hidden>
+	 <div class="form-row justify-content-md-center">
+	  <div class="form-group col-md-3">
+		<label for="transactionDate" class="col-form-label">Date:</label>
+		<input type="text" class="form-control" id="transactionDate" name="transactionDate" required>
+	  </div>
+	  <div class="form-group col-md-3">
+		<label for="amount" class="col-form-label">Amount:</label>
+		<input type="text" class="form-control" id="amount" name="amount" required>
+	  </div>
+	  <div class="form-group col-md-3">
+		<label for="Category" class="col-form-label">Category:</label>
+		<div class="input-group mb-3">
+		  <select class="custom-select" id="selectCatI" name="Category">
+			<option value="0">Choose...</option>
+			 {% for catI in catsI %}
+				<option value="{{catI.idCatI}}">{{catI.nameCatI}}</option>
+			{% endfor %}
+		  </select>
+		</div>
+	  </div>
+	 </div>
+	 <div class="form-row justify-content-md-center">
+	  <div class="form-group col-md-6">
+		<label for="description" class="col-form-label">Description:</label>
+		<input type="text" class="form-control" id="description" maxlength="50" name="description" required>
+	  </div>
+	 </div>
+	 <div class="row justify-content-sm-center">
+	  <button type="submit" class="btn btn-success col-sm-4 m-md-4">Add transaction</button>
+	 </div>
+	 <div  class="row justify-content-sm-center">
+	  <a  class="btn btn-outline-success col-sm-3 m-md-3 " role="button">Add income category</a>
+	 </div>
+	</form>
+
+<!--- do not touch below -->   
+ </div>
+</main>
+
+</div>
+{% endblock %}

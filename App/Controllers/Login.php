@@ -42,7 +42,7 @@ class Login extends \Core\Controller{
 	$incomeCat=Transaction::getIncomeCat();
 	$expenseCat=Transaction::getExpenseCat();
 	$paymentCat=Transaction::getPayCat();
-	View::renderTemplate('Logged_in/success.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat]);
+	View::renderTemplate('Logged_in/success.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat, 'view'=>$view]);
 	//$this->redirect('/Login/show-logout-info');
  }
 
