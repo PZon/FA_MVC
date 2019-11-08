@@ -4,6 +4,7 @@ namespace App\Models;
 
 use PDO;
 use \Core\View;
+use \App\Period;
 
 class Transaction extends \Core\Model{
 
@@ -86,7 +87,7 @@ class Transaction extends \Core\Model{
    return false;
  }//end method;	
  
- public function validateTransaction(){
+ private function validateTransaction(){
 
 	if($this->transactionDate=='' || $this->amount=='' || $this->Category==0 || $this->description=''){
 		$this->errors[] = 'All fields are required';

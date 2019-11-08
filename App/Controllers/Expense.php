@@ -6,7 +6,7 @@ use \App\Auth;
 use \App\Flash;
 use \App\Models\Transaction;
 
-class Expense extends \Core\Controller{
+class Expense extends Authenticated{
 	
  function __construct(){
    $this->expenseCat=Transaction::getExpenseCat();

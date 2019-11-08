@@ -4,9 +4,10 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
+use \App\Period;
 use \App\Models\Transaction;
 
-class Income extends \Core\Controller{
+class Income extends Authenticated{
 	
  function __construct(){
    $this->incomeCat=Transaction::getIncomeCat();
@@ -25,7 +26,6 @@ class Income extends \Core\Controller{
 	View::renderTemplate('Transaction/addIncome.html',['income'=>$income,'catsI'=>$this->incomeCat]);  
    }
  }
-
  
 }//end class;
 ?>
