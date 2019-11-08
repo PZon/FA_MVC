@@ -13,6 +13,9 @@ class Transaction extends \Core\Model{
 	foreach($data as $key=>$value){
 		$this->$key=$value;
 	};
+	$this->currentYM=Period::setCurrentYM();
+	$this->prevYM=Period::setPreviousYM();
+	$this->prevYMEnd=Period::setPreviousYMEnd();
  }
  
  public static function getIncomeCat(){
@@ -103,5 +106,43 @@ class Transaction extends \Core\Model{
 		$this->errors[] = 'In description you can use just alphanumeric characters';
 	}
  }
+ 
+ public function getIncomesCM(){
+	  $sql="SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+	 JOIN in_cat c ON (c.idCatI=i.idIncomeCat) 
+	 WHERE i.idUser={$_SESSION['idUser']} AND i.incomeDate >= '$this->currentYM'
+	 UNION
+	 SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
+	 JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
+	 WHERE i.idUser={$_SESSION['idUser']} AND i.incomeDate >= '$this->currentYM'
+	 ORDER BY incomeDate";
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+	 $stmt->execute();
+	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+     return $result;
+ }
+ 
+ public function getIncomesPM(){
+	 $sql="SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+	 JOIN in_cat c ON (c.idCatI=i.idIncomeCat)
+	 WHERE i.idUser={$_SESSION['idUser']} 
+	 AND i.incomeDate BETWEEN '$this->prevYM' AND '$this->prevYMEnd' 
+	 UNION
+	 SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
+	 JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
+	 WHERE i.idUser={$_SESSION['idUser']} 
+	 AND i.incomeDate BETWEEN '$this->prevYM' AND '$this->prevYMEnd'ORDER BY incomeDate";
+	 
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+	 $stmt->execute();
+	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+     return $result;
+	 
+ }
+ 
  
 }//end class

@@ -10,11 +10,6 @@ use \App\Period;
 
 class Login extends \Core\Controller{
 	
- function __construct(){
-   $this->Year=Period::getCurrentYear();
-   $this->Month=Period::getCurrentMonth();
- }
-	
  public function createAction(){
 	$user=User::authenticate($_POST['email'], $_POST['pass']);
 	
@@ -44,11 +39,13 @@ class Login extends \Core\Controller{
  }
  
   public function VerifiedUser(){
-	$view=$_GET['view'];
-	$incomeCat=Transaction::getIncomeCat();
-	$expenseCat=Transaction::getExpenseCat();
-	$paymentCat=Transaction::getPayCat();
-	View::renderTemplate('Logged_in/success.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat, 'view'=>$view]);
+	$trans=new Transaction();
+	$incomeCat=$trans->getIncomeCat();
+	$expenseCat=$trans->getExpenseCat();
+	$paymentCat=$trans->getPayCat();
+	$incomes=$trans->getIncomesCM();
+	
+	View::renderTemplate('Logged_in/success.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat, 'incomes'=>$incomes]);
  }
 
  

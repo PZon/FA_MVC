@@ -6,7 +6,7 @@
 <main>
 <div id="mainPage" class="container">
  <div class="row mb-5">
-   <div class="col-sm-12">
+   <div class="col-sm-12 col-md-8">
    <h5>
     {% if current_user %}
 	  Welcome to Finance Assitant: {{current_user.Nick}}<br />
@@ -14,12 +14,45 @@
     {% endif %}
     </h5>
    </div>
-  </div><hr>
-  {{view}}<br>
+   <div class="col-sm-12 col-md-4">
+    <div class="dropdown">
+	  <button class="btn btn-warning dropdown-toggle" type="button" id="menuStatement" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class='fas fa-chart-line'></i> Statements</button>
+	  <div class="dropdown-menu" aria-labelledby="menuStatement">
+	   <a class="dropdown-item" href="/Statement/displayStatement?view=cm">&#9656; Current Month</a>
+	   <a class="dropdown-item" href="/Statement/displayStatement?view=pm">&#9656; Previous Month</a>
+	   <a class="dropdown-item" href="/Statement/displayStatement?view=cp">&#9656; Custom Period</a>
+	  </div>
+    </div>
+   </div>
+  </div>
+  {% if view == 'cp' %}
+	<div class="row">
+	 <h5 class="mb-md-3 col-md-12">Choose statement period:</h5>
+   </div>
+	<form action="" method="post">
+	 <div class="form-row justify-content-md-center">
+	  <div class="form-group m-xs-1 col-md-4">
+		<label for="datepickerFrom" class="col-form-label">from:</label> 
+		<input type="text" class="form-control m-2" id="datepickerFrom" name="dateFrom" placeholder="From">
+	  </div>
+	  <div class="form-group m-xs-1 col-md-4">
+		<label for="datepickerTo" class="col-form-label">to: </label>
+		<input type="text" class="form-control m-2" id="datepickerTo" name="dateTo" placeholder="To">
+	  </div>
+    </div>
+	<div class="row justify-content-sm-center">
+	  <button type="submit" class="btn btn-warning col-sm-4 m-md-4">Submit</button>
+	</div>
+   </form>
+   {% elseif view == 'pm' %}
+	<h5 class="mb-md-3 col-md-12">Previous month statement</h5>
+   {% else %}
+	<h5 class="mb-md-3 col-md-12">Current month statement</h5>
+   {% endif %}<hr>
   {% for trans in incomes  %}
 	{{trans.incomeAmount}} | {{trans.incomeDescr}}<br>
   {% endfor %}
-  <hr>
+
 <div id="transBtns" class="row mt-5 justify-content-md-center">
  <button type="button" class="m-1  btn btn-outline-success btn-lg col-md-5" data-toggle="modal" data-target="#addIncome">Add income</button>
  
