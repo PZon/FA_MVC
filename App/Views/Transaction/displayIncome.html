@@ -1,0 +1,57 @@
+{% extends "base_loggedIn.html" %}
+
+{% block title %}Incom edit{% endblock %}
+
+{% block content %}
+<main>
+<div id="mainPage" class="container">
+ <div class="row mb-5">
+    <div class="col-sm-12">
+   <h5>
+    {% if current_user %}
+	  Welcome to Finance Assistant: {{current_user.Nick}}  
+    {% endif %}
+	</h5><br />
+	<hr>
+	<div id="editList">
+	 <dl>
+		<dt>income date: </dt>
+			<dd>{{income.incomeDate}}</dd>
+		<dt>income amount: </dt>
+			<dd>{{income.incomeAmount}}</dd>
+		<dt>income category: </dt>
+			<dd>{{income.nameCatI}}</dd>
+		<dt>income decription: </dt>
+			<dd>{{income.incomeDescr}}</dd>
+	 </dl>
+	</div>
+	<a class="btn btn-warning" role="button" href="/income/editIncome">Edit income</a>
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#removeIncome">Remove transaction</button>
+   </div>
+  </div>
+ </div>
+</main>
+<!--- remove transaction Modal -->
+	<div class="modal fade" id="removeIncome" tabindex="-1" role="dialog" aria-labelledby="removeTransaction" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div id="removeTransModal" class="modal-content">
+		  <div class="modal-header">
+			<h6 class="modal-title text-danger" id="removeTransactionLabel">Remove transaction !!!</h6>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<p class="text-danger">Please confirm you want to remove this transaction?</p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+			<a class="btn btn-danger" href="/income/deleteIncome" role="button" >Yes</a>
+		  </div>
+		</div>
+	  </div>
+	  </div>
+<!--- end modal -->
+
+</div>
+{% endblock %}

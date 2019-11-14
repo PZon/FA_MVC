@@ -79,9 +79,9 @@ class Transaction extends \Core\Model{
 	 
     $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
     $stmt->bindValue(':category', $this->Category, PDO::PARAM_INT);
-    $stmt->bindValue(':transactionDate', 			  $transactionDate, PDO::PARAM_STR);
-    $stmt->bindValue(':amount', $amount, PDO::        PARAM_STR);
-    $stmt->bindValue(':description', $description,        PDO::PARAM_STR);
+    $stmt->bindValue(':transactionDate', $transactionDate, PDO::PARAM_STR);
+    $stmt->bindValue(':amount', $amount, PDO::PARAM_STR);
+    $stmt->bindValue(':description', $description, PDO::PARAM_STR);
 	if(isset($this->payType)){
 	 $stmt->bindValue(':payType', $this->payType, PDO::PARAM_INT);
 	}
@@ -108,7 +108,7 @@ class Transaction extends \Core\Model{
  }
  
  public function getIncomesCM(){
-	  $sql="SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+	 $sql="SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
 	 JOIN in_cat c ON (c.idCatI=i.idIncomeCat) 
 	 WHERE i.idUser={$_SESSION['idUser']} AND i.incomeDate >= '$this->currentYM'
 	 UNION
@@ -123,6 +123,24 @@ class Transaction extends \Core\Model{
 	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
      return $result;
  }
+ 
+ function getExpensesCM(){
+	 $sql="SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
+	 JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+	 JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.expenseDate >= '$this->currentYM'
+	 UNION 
+	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
+	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
+	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.expenseDate >= '$this->currentYM'
+	 ORDER BY expenseDate";
+	 
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+	 $stmt->execute();
+	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+     return $result;
+	}
  
  public function getIncomesPM(){
 	 $sql="SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
@@ -140,9 +158,108 @@ class Transaction extends \Core\Model{
 	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
 	 $stmt->execute();
 	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
-     return $result;
-	 
+     return $result; 
  }
  
+ function getExpensesPM(){
+	 $sql="SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
+	 JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+	 JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
+	 e.expenseDate BETWEEN '$this->prevYM' AND '$this->prevYMEnd'
+	 UNION 
+	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
+	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
+	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND 
+	 e.expenseDate BETWEEN '$this->prevYM' AND '$this->prevYMEnd'ORDER BY expenseDate";
+	 
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+	 $stmt->execute();
+	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+     return $result; 
+	}
+	
+  function getIncomesCP($dateFrom, $dateTo){
+	 $sql="SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+	 JOIN in_cat c ON (c.idCatI=i.idIncomeCat)
+	 WHERE i.idUser={$_SESSION['idUser']} 
+	 AND i.incomeDate BETWEEN '$dateFrom' AND '$dateTo' 
+	 UNION
+	 SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
+	 JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
+	 WHERE i.idUser={$_SESSION['idUser']} 
+	 AND i.incomeDate BETWEEN '$dateFrom' AND '$dateTo' ORDER BY incomeDate";
+	 
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+	 $stmt->execute();
+	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+     return $result;
+ }
+ 
+  function getExpensesCP( $dateFrom, $dateTo){
+	 $sql="SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
+	 JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+	 JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
+	 e.expenseDate BETWEEN '$dateFrom' AND '$dateTo'
+	 UNION 
+	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
+	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
+	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND 
+	 e.expenseDate BETWEEN '$dateFrom' AND '$dateTo' ORDER BY expenseDate";
+
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+	 $stmt->execute();
+	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+     return $result;
+	}
+	
+ public static function getSingleTransaction($transId){
+	  $sql="SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+	 JOIN in_cat c ON (c.idCatI=i.idIncomeCat) 
+	 WHERE i.idUser={$_SESSION['idUser']} AND i.idIncome = :transId
+	 UNION
+	 SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
+	 JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
+	 WHERE i.idUser={$_SESSION['idUser']} AND i.idIncome = :transId";
+	 
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->bindParam(':transId', $transId, PDO::PARAM_INT);
+	 $stmt->execute();
+     return $stmt->fetch();
+ }
+ 
+  public static function deleteTransaction($transId){
+	  $sql="DELETE FROM income WHERE idIncome = :transId and idUser={$_SESSION['idUser']}";
+	 
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->bindParam(':transId', $transId, PDO::PARAM_INT);
+	 $stmt->execute();
+	 return true;
+ }
+ 
+ public static function updateTransaction($transId){
+	 $transactionDate=filter_input(INPUT_POST,'incomeDate',FILTER_SANITIZE_STRING);
+	 $amount=filter_input(INPUT_POST,'incomeAmount',FILTER_SANITIZE_STRING);
+	 $description=filter_input(INPUT_POST,'incomeDescription',FILTER_SANITIZE_STRING);
+	 if(isset($_POST['transType'])){
+	  $sql="UPDATE income SET idIncomeCat = :idIncomeCat, incomeDate = :incomeDate, incomeAmount = :incomeAmount, incomeDescr = :incomeDescr WHERE idIncome = :idIncome and idUser={$_SESSION['idUser']}";
+	 
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->bindParam(':idIncome', $transId, PDO::PARAM_INT);
+	 $stmt->bindValue(':idIncomeCat', $_POST['incomeCategory'], PDO::PARAM_INT);
+     $stmt->bindValue(':incomeDate', $transactionDate, PDO::PARAM_STR);
+     $stmt->bindValue(':incomeAmount', $amount, PDO::PARAM_STR);
+     $stmt->bindValue(':incomeDescr', $description, PDO::PARAM_STR);
+		return $stmt->execute();
+	 }else return false;
+ }
  
 }//end class

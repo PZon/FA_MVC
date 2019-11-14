@@ -15,6 +15,8 @@ class Statement extends Authenticated{
  }
 
  public function displayStatementAction(){
+	unset($_SESSION['incomeId']);
+	unset($_SESSION['expenseId']);
 	$trans=new Transaction();
 	$incomeCat=$trans->getIncomeCat();
 	$expenseCat=$trans->getExpenseCat();
@@ -22,19 +24,22 @@ class Statement extends Authenticated{
 	
 	if($this->view=='cm'){
 	 $incomes=$trans->getIncomesCM();
-	 View::renderTemplate('Statement/statement.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat, 'incomes'=>$incomes, 'view'=>$this->view]);
+	 $expenses=$trans->getExpensesCM();
+	 
+	 View::renderTemplate('Statement/statement.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat, 'incomes'=>$incomes, 'expenses'=>$expenses, 'view'=>$this->view]);
 	}else if($this->view=='pm'){
-		$prevYM=Period::setPreviousYM();
-		$prevYMEnd=Period::setPreviousYMEnd();
-		
 		$incomes=$trans->getIncomesPM();
-		View::renderTemplate('Statement/statement.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat, 'incomes'=>$incomes, 'view'=>$this->view]);
+		$expenses=$trans->getExpensesPM();
+		
+		View::renderTemplate('Statement/statement.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat, 'incomes'=>$incomes,'expenses'=>$expenses, 'view'=>$this->view]);
 	}else if($this->view=='cp'){
-		$prevYM=Period::setPreviousYM();
-		$prevYMEnd=Period::setPreviousYMEnd();
-		
-		$incomes=$trans->getIncomesPM();
-		View::renderTemplate('Statement/statement.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat, 'incomes'=>$incomes, 'view'=>$this->view]);
+		if(!isset($_GET['dateFrom'])){
+			View::renderTemplate('Statement/statement.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat, 'view'=>$this->view]);
+		}else{
+		$incomes=$trans->getIncomesCP($_GET['dateFrom'], $_GET['dateTo']);
+		$expenses=$trans->getExpensesCP($_GET['dateFrom'], $_GET['dateTo']);
+			View::renderTemplate('Statement/statement.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat,'incomes'=>$incomes,'expenses'=>$expenses, 'view'=>$this->view]);
+		}
 	};
  }
  
