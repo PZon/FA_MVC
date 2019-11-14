@@ -1,0 +1,94 @@
+{% extends "base_loggedIn.html" %}
+
+{% block title %}Edit Expense{% endblock %}
+
+{%block js%} 
+ <script src="/js/hideShowPassword.min.js"></script>
+ <script src="/js/app.js"></script>
+
+ <script>
+  $(document).ready(function(){
+   var userId = '{{current_user.idUser}}';
+   $('#formProfile').validate({
+    rules:{
+	 expenseDate:'required',
+	 expenseAmount:'required',
+	 expenseDescription:'required'
+   });
+ </script>
+{%endblock%}
+
+{% block content %}
+<main>
+<div id="mainPage" class="container">
+ <div class="row mb-3">
+   <div class="col-sm-12">
+   <h5>
+    {% if current_user %}
+	  Welcome to Finance Assitant: {{current_user.Nick}}<br />
+	 {% else %}
+    {% endif %}
+    </h5>
+   </div>
+  </div>
+    {% block info_fp %}	
+		{% for info in flash_info %}
+		<div class="alert alert-{{info.type}}">{{ info.body }}</div>
+		{% endfor %}
+	{% endblock %}
+  <hr>
+<!--- just edit below -->   
+  <h5>Edit Expense</h5><br>
+  {%if expense.errors is not empty %}
+   <div class="error_reg">
+   <h7>Errors:</h7>
+   <ul>
+     {%for error in expense.errors%}
+	   <li>{{error}}</li>
+	 {%endfor%}
+   </ul>
+   </div>
+   {%endif%}
+	<form action="/expense/updateExpense" method="post">
+	 <div class="form-row justify-content-md-center">
+	  <div class="form-group col-md-3">
+		<label for="expenseDate" class="col-form-label">Date:</label>
+		<input type="text" class="form-control" id="expenseDate" name="expenseDate" value="{{expense.expenseDate}}"required>
+	  </div>
+	  <div class="form-group col-md-3">
+		<label for="expenseAmount" class="col-form-label">Amount:</label>
+		<input type="text" class="form-control" id="expenseAmount" name="expenseAmount" value="{{expense.expenseAmount}}" required>
+	  </div>
+	  <div class="form-group col-md-3">
+		<label for="Category" class="col-form-label">Category:</label>
+		<div class="input-group mb-3">
+		  <select class="custom-select" id="selectCatE" name="expenseCategory">
+			<option value="{{expense.idExpenseCat}}">{{expense.nameCatE}}</option>
+			 {% for catE in catsE %}
+				<option value="{{catE.idCatE}}">{{catE.nameCatE}}</option>
+			{% endfor %}
+		  </select>
+		</div>
+	  </div>
+	 </div>
+	 <div class="form-row justify-content-md-center">
+	  <div class="form-group col-md-6">
+		<label for="expenseDescription" class="col-form-label">Description:</label>
+		<input type="text" class="form-control" id="expenseDescription" maxlength="50" name="expenseDescription" value="{{expense.expenseDescr}}" required>
+	  </div>
+	 </div>
+	 <div class="row justify-content-sm-center">
+	  <button type="submit" class="btn btn-success col-sm-4 m-md-4">Save changes</button>
+	 <a class="btn btn-danger col-sm-4 m-md-4" role="button" href="/expense/showSingleExpense">Cancel</a>
+	 </div>
+	 <div  class="row justify-content-sm-center">
+	  <a href=""  class="btn btn-outline-success col-sm-3 m-md-3 " role="button">Add expense category</a>
+	 </div>
+	</form>
+
+<!--- do not touch below -->   
+ </div>
+</main>
+
+</div>
+{% endblock %}

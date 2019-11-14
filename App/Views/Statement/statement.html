@@ -29,7 +29,8 @@
 	<div class="row">
 	 <h5 class="mb-md-3 col-md-12">Choose statement period:</h5>
    </div>
-	<form action="" method="post">
+	<form action="/Statement/displayStatement?view=cp" method="get">
+	<input type="text"  name="view" value="cp" hidden >
 	 <div class="form-row justify-content-md-center">
 	  <div class="form-group m-xs-1 col-md-4">
 		<label for="datepickerFrom" class="col-form-label">from:</label> 
@@ -45,14 +46,97 @@
 	</div>
    </form>
    {% elseif view == 'pm' %}
+   <div class="row">
 	<h5 class="mb-md-3 col-md-12">Previous month statement</h5>
+   </div>
    {% else %}
+   <div class="row">
 	<h5 class="mb-md-3 col-md-12">Current month statement</h5>
+   </div>
    {% endif %}<hr>
-  {% for trans in incomes  %}
-	{{trans.incomeAmount}} | {{trans.incomeDescr}}<br>
-  {% endfor %}
+   <div class="row justify-content-md-center">
+    <div class="col-sm-12 col-md-8">
+    {% block info_fp %}	
+	 {% for info in flash_info %}
+	  <div class="alert alert-{{info.type}}">{{ info.body }}</div>
+	 {% endfor %}
+	{% endblock %}
+    </div>
+   </div>
 
+  <div class="row">
+	<table class="table table-hover table-bordered">
+	  <thead>
+		<tr class="bg-success">
+		  <th class="tbStyle" colspan="5">INCOMES</th>
+		</tr>
+		<tr class="bg-dark">
+		  <th scope="col">Date</th>
+		  <th scope="col">Amount</th>
+		  <th scope="col">Category</th>
+		  <th scope="col">Description</th>
+		  <th scope="col">Options</th>
+		</tr>
+	  </thead>
+	  <tbody>
+  {% for income in incomes  %}
+			<tr>
+			
+			 <td>{{income.incomeDate}}</td>
+			 <td>{{income.incomeAmount}}</td>
+			 <td>{{income.nameCatI}}</td>
+			 <td>{{income.incomeDescr}}</td>
+			 <th>
+	<form method="post" id="formEditIncome" action="/income/showSingleIncome">
+		<input type="hidden" name="incomeId" value="{{income.idIncome}}">
+		<button type="submit" class="btn btn-outline-warning" name="Edit Income">
+		 <i class="fas fa-edit" value="submit"></i>
+		</button>
+	</form></th>
+		</tr>
+		{% endfor %}
+	  </tbody>
+  </table>
+ </div> 
+ 
+ 	<div class="row">
+	<table class="table table-hover table-bordered">
+	  <thead >
+	  <tr class="bg-danger">
+		  <th class="tbStyle" colspan="6">EXPENSES</th>
+	  </tr>
+		<tr class="bg-dark" >
+		  <th scope="col">Date</th>
+		  <th scope="col">Amount</th>
+		  <th scope="col">Category</th>
+		  <th scope="col">Description</th>
+		  <th scope="col">Payment type</th>
+		  <th scope="col">Options</th>
+		</tr>
+	  </thead>
+	  <tbody>
+	  {% for expense in expenses  %}
+	   <tr>
+			 <td>{{expense.expenseDate}}</td>
+			 <td>{{expense.expenseAmount}}</td>
+			 <td>{{expense.nameCatE}}</td>
+			 <td>{{expense.expenseDescr}}</td>
+			 <td>{{expense.nameCatPay}}</td>
+			 <th>
+			 <form method="post" action="expense/updateExpense">
+				<input type="hidden" name="expenseId" value="{{expense.idExpenses}}">
+			  <button type="submit" class="btn btn-outline-warning">
+			  <i class="fas fa-edit" value="submit"></i>
+			  </button>
+				</form>
+			 </th>
+			</tr>
+	 {% endfor %}
+	  </tbody>
+  </table>
+ </div>
+
+ <!--- Add income/expenses buttons -->  
 <div id="transBtns" class="row mt-5 justify-content-md-center">
  <button type="button" class="m-1  btn btn-outline-success btn-lg col-md-5" data-toggle="modal" data-target="#addIncome">Add income</button>
  
@@ -164,10 +248,10 @@
 	  </div>
 	</div>
 <!--- end modal -->
+
+
   </div>
-  
  </div>
 </main>
 
-</div>
 {% endblock %}

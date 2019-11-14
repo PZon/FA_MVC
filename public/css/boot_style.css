@@ -97,7 +97,6 @@ article{
 }
 #mainPage p{
  font-size:20px;
- 
  text-align:justify;
 }
 #mainPage h6,
@@ -209,13 +208,26 @@ table tr th, td{
 #passHelp{
 	margin-bottom: 5px;
 }
-dt{
-	font-family: 'Diplomata SC', cursive;
-	font-size: 14px;
-	text-decoration: underline;
+
+dl {
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
 }
-dd{
-	font-family: 'Diplomata SC', cursive;
-	font-size: 21px;
+dt {
+	font-size:25px;
+  float: left;
+  width: 50%;
+  /* adjust the width; make sure the total of both is 100% */
+  padding: 0;
+  margin: 0
+}
+dd {
+	font-size:25px;
+  float: left;
+  width: 50%;
+  /* adjust the width; make sure the total of both is 100% */
+  padding: 0;
+  margin: 0
 }
 
