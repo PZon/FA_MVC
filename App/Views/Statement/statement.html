@@ -88,6 +88,7 @@
 			 <td>{{income.incomeDescr}}</td>
 			 <th>
 	<form method="post" id="formEditIncome" action="/income/showSingleIncome">
+		<input type="hidden" name="transType" value="I">
 		<input type="hidden" name="incomeId" value="{{income.idIncome}}">
 		<button type="submit" class="btn btn-outline-warning" name="Edit Income">
 		 <i class="fas fa-edit" value="submit"></i>
@@ -108,9 +109,9 @@
 		<tr class="bg-dark" >
 		  <th scope="col">Date</th>
 		  <th scope="col">Amount</th>
+		  <th scope="col">Payment type</th>
 		  <th scope="col">Category</th>
 		  <th scope="col">Description</th>
-		  <th scope="col">Payment type</th>
 		  <th scope="col">Options</th>
 		</tr>
 	  </thead>
@@ -119,18 +120,19 @@
 	   <tr>
 			 <td>{{expense.expenseDate}}</td>
 			 <td>{{expense.expenseAmount}}</td>
+			 <td>{{expense.nameCatPay}}</td>
 			 <td>{{expense.nameCatE}}</td>
 			 <td>{{expense.expenseDescr}}</td>
-			 <td>{{expense.nameCatPay}}</td>
-			 <th>
-			 <form method="post" action="expense/updateExpense">
-				<input type="hidden" name="expenseId" value="{{expense.idExpenses}}">
-			  <button type="submit" class="btn btn-outline-warning">
-			  <i class="fas fa-edit" value="submit"></i>
-			  </button>
-				</form>
-			 </th>
-			</tr>
+		<th>
+		<form method="post" action="/expense/showSingleExpense">
+		  <input type="hidden" name="transType" value="E">
+		  <input type="hidden" name="expenseId" value="{{expense.idExpenses}}">
+		  <button type="submit" class="btn btn-outline-warning">
+		  <i class="fas fa-edit" value="submit"></i>
+		  </button>
+		</form>
+		</th>
+		</tr>
 	 {% endfor %}
 	  </tbody>
   </table>
