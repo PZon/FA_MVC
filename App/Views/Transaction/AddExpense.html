@@ -78,11 +78,63 @@
 	 <div class="row justify-content-sm-center">
 	  <button type="submit" class="btn btn-warning col-sm-4 m-md-4">Add transaction</button>
 	 </div>
-	 <div  class="row justify-content-sm-center">
-	  <a  class="btn btn-outline-warning col-sm-3 m-md-3 " role="button">Add expense category</a>
-	 </div>
-	</form>
-
+	 </form>
+	<div  class="row justify-content-sm-center">
+		<button type="button" class="btn btn-outline-warning col-sm-3 m-md-3" data-toggle="modal" data-target="#addExpenseCatModal">Add expense category</button>
+		<button type="button" class="btn btn-outline-warning col-sm-3 m-md-3" data-toggle="modal" data-target="#addPaymentTypeModal">Add payment type</button>
+	</div>
+<!--- add expense category -->
+	<div class="modal fade" id="addExpenseCatModal" tabindex="-1" role="dialog" aria-labelledby="expenseModal" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="addExpenseCat">Add expense Category:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<form action="/category/create" method="post">
+			<input type="hidden" class="form-control"  name="categoryType" value="UE">
+			  <div class="form-group">
+				<label for="expenseCategory" class="col-form-label">New expense category</label>
+				<input type="text" class="form-control" id="expenseCategory" name="category" placeholder="Expense Category" required>
+			  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-warning">Save category</button>
+		  </div>
+		 </form></div>
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
+<!--- add payment type -->
+	<div class="modal fade" id="addPaymentTypeModal" tabindex="-1" role="dialog" aria-labelledby="paymentModal" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="addpaymentType">Add payment type:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<form action="/category/create" method="post">
+			<input type="hidden" class="form-control"  name="categoryType" value="UP">
+			  <div class="form-group">
+				<label for="paymentCategory" class="col-form-label">New payment type</label>
+				<input type="text" class="form-control" id="paymentCategory" name="category" placeholder="Payment type" required>
+			  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-warning">Save payment type</button>
+		  </div>
+		 </form></div>
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
 <!--- do not touch below -->   
  </div>
 </main>
