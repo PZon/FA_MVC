@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use PDO;
@@ -131,8 +130,15 @@ class Transaction extends \Core\Model{
 	 UNION 
 	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
 	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
-	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.expenseDate >= '$this->currentYM'
-	 ORDER BY expenseDate";
+	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.expenseDate >= '$this->currentYM' 
+	 UNION 
+	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, p.nameCatPay FROM expenses e 
+	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat)  
+	 JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.expenseDate >= '$this->currentYM' 
+	 UNION 
+	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, a.nameUserCatPay FROM expenses e 
+	 JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.expenseDate >= '$this->currentYM' ORDER BY expenseDate";
 	 
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
@@ -161,7 +167,7 @@ class Transaction extends \Core\Model{
      return $result; 
  }
  
- function getExpensesPM(){
+ function getExpensesPM(){ 
 	 $sql="SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
 	 JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
 	 JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
@@ -169,8 +175,18 @@ class Transaction extends \Core\Model{
 	 UNION 
 	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
 	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
-	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND 
-	 e.expenseDate BETWEEN '$this->prevYM' AND '$this->prevYMEnd'ORDER BY expenseDate";
+	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
+	 e.expenseDate BETWEEN '$this->prevYM' AND '$this->prevYMEnd'
+	 UNION 
+	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, p.nameCatPay FROM expenses e 
+	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat)  
+	 JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
+	 e.expenseDate BETWEEN '$this->prevYM' AND '$this->prevYMEnd' 
+	 UNION 
+	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, a.nameUserCatPay FROM expenses e 
+	 JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
+	 e.expenseDate BETWEEN '$this->prevYM' AND '$this->prevYMEnd' ORDER BY expenseDate";
 	 
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
@@ -207,7 +223,17 @@ class Transaction extends \Core\Model{
 	 UNION 
 	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
 	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
-	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND 
+	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
+	 e.expenseDate BETWEEN '$dateFrom' AND '$dateTo'
+	 UNION 
+	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, p.nameCatPay FROM expenses e 
+	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat)  
+	 JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
+	 e.expenseDate BETWEEN '$dateFrom' AND '$dateTo' 
+	 UNION 
+	 SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, a.nameUserCatPay FROM expenses e 
+	 JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND
 	 e.expenseDate BETWEEN '$dateFrom' AND '$dateTo' ORDER BY expenseDate";
 
 	 $db=static::getDB();
@@ -218,48 +244,73 @@ class Transaction extends \Core\Model{
      return $result;
 	}
 	
- public static function getSingleTransaction($transId){
-	  $sql="SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
+ public static function getSingleTransaction(){
+	if(isset($_SESSION['incomeId'])){
+	 $sql="SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, c.nameCatI FROM income i 
 	 JOIN in_cat c ON (c.idCatI=i.idIncomeCat) 
-	 WHERE i.idUser={$_SESSION['idUser']} AND i.idIncome = :transId
+	 WHERE i.idUser={$_SESSION['idUser']} AND i.idIncome = {$_SESSION['incomeId']}
 	 UNION
 	 SELECT i.idIncome, i.idIncomeCat, i.incomeDate, i.incomeAmount, i.incomeDescr, u.nameUserCatIn FROM income i 
 	 JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
-	 WHERE i.idUser={$_SESSION['idUser']} AND i.idIncome = :transId";
-	 
+	 WHERE i.idUser={$_SESSION['idUser']} AND i.idIncome = {$_SESSION['incomeId']}";
+	}else if(isset($_SESSION['expenseId'])){
+	 $sql="SELECT e.idExpenses, e.idExpensesCat, e.userPayMethId, e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
+	 JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+	 JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.idExpenses = {$_SESSION['expenseId']}
+	 UNION 
+	 SELECT e.idExpenses, e.idExpensesCat, e.userPayMethId, e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, a.nameUserCatPay FROM expenses e 
+	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
+	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.idExpenses = {$_SESSION['expenseId']}
+	 UNION 
+	 SELECT e.idExpenses, e.idExpensesCat, e.userPayMethId, e.expenseDate, e.expenseAmount, e.expenseDescr, u.nameUserCatEx, p.nameCatPay FROM expenses e 
+	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat)  
+	 JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.idExpenses = {$_SESSION['expenseId']} 
+	 UNION 
+	 SELECT e.idExpenses, e.idExpensesCat, e.userPayMethId, e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, a.nameUserCatPay FROM expenses e 
+	 JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+	 JOIN user_pay_cat a ON (a.idUserCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.idExpenses = {$_SESSION['expenseId']} ";
+	}
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
-	 $stmt->bindParam(':transId', $transId, PDO::PARAM_INT);
 	 $stmt->execute();
      return $stmt->fetch();
  }
  
-  public static function deleteTransaction($transId){
-	  $sql="DELETE FROM income WHERE idIncome = :transId and idUser={$_SESSION['idUser']}";
-	 
+  public static function deleteTransaction(){
+	 if(isset($_SESSION['incomeId'])){
+	  $sql="DELETE FROM income WHERE idIncome = {$_SESSION['incomeId']} and idUser={$_SESSION['idUser']}";
+	 }else if(isset($_SESSION['expenseId'])){
+	  $sql="DELETE FROM expenses WHERE idExpenses = {$_SESSION['expenseId']} and idUser={$_SESSION['idUser']}";
+	 }
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
-	 $stmt->bindParam(':transId', $transId, PDO::PARAM_INT);
 	 $stmt->execute();
 	 return true;
  }
  
- public static function updateTransaction($transId){
-	 $transactionDate=filter_input(INPUT_POST,'incomeDate',FILTER_SANITIZE_STRING);
-	 $amount=filter_input(INPUT_POST,'incomeAmount',FILTER_SANITIZE_STRING);
-	 $description=filter_input(INPUT_POST,'incomeDescription',FILTER_SANITIZE_STRING);
-	 if(isset($_POST['transType'])){
-	  $sql="UPDATE income SET idIncomeCat = :idIncomeCat, incomeDate = :incomeDate, incomeAmount = :incomeAmount, incomeDescr = :incomeDescr WHERE idIncome = :idIncome and idUser={$_SESSION['idUser']}";
+ public static function updateTransaction(){
+	 $transactionDate=filter_input(INPUT_POST,'transactionDate',FILTER_SANITIZE_STRING);
+	 $amount=filter_input(INPUT_POST,'transactionAmount',FILTER_SANITIZE_STRING);
+	 $description=filter_input(INPUT_POST,'transactionDescription',FILTER_SANITIZE_STRING);
+	 
+	 if(isset($_SESSION['incomeId'])){
+	  $sql="UPDATE income SET idIncomeCat = :idIncomeCat, incomeDate = :transactionDate, incomeAmount = :amount, incomeDescr = :description WHERE idIncome = {$_SESSION['incomeId']} and idUser={$_SESSION['idUser']}";
+	 }else if(isset($_SESSION['expenseId'])){
+	  $sql="UPDATE expenses SET idExpensesCat = :idExpensesCat, userPayMethId = :userPayMethId, expenseDate = :transactionDate, expenseAmount = :amount, expenseDescr = :description WHERE idExpenses = {$_SESSION['expenseId']} and idUser={$_SESSION['idUser']}"; 
+	 }
 	 
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
-	 $stmt->bindParam(':idIncome', $transId, PDO::PARAM_INT);
-	 $stmt->bindValue(':idIncomeCat', $_POST['incomeCategory'], PDO::PARAM_INT);
-     $stmt->bindValue(':incomeDate', $transactionDate, PDO::PARAM_STR);
-     $stmt->bindValue(':incomeAmount', $amount, PDO::PARAM_STR);
-     $stmt->bindValue(':incomeDescr', $description, PDO::PARAM_STR);
+	 if(isset($_SESSION['incomeId'])){
+	  $stmt->bindValue(':idIncomeCat', $_POST['incomeCategory'], PDO::PARAM_INT);
+	 }else if(isset($_SESSION['expenseId'])){
+	  $stmt->bindValue(':idExpensesCat', $_POST['expenseCategory'], PDO::PARAM_INT);
+	  $stmt->bindValue(':userPayMethId', $_POST['payCategory'], PDO::PARAM_INT); 
+	 }
+      $stmt->bindValue(':transactionDate', $transactionDate, PDO::PARAM_STR);
+      $stmt->bindValue(':amount', $amount, PDO::PARAM_STR);
+      $stmt->bindValue(':description', $description, PDO::PARAM_STR);
 		return $stmt->execute();
-	 }else return false;
+	// }else return false;
  }
- 
 }//end class

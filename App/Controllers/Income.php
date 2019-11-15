@@ -31,34 +31,34 @@ class Income extends Authenticated{
 	 if(isset($_POST['incomeId'])){
 	 $_SESSION['incomeId']=$_POST['incomeId'];
 	 }
-	 $income=Transaction::getSingleTransaction($_SESSION['incomeId']);
+	 $income=Transaction::getSingleTransaction();
 	 View::renderTemplate('Transaction/displayIncome.html',['income'=>$income]); 
  }
  
   public function editIncome(){
-	 $income=Transaction::getSingleTransaction($_SESSION['incomeId']);
+	 $income=Transaction::getSingleTransaction();
 	 View::renderTemplate('Transaction/editIncomeForm.html',['catsI'=>$this->incomeCat,'income'=>$income]); 
  }
  
    public function deleteIncome(){
 
-	if(Transaction::deleteTransaction($_SESSION['incomeId'])){
+	if(Transaction::deleteTransaction()){
 		Flash::addMessage('Transaction has been removed');
 		$this->redirect('/statement/displayStatement?view=cm');
 	}else{
-		$income=Transaction::getSingleTransaction($_SESSION['incomeId']);
+		$income=Transaction::getSingleTransaction();
 		Flash::addMessage('Error');
 		View::renderTemplate('Transaction/editIncomeForm.html',['catsI'=>$this->incomeCat,'income'=>$income]);
 	}
  }
  
  public function updateIncome(){
-   if(Transaction::updateTransaction($_SESSION['incomeId'])){
+   if(Transaction::updateTransaction()){
 	Flash::addMessage('Income data has been updated.', Flash::WARNING);
 	$this->redirect('/statement/displayStatement?view=cm');
 	exit();
    }else{
-	$income=Transaction::getSingleTransaction($_SESSION['incomeId']);
+	$income=Transaction::getSingleTransaction();
 	Flash::addMessage('Error');
 	View::renderTemplate('Transaction/editIncomeForm.html',['catsI'=>$this->incomeCat,'income'=>$income]);  
    }

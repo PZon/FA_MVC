@@ -53,17 +53,17 @@
 	 <div class="form-row justify-content-md-center">
 	  <div class="form-group col-md-3">
 		<label for="expenseDate" class="col-form-label">Date:</label>
-		<input type="text" class="form-control" id="expenseDate" name="expenseDate" value="{{expense.expenseDate}}"required>
+		<input type="text" class="form-control" id="expenseDate" name="transactionDate" value="{{expense.expenseDate}}" required>
 	  </div>
 	  <div class="form-group col-md-3">
 		<label for="expenseAmount" class="col-form-label">Amount:</label>
-		<input type="text" class="form-control" id="expenseAmount" name="expenseAmount" value="{{expense.expenseAmount}}" required>
+		<input type="text" class="form-control" id="expenseAmount" name="transactionAmount" value="{{expense.expenseAmount}}" required>
 	  </div>
 	  <div class="form-group col-md-3">
-		<label for="Category" class="col-form-label">Category:</label>
+		<label for="selectCatE" class="col-form-label">Category:</label>
 		<div class="input-group mb-3">
 		  <select class="custom-select" id="selectCatE" name="expenseCategory">
-			<option value="{{expense.idExpenseCat}}">{{expense.nameCatE}}</option>
+			<option value="{{expense.idExpensesCat}}">{{expense.nameCatE}}</option>
 			 {% for catE in catsE %}
 				<option value="{{catE.idCatE}}">{{catE.nameCatE}}</option>
 			{% endfor %}
@@ -72,9 +72,20 @@
 	  </div>
 	 </div>
 	 <div class="form-row justify-content-md-center">
+	  <div class="form-group col-md-3">
+		<label for="payCategory" class="col-form-label">Category:</label>
+		<div class="input-group mb-3">
+		  <select class="custom-select" id="payCategory" name="payCategory">
+			<option value="{{expense.userPayMethId}}">{{expense.nameCatPay}}</option>
+			 {% for catP in catsP %}
+				<option value="{{catP.idCatPay}}">{{catP.nameCatPay}}</option>
+			{% endfor %}
+		  </select>
+		</div>
+	  </div>
 	  <div class="form-group col-md-6">
 		<label for="expenseDescription" class="col-form-label">Description:</label>
-		<input type="text" class="form-control" id="expenseDescription" maxlength="50" name="expenseDescription" value="{{expense.expenseDescr}}" required>
+		<input type="text" class="form-control" id="expenseDescription" maxlength="50" name="transactionDescription" value="{{expense.expenseDescr}}" required>
 	  </div>
 	 </div>
 	 <div class="row justify-content-sm-center">

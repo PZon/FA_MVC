@@ -52,13 +52,12 @@
 	<form action="/income/updateIncome" method="post">
 	 <div class="form-row justify-content-md-center">
 	  <div class="form-group col-md-3">
-		<input type="hidden" class="form-control" id="transType" name="transType" value="I">
 		<label for="incomeDate" class="col-form-label">Date:</label>
-		<input type="text" class="form-control" id="incomeDate" name="incomeDate" value="{{income.incomeDate}}"required>
+		<input type="text" class="form-control" id="incomeDate" name="transactionDate" value="{{income.incomeDate}}"required>
 	  </div>
 	  <div class="form-group col-md-3">
 		<label for="incomeAmount" class="col-form-label">Amount:</label>
-		<input type="text" class="form-control" id="incomeAmount" name="incomeAmount" value="{{income.incomeAmount}}" required>
+		<input type="text" class="form-control" id="incomeAmount" name="transactionAmount" value="{{income.incomeAmount}}" required>
 	  </div>
 	  <div class="form-group col-md-3">
 		<label for="Category" class="col-form-label">Category:</label>
@@ -75,7 +74,7 @@
 	 <div class="form-row justify-content-md-center">
 	  <div class="form-group col-md-6">
 		<label for="incomeDescription" class="col-form-label">Description:</label>
-		<input type="text" class="form-control" id="incomeDescription" maxlength="50" name="incomeDescription" value="{{income.incomeDescr}}" required>
+		<input type="text" class="form-control" id="incomeDescription" maxlength="50" name="transactionDescription" value="{{income.incomeDescr}}" required>
 	  </div>
 	 </div>
 	 <div class="row justify-content-sm-center">
