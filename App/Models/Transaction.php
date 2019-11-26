@@ -311,6 +311,59 @@ class Transaction extends \Core\Model{
       $stmt->bindValue(':amount', $amount, PDO::PARAM_STR);
       $stmt->bindValue(':description', $description, PDO::PARAM_STR);
 		return $stmt->execute();
-	// }else return false;
+ }
+ 
+ public static function totalIncomes(){
+	 $sql="SELECT SUM(incomeAmount) AS sumI FROM income";
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->execute();
+     return $stmt->fetch();
+ }
+ 
+  public static function totalExpenses(){
+	 $sql="SELECT SUM(expenseAmount) AS sumE FROM expenses";
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->execute();
+     return $stmt->fetch();
+ }
+ 
+ public static function groupedIncomes(){
+	 $sql="SELECT i.idIncomeCat, SUM(i.incomeAmount) AS totalI, c.nameCatI FROM income i 
+	 JOIN in_cat c ON (c.idCatI=i.idIncomeCat) 
+	 WHERE i.idUser={$_SESSION['idUser']}
+     GROUP BY i.idIncomeCat
+	 UNION
+	 SELECT i.idIncomeCat, SUM(i.incomeAmount) AS totalI , u.nameUserCatIn FROM income i 
+	 JOIN user_in_cat u ON (u.idUserCatIn=i.idIncomeCat)
+	 WHERE i.idUser={$_SESSION['idUser']}
+     GROUP BY i.idIncomeCat";
+	 
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+	 $stmt->execute();
+	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+     return $result;
+ }
+ 
+  public static function groupedExpenses(){
+	 $sql="SELECT e.idExpensesCat, SUM(e.expenseAmount) AS totalE, c.nameCatE  FROM expenses e 
+	 JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
+ 	 WHERE e.idUser={$_SESSION['idUser']}
+     GROUP BY e.idExpensesCat
+	 UNION 
+	 SELECT e.idExpensesCat, SUM(e.expenseAmount) AS totalE,  u.nameUserCatEx FROM expenses e 
+	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
+	 WHERE e.idUser={$_SESSION['idUser']}
+     GROUP BY e.idExpensesCat";
+	 
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+	 $stmt->execute();
+	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+     return $result;
  }
 }//end class

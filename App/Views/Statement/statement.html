@@ -6,7 +6,7 @@
 <main>
 <div id="mainPage" class="container">
  <div class="row mb-5">
-   <div class="col-sm-12 col-md-8">
+   <div class="col-sm-12 col-md-9">
    <h5>
     {% if current_user %}
 	  Welcome to Finance Assitant: {{current_user.Nick}}<br />
@@ -14,9 +14,9 @@
     {% endif %}
     </h5>
    </div>
-   <div class="col-sm-12 col-md-4">
+   <div class="col-sm-12 col-md-3">
     <div class="dropdown">
-	  <button class="btn btn-warning dropdown-toggle" type="button" id="menuStatement" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class='fas fa-chart-line'></i> Statements</button>
+	  <button class="btn btn-warning dropdown-toggle btn-block" type="button" id="menuStatement" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class='fas fa-chart-line'></i> Statements</button>
 	  <div class="dropdown-menu" aria-labelledby="menuStatement">
 	   <a class="dropdown-item" href="/Statement/displayStatement?view=cm">&#9656; Current Month</a>
 	   <a class="dropdown-item" href="/Statement/displayStatement?view=pm">&#9656; Previous Month</a>
