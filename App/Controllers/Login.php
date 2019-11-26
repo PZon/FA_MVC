@@ -40,12 +40,13 @@ class Login extends \Core\Controller{
  
   public function VerifiedUser(){
 	$trans=new Transaction();
-	$incomeCat=$trans->getIncomeCat();
-	$expenseCat=$trans->getExpenseCat();
-	$paymentCat=$trans->getPayCat();
-	$incomes=$trans->getIncomesCM();
+	$totalIncomes=$trans->totalIncomes();
+	$groupedIncomes=$trans->groupedIncomes();
+	$totalExpenses=$trans->totalExpenses();
+	$groupedExpenses=$trans->groupedExpenses();
+	$total=$totalIncomes['sumI']-$totalExpenses['sumE'];
 	
-	View::renderTemplate('Logged_in/success.html',['catsI'=>$incomeCat,'catsE'=>$expenseCat,'catsP'=>$paymentCat, 'incomes'=>$incomes]);
+	View::renderTemplate('Logged_in/success.html',['totalI'=>$totalIncomes, 'totalE'=>$totalExpenses,'total'=>$total, 'groupedI'=>$groupedIncomes, 'groupedE'=>$groupedExpenses]);
  }
 
  

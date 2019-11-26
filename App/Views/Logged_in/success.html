@@ -1,137 +1,153 @@
 {% extends "base_loggedIn.html" %}
 
-{% block title %}{% endblock %}
+{% block title %}Account overview{% endblock %}
+
+{%block js%}
+
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      google.charts.load('current', {'packages':['corechart']});
+
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        // Create the data table - incomes.
+       var dataI = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+ {% for income in groupedI  %}
+ ['{{income.nameCatI}}',{{income.totalI}}]
+	 //  <tr>	
+	//	 <td>{{income.nameCatI}}</td>
+	//	 <td>{{income.totalI}}</td>
+	//   </tr>
+  {% endfor %}
+   
+        ]);
+
+        // Set chart options
+        var options = {'title':'Incomes Overview',
+		is3D:true,
+		backgroundColor: '#222211',
+		titleTextStyle: {color: '#ccac77',
+						 bold: true,
+						 fontSize:15},
+		legend: {textStyle:{fontSize: 12,
+				 color:'#ccac77'}},
+		};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chartI'));
+        chart.draw(dataI, options);
+		
+		
+		
+		// Create the data table - expenses.
+		var dataE = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+		  ['Work',     7],
+          ['Eat',      22],
+          ['Commute',  12],
+          ['Watch TV', 2],
+          ['Sleep',    17]
+
+        ]);
+
+        // Set chart options
+        var options = {'title':'Expenses Overview',
+		is3D:true,
+		backgroundColor: '#222211',
+		titleTextStyle: {color: '#ccac77',
+						 bold: true,
+						 fontSize:15},
+		legend: {textStyle:{fontSize: 12,
+				 color:'#ccac77'}}
+		};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('chartE'));
+        chart.draw(dataE, options);
+      }
+    </script>
+
+{%endblock%}
 
 {% block content %}
 <main>
 <div id="mainPage" class="container">
- <div class="row mb-5">
+ <div class="row">
    <div class="col-sm-12">
    <h5>
-    {% if current_user %}
-	  Welcome to Finance Assitant: {{current_user.Nick}}<br />
-	 {% else %}
-    {% endif %}
+	  Welcome to Finance Assitant: {{current_user.Nick}}
     </h5>
    </div>
-  </div><hr>
-  {{view}}<br>
-  {% for trans in incomes  %}
-	{{trans.incomeAmount}} | {{trans.incomeDescr}}<br>
-  {% endfor %}
-  <hr>
-<div id="transBtns" class="row mt-5 justify-content-md-center">
- <button type="button" class="m-1  btn btn-outline-success btn-lg col-md-5" data-toggle="modal" data-target="#addIncome">Add income</button>
- 
- <!--- Add income MODAL -->
-	<div class="modal fade" id="addIncome" tabindex="-1" role="dialog" aria-labelledby="addIncome" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="addIncomeLabel">Add income:</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-			<form action="/income/create" method="post">
-			<input type="text" class="form-control" id="transactionType" value="I" name="transactionType" hidden>
-			 <div class="form-group">
-			  <label for="incomeDate" class="col-form-label">Date:</label>
-			  <input type="text" class="form-control" id="incomeDate" name="transactionDate" required>
-			 </div>
-			 <div class="form-group">
-				<label for="amountI" class="col-form-label">Amount:</label>
-				<input type="text" class="form-control" id="amountI" name="amount" required>
-			 </div>
-			 <div class="form-group">
-			  <label for="Category" class="col-form-label">Category:</label>
-			  <div class="input-group mb-3">
-				<select class="custom-select" id="selectCatI" name="Category" required>
-				<option value="0">Choose...</option>
-				 
-				 {% for catI in catsI %}
-				 <option value="{{catI.idCatI}}">{{catI.nameCatI}}</option>
-				 {% endfor %}
-				
-				 </select>
-				</div>
-			  </div>
-			  <div class="form-group">
-				<label for="descriptionI" class="col-form-label">Description:</label>
-				<input type="text" class="form-control" id="descriptionI" maxlength="50" name="description" required>
-			  </div>
-
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="submit" class="btn btn-warning">Save income</button>
-		  </div>
-		  </form>
-		 </div> 
-		</div>
-	  </div>
-	</div>
-<!--- end modal -->
-
-<button type="button" class="m-1  btn btn-outline-danger btn-lg col-md-5" data-toggle="modal" data-target="#addExpense">Add expense</button>
- <div class="modal fade" id="addExpense" tabindex="-1" role="dialog" aria-labelledby="addExpense" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="addExpenseLabel">Add expense:</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-		  <form action="/expense/create" method="post">
-			<input type="text" class="form-control" id="transactionType" value="E" name="transactionType"hidden>
-			  <div class="form-group">
-				<label for="expenseDate" class="col-form-label">Date:</label>
-				<input type="text" class="form-control" id="expenseDate" name="transactionDate">
-			  </div>
-			  <div class="form-group">
-				<label for="amountE" class="col-form-label">Amount:</label>
-				<input type="text" class="form-control" id="amountE" name="amount">
-			  </div>
-			  <div class="form-group">
-				<label for="payType" class="col-form-label">Payment Type:</label>
-				<div class="input-group">
-				 <select class="custom-select" id="PayType" name="payType" >
-				 <option value="0">Choose...</option>
-				 {% for catP in catsP %}
-				 <option value="{{catP.idCatPay}}">{{catP.nameCatPay}}</option>
-				 {% endfor %}
-				 </select>
-				</div>
-			  </div>
-			  <div class="form-group">
-				<label for="categoryE" class="col-form-label">Category:</label>
-				<div class="input-group">
-				  <select class="custom-select" id="selectCatE" name="Category"  required>
-					<option value="0">Choose...</option>
-					{% for catE in catsE %}
-					<option value="{{catE.idCatE}}">{{catE.nameCatE}}</option>
-					{% endfor %}
-				  </select>
-				</div>
-			  </div>
-			  <div class="form-group">
-				<label for="descriptionE" class="col-form-label">Description:</label>
-				<input type="text" class="form-control" id="descriptionE" maxlength="50" name="description">
-			  </div>
-			
-			  <div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="submit" class="btn btn-warning">Save expense</button>
-			  </div>
-		  </form>
-		  </div>
-		</div>
-	  </div>
-	</div>
-<!--- end modal -->
   </div>
+     <div class="row">
+	<h5 class="col-sm-12">Account overview</h5>
+   </div>
+   <hr>
+   
+   <div class="row mb-lg-3">
+	<table class="table table-hover table-bordered col-lg-6">
+	  <thead>
+		<tr class="bg-success">
+		  <th class="tbStyle" colspan="2">INCOMES</th>
+		</tr>
+		<tr class="bg-dark">
+		  <th scope="col">Income type</th>
+		  <th scope="col">Total</th>
+		</tr>
+	  </thead>
+	  <tbody>
+  {% for income in groupedI  %}
+	   <tr>	
+		 <td>{{income.nameCatI}}</td>
+		 <td>{{income.totalI}}</td>
+	   </tr>
+  {% endfor %}
+		<tr class="bg-dark">	
+		 <th>Income sum</th>
+		 <th>{{totalI.sumI}}</th>
+	   </tr>
+	  </tbody>
+  </table>
+  <div id="chartI" class="col-lg-5"></div>
+ </div>
+
+ <div class="row">
+	<table class="table table-hover table-bordered col-lg-6">
+	  <thead>
+		<tr class="bg-danger">
+		  <th class="tbStyle" colspan="2">EXPENSES</th>
+		</tr>
+		<tr class="bg-dark">
+	<th scope="col">Expense type</th>
+		  <th scope="col">Total</th>
+		</tr>
+	  </thead>
+  <tbody>
+	{% for expense in groupedE  %}
+	   <tr>	
+		 <td>{{expense.nameCatE}}</td>
+		 <td>{{expense.totalE}}</td>
+	   </tr>
+	{% endfor %}
+		<tr class="bg-dark">	
+ <th>Expense sum</th>
+	 <th>{{totalE.sumE}}</th>
+	   </tr>
+	  </tbody>
+  </table>
+  <div id="chartE" class="col-lg-5"></div>
+ </div>  
+
+<hr>
+	Total: {{total}}<br>
+	
+  <hr>
+
   
  </div>
 </main>

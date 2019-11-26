@@ -231,3 +231,7 @@ dd {
   margin: 0
 }
 
+#chartI, #chartE{
+	text-shadow:0 0 0;
+}
+
