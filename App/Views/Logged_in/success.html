@@ -17,13 +17,6 @@
         // Create the data table - incomes.
        var dataI = google.visualization.arrayToDataTable([
           ['Task', 'Hours per Day'],
- {% for income in groupedI  %}
- ['{{income.nameCatI}}',{{income.totalI}}]
-	 //  <tr>	
-	//	 <td>{{income.nameCatI}}</td>
-	//	 <td>{{income.totalI}}</td>
-	//   </tr>
-  {% endfor %}
    
         ]);
 
