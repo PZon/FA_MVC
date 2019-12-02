@@ -314,7 +314,7 @@ class Transaction extends \Core\Model{
  }
  
  public static function totalIncomes(){
-	 $sql="SELECT SUM(incomeAmount) AS sumI FROM income";
+	 $sql="SELECT SUM(incomeAmount) AS sumI FROM income WHERE idUser={$_SESSION['idUser']}";
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
 	 $stmt->execute();
@@ -322,7 +322,7 @@ class Transaction extends \Core\Model{
  }
  
   public static function totalExpenses(){
-	 $sql="SELECT SUM(expenseAmount) AS sumE FROM expenses";
+	 $sql="SELECT SUM(expenseAmount) AS sumE FROM expenses WHERE idUser={$_SESSION['idUser']}";
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
 	 $stmt->execute();

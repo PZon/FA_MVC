@@ -16,7 +16,10 @@
 
         // Create the data table - incomes.
        var dataI = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
+          ['Income type', 'Total'],
+		  {% for pieChI in groupedI %}
+          	['{{ pieChI.nameCatI }}', {{pieChI.totalI}}],
+          {% endfor %}
    
         ]);
 
@@ -39,13 +42,10 @@
 		
 		// Create the data table - expenses.
 		var dataE = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-		  ['Work',     7],
-          ['Eat',      22],
-          ['Commute',  12],
-          ['Watch TV', 2],
-          ['Sleep',    17]
-
+          ['Income type', 'Total'],
+		  {% for pieChE in groupedE %}
+          	['{{ pieChE.nameCatE }}', {{pieChE.totalE}}],
+          {% endfor %}
         ]);
 
         // Set chart options
@@ -106,7 +106,7 @@
 	   </tr>
 	  </tbody>
   </table>
-  <div id="chartI" class="col-lg-5"></div>
+  <div id="chartI" class="col-lg-6"></div>
  </div>
 
  <div class="row">
@@ -133,14 +133,12 @@
 	   </tr>
 	  </tbody>
   </table>
-  <div id="chartE" class="col-lg-5"></div>
+  <div id="chartE" class="col-lg-6"></div>
  </div>  
 
-<hr>
-	Total: {{total}}<br>
-	
   <hr>
-
+	<h5>Balance: {{total}} &#36;</h5>
+  <hr>
   
  </div>
 </main>
