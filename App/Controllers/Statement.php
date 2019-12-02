@@ -1,8 +1,6 @@
 <?php
 namespace App\Controllers;
 
-namespace App\Controllers;
-
 use \Core\View;
 use \App\Models\Transaction;
 use \App\Auth;

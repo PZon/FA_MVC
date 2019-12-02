@@ -17,10 +17,12 @@
 		<dt >Email</dt>
 			<dd >{{current_user.Email}}</dd>
 	</dl>
-	<a class="btn btn-warning" role="button" href="/profile/edit">Edit profile</a>
+	<div class="row mt-5 justify-content-md-center">
+	<a class="btn btn-warning m-1" role="button" href="/profile/edit">Edit profile</a>
+	<a class="btn btn-danger m-1" role="button" href="/profile/remove">Remove Account</a>
 	 {% else %}
     {% endif %}
-
+	</div>
    </div>
   </div>
  </div>
