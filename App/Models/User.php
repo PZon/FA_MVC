@@ -26,7 +26,8 @@ class User extends \Core\Model{
 	 $hashed_token=$token->getHash();
 	 $this->activation_token = $token->getValue();
 	 
-	 $sql='INSERT INTO users VALUES (NULL, :nick, :email, :pass_hash,NULL,NULL,:activation_hash,"N")';
+	// $sql='INSERT INTO users VALUES (NULL, :nick, :email, :pass_hash,NULL,NULL,:activation_hash,"N")';
+	 $sql='INSERT INTO users VALUES (NULL, :nick, :email, :pass_hash,NULL,NULL,NULL,"Y")';
 	 
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
@@ -34,7 +35,7 @@ class User extends \Core\Model{
 	 $stmt->bindValue(':nick', $nick, PDO::PARAM_STR );
 	 $stmt->bindValue(':email', $this->Email, PDO::PARAM_STR );
 	 $stmt->bindValue(':pass_hash', $pass_hash, PDO::PARAM_STR );
-	 $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR );
+	 //$stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR );
 	 
 	 return $stmt->execute();
 	}

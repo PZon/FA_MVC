@@ -15,7 +15,7 @@ class Register extends \Core\Controller{
  public function createAction(){
 	$user=new User($_POST);
    if($user->save()){
-	$user->sendActivationEmail(); 
+	//$user->sendActivationEmail(); 
 	$this->redirect('/register/success');
 	exit();
    }else{

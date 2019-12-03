@@ -94,6 +94,7 @@
 		</tr>
 	  </thead>
 	  <tbody>
+
   {% for income in groupedI  %}
 	   <tr>	
 		 <td>{{income.nameCatI}}</td>
@@ -101,8 +102,10 @@
 	   </tr>
   {% endfor %}
 		<tr class="bg-dark">	
-		 <th>Income sum</th>
-		 <th>{{totalI.sumI}}</th>
+		 <th>Incomes sum</th>
+		<th>{{totalI.sumI}}</th>
+		
+		 
 	   </tr>
 	  </tbody>
   </table>
@@ -128,7 +131,7 @@
 	   </tr>
 	{% endfor %}
 		<tr class="bg-dark">	
- <th>Expense sum</th>
+ <th>Expenses sum</th>
 	 <th>{{totalE.sumE}}</th>
 	   </tr>
 	  </tbody>
