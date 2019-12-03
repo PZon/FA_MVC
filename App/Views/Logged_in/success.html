@@ -94,7 +94,6 @@
 		</tr>
 	  </thead>
 	  <tbody>
-
   {% for income in groupedI  %}
 	   <tr>	
 		 <td>{{income.nameCatI}}</td>
@@ -103,13 +102,21 @@
   {% endfor %}
 		<tr class="bg-dark">	
 		 <th>Incomes sum</th>
-		<th>{{totalI.sumI}}</th>
-		
-		 
+		 {% if totalI.sumI!=0 %}
+		 <th>{{totalI.sumI}}</th>
+		 {% else %}
+		 <th> 0 </th>
+		 {% endif %}
 	   </tr>
 	  </tbody>
   </table>
+  {% if totalI.sumI!=0 %}
   <div id="chartI" class="col-lg-6"></div>
+  {%else%}
+  <div class="col-lg-6">
+  <p class="text-center">Please add incomes to display chart</p>
+  </div>
+  {%endif%}
  </div>
 
  <div class="row">
@@ -131,12 +138,21 @@
 	   </tr>
 	{% endfor %}
 		<tr class="bg-dark">	
- <th>Expenses sum</th>
-	 <th>{{totalE.sumE}}</th>
+		<th>Expenses sum</th>
+		{% if totalE.sumE!=0 %}
+		<th>{{totalE.sumE}}</th>
+		{%else%}
+		<th>0</th>
+		{%endif%}
 	   </tr>
 	  </tbody>
   </table>
-  <div id="chartE" class="col-lg-6"></div>
+  {% if totalE.sumE!=0 %}
+	<div id="chartE" class="col-lg-6"></div>
+  {%else%}
+	<div class="col-lg-6"><p class="text-center">Please add expenses to display chart</p></div>
+  {%endif%}
+
  </div>  
 
   <hr>
