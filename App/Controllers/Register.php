@@ -24,7 +24,7 @@ class Register extends \Core\Controller{
  }
  
   public function successAction(){
-	View::renderTemplate('register/success.html');
+	View::renderTemplate('Register/success.html');
  }
  
   public function activateAction(){

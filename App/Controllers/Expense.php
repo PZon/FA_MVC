@@ -14,7 +14,7 @@ class Expense extends Authenticated{
  }
 	
   public function addExpenseAction(){
-	View::renderTemplate('Transaction/addExpense.html',['catsE'=>$this->expenseCat,'catsP'=>$this->paymentCat]);
+	View::renderTemplate('Transaction/AddExpense.html',['catsE'=>$this->expenseCat,'catsP'=>$this->paymentCat]);
  }
  
  public function createAction(){

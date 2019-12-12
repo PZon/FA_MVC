@@ -69,6 +69,17 @@ class User extends \Core\Model{
            $this->errors[] = 'Password needs at least one number';
        } 
 	}
+	
+/*
+	$captchaKey="secretKey";
+	$checkCaptcha=file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$captchaKey.'&response='.$_POST['g-recaptcha-response']);
+	$captchaRespond=json_decode($checkCaptcha);
+	
+	if(!($captchaRespond->success)){
+	 $this->errors[]='ERROR: Confirm you are not a BOT';
+	}
+*/	
+	
  }
  
  public static function findByEmail($email){
