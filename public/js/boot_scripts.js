@@ -22,8 +22,10 @@ function countdown(){
 
 $(function() {
   $( "#datepickerFrom" ).datepicker({dateFormat: 'yy-mm-dd' }); 
-  $( "#datepickerTo" ).datepicker({ dateFormat: 'yy-mm-dd' });
-  $( "#incomeDate" ).datepicker({ dateFormat: 'yy-mm-dd' });
-  $( "#expenseDate" ).datepicker({ dateFormat: 'yy-mm-dd' });
-  $( "#transactionDate" ).datepicker({ dateFormat: 'yy-mm-dd' });
+  $( "#modalDatepickerFrom" ).datepicker({dateFormat: 'yy-mm-dd' }); 
+  $( "#datepickerTo" ).datepicker({dateFormat: 'yy-mm-dd' });
+  $( "#modalDatepickerTo" ).datepicker({dateFormat: 'yy-mm-dd' });
+  $( "#incomeDate" ).datepicker({dateFormat: 'yy-mm-dd' });
+  $( "#expenseDate" ).datepicker({dateFormat: 'yy-mm-dd' });
+  $( "#transactionDate" ).datepicker({dateFormat: 'yy-mm-dd' });
 });

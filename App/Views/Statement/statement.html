@@ -20,7 +20,7 @@
 	  <div class="dropdown-menu" aria-labelledby="menuStatement">
 	   <a class="dropdown-item" href="/Statement/displayStatement?view=cm">&#9656; Current Month</a>
 	   <a class="dropdown-item" href="/Statement/displayStatement?view=pm">&#9656; Previous Month</a>
-	   <a class="dropdown-item" href="/Statement/displayStatement?view=cp">&#9656; Custom Period</a>
+	   <a class="dropdown-item" href="/Statement/displayStatement?view=cp" title="datePicker Form" data-toggle="modal" data-target="#datePickerModal">&#9656; Custom Period</a>
 	  </div>
     </div>
    </div>
@@ -141,6 +141,40 @@
  <!--- Add income/expenses buttons -->  
 <div id="transBtns" class="row mt-5 justify-content-md-center">
  <button type="button" class="m-1  btn btn-outline-success btn-lg col-md-5" data-toggle="modal" data-target="#addIncome">Add income</button>
+ 
+ <!--- datePicker MODAL -->
+	<div class="modal fade" id="datePickerModal" tabindex="-1" role="dialog" aria-labelledby="datePicker" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="datePickerLabel">Choose statement period:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+		<form action="/Statement/displayStatement?view=cp" method="get">
+			<input type="text"  name="view" value="cp" hidden >
+		 <div class="form-row justify-content-md-center">
+		  <div class="form-group m-xs-1 col-md-6">
+			<label for="modalDatepickerFrom" class="col-form-label">from:</label> 
+			<input type="text" class="form-control m-2" id="modalDatepickerFrom" name="dateFrom" placeholder="From">
+		  </div>
+		  <div class="form-group m-xs-1 col-md-6">
+			<label for="modalDatepickerTo" class="col-form-label">to: </label>
+			<input type="text" class="form-control m-2" id="modalDatepickerTo" name="dateTo" placeholder="To">
+		  </div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="submit" class="btn btn-warning">Submit</button>
+		  </div>
+		  </form>
+		 </div> 
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
  
  <!--- Add income MODAL -->
 	<div class="modal fade" id="addIncome" tabindex="-1" role="dialog" aria-labelledby="addIncome" aria-hidden="true">
