@@ -2,6 +2,16 @@
 
 {% block title %}Add Expese{% endblock %}
 
+{%block js%} 
+ <script>
+  $(function(){
+	$("#addExpenseLimit").click(function(){
+	 $("#expenseLimit").toggle('slow');
+	});
+   });
+ </script>
+{%endblock%}
+
 {% block content %}
 <main>
 <div id="mainPage" class="container">
@@ -99,6 +109,11 @@
 			  <div class="form-group">
 				<label for="expenseCategory" class="col-form-label">New expense category</label>
 				<input type="text" class="form-control" id="expenseCategory" name="category" placeholder="Expense Category" required>
+			  </div>
+			  <div class="form-group">
+			   <label for="addExpenseLimit" class="col-form-label">Set monthly expenses limit</label>
+			   <input id="addExpenseLimit" type="checkbox" name="checkboxExp">&nbsp;
+			   <input class="form-control" id="expenseLimit" type="number" name="expLimit" style="display:none" placeholder="0" min="0" max="100000"> 
 			  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

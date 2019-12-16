@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2019 at 10:53 AM
--- Server version: 10.3.16-MariaDB
--- PHP Version: 7.3.7
+-- Generation Time: Dec 16, 2019 at 11:26 AM
+-- Server version: 10.4.10-MariaDB
+-- PHP Version: 7.1.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -58,33 +58,34 @@ INSERT INTO `expenses` (`idExpenses`, `idUser`, `idExpensesCat`, `userPayMethId`
 
 CREATE TABLE `ex_cat` (
   `idCatE` smallint(4) NOT NULL,
-  `nameCatE` char(20) NOT NULL
+  `nameCatE` char(20) NOT NULL,
+  `Expense_Limit` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ex_cat`
 --
 
-INSERT INTO `ex_cat` (`idCatE`, `nameCatE`) VALUES
-(1, 'Food'),
-(2, 'Transport'),
-(3, 'Home'),
-(4, 'Phone & Internet'),
-(5, 'Clothes'),
-(6, 'Health care'),
-(7, 'Clothes'),
-(8, 'Kids'),
-(9, 'Entertainment'),
-(10, 'Travel'),
-(11, 'Holiday'),
-(12, 'Education'),
-(13, 'Books'),
-(14, 'Savings'),
-(15, 'Pension'),
-(16, 'Mortgage'),
-(17, 'Loans'),
-(18, 'Gift'),
-(19, 'Other');
+INSERT INTO `ex_cat` (`idCatE`, `nameCatE`, `Expense_Limit`) VALUES
+(1, 'Food', NULL),
+(2, 'Transport', NULL),
+(3, 'Home', NULL),
+(4, 'Phone & Internet', NULL),
+(5, 'Clothes', NULL),
+(6, 'Health care', NULL),
+(7, 'Clothes', NULL),
+(8, 'Kids', NULL),
+(9, 'Entertainment', NULL),
+(10, 'Travel', NULL),
+(11, 'Holiday', NULL),
+(12, 'Education', NULL),
+(13, 'Books', NULL),
+(14, 'Savings', NULL),
+(15, 'Pension', NULL),
+(16, 'Mortgage', NULL),
+(17, 'Loans', NULL),
+(18, 'Gift', NULL),
+(19, 'Other', NULL);
 
 -- --------------------------------------------------------
 
@@ -192,17 +193,18 @@ INSERT INTO `users` (`idUser`, `Nick`, `Email`, `Password`, `Password_reset_hash
 CREATE TABLE `user_ex_cat` (
   `idUserCatEx` smallint(4) NOT NULL,
   `idUser` smallint(6) NOT NULL,
-  `nameUserCatEx` char(20) NOT NULL
+  `nameUserCatEx` char(20) NOT NULL,
+  `UEx_Limit` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_ex_cat`
 --
 
-INSERT INTO `user_ex_cat` (`idUserCatEx`, `idUser`, `nameUserCatEx`) VALUES
-(30, 1, 'ADMIN-DON\'T TOUCH'),
-(31, 34, 'ex_testowa'),
-(37, 34, 'EX CATEGORY');
+INSERT INTO `user_ex_cat` (`idUserCatEx`, `idUser`, `nameUserCatEx`, `UEx_Limit`) VALUES
+(30, 1, 'ADMIN-DON\'T TOUCH', NULL),
+(31, 34, 'ex_testowa', NULL),
+(37, 34, 'EX CATEGORY', NULL);
 
 -- --------------------------------------------------------
 
@@ -346,7 +348,7 @@ ALTER TABLE `ex_cat`
 -- AUTO_INCREMENT for table `income`
 --
 ALTER TABLE `income`
-  MODIFY `idIncome` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `idIncome` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `in_cat`

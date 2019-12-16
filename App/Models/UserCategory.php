@@ -19,11 +19,12 @@ class UserCategory extends \Core\Model{
 	
 	if(empty($this->errors)){
 	$this->category=filter_input(INPUT_POST,'category',FILTER_SANITIZE_STRING);
+	$this->expLimit=filter_input(INPUT_POST,'expLimit',FILTER_SANITIZE_NUMBER_INT);
 	 $category=strtoupper($this->category);
 	 if($this->categoryType=='UI'){
 		$sql="INSERT INTO user_in_cat VALUES (NULL, {$_SESSION['idUser']}, :category)";
 	 }else if($this->categoryType=='UE'){
-		$sql="INSERT INTO user_ex_cat VALUES (NULL, {$_SESSION['idUser']}, :category)";
+		$sql="INSERT INTO user_ex_cat VALUES (NULL, {$_SESSION['idUser']}, :category, :limit)";
 	 }else if($this->categoryType=='UP'){
 		$sql="INSERT INTO user_pay_cat VALUES (NULL, {$_SESSION['idUser']}, :category)";
 	 }
@@ -31,6 +32,7 @@ class UserCategory extends \Core\Model{
 	 $stmt=$db->prepare($sql);
 	 
 	 $stmt->bindValue(':category', $category, PDO::PARAM_STR );
+	 $stmt->bindValue(':limit', $this->expLimit, PDO::PARAM_INT );
 	 
 	 return $stmt->execute();
 	}
@@ -41,6 +43,10 @@ class UserCategory extends \Core\Model{
 	 if ($this->category == '') {
            $this->errors[] = 'Category name is required';
        }
+	 if ($this->expLimit < 0 || $this->expLimit > 100000) {
+           $this->errors[] = 'Value for expnses category should be set between 0 and 100000';
+       }
+	 
  }
 	
  }//end class

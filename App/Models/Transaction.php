@@ -62,7 +62,7 @@ class Transaction extends \Core\Model{
   
   if(empty($this->errors)){
    	 $transactionDate=filter_input(INPUT_POST,'transactionDate',FILTER_SANITIZE_STRING);
-	 $amount=filter_input(INPUT_POST,'amount',FILTER_SANITIZE_STRING);
+	 $amount=filter_input(INPUT_POST,'amount',FILTER_SANITIZE_NUMBER_INT);
 	 $description=filter_input(INPUT_POST,'description',FILTER_SANITIZE_STRING);
 	 $userId=$_SESSION['idUser'];
 	
@@ -290,7 +290,7 @@ class Transaction extends \Core\Model{
  
  public static function updateTransaction(){
 	 $transactionDate=filter_input(INPUT_POST,'transactionDate',FILTER_SANITIZE_STRING);
-	 $amount=filter_input(INPUT_POST,'transactionAmount',FILTER_SANITIZE_STRING);
+	 $amount=filter_input(INPUT_POST,'transactionAmount',FILTER_SANITIZE_NUMBER_INT);
 	 $description=filter_input(INPUT_POST,'transactionDescription',FILTER_SANITIZE_STRING);
 	 
 	 if(isset($_SESSION['incomeId'])){
