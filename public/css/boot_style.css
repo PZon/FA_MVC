@@ -234,4 +234,8 @@ dd {
 #chartI, #chartE{
 	text-shadow:0 0 0;
 }
+.modalError{
+	color:#FF0000;
+	font-size: 17px;
+}
 

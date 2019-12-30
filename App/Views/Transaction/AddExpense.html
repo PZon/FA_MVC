@@ -2,16 +2,6 @@
 
 {% block title %}Add Expese{% endblock %}
 
-{%block js%} 
- <script>
-  $(function(){
-	$("#addExpenseLimit").click(function(){
-	 $("#expenseLimit").toggle('slow');
-	});
-   });
- </script>
-{%endblock%}
-
 {% block content %}
 <main>
 <div id="mainPage" class="container">
@@ -33,6 +23,7 @@
   <hr>
 <!--- just edit above -->   
   <h5>Add Expense</h5><br>
+	<span id="infoLimit"></span>
     {%if expense.errors is not empty %}
    <div class="error_reg">
    <h7>Errors:</h7>
@@ -43,6 +34,7 @@
    </ul>
    </div>
    {%endif%}
+   
 	<form action="/expense/create" method="post">
 	 <input type="text" class="form-control" id="transactionType" value="E" name="transactionType" hidden>
 	 <div class="form-row justify-content-md-center">
@@ -86,7 +78,7 @@
 	  </div>
 	 </div>
 	 <div class="row justify-content-sm-center">
-	  <button type="submit" class="btn btn-warning col-sm-4 m-md-4">Add transaction</button>
+	  <button  type="submit" class="btn btn-warning col-sm-4 m-md-4">Add transaction</button>
 	 </div>
 	 </form>
 	<div  class="row justify-content-sm-center">
@@ -104,11 +96,12 @@
 			</button>
 		  </div>
 		  <div class="modal-body">
-			<form action="/category/create" method="post">
-			<input type="hidden" class="form-control"  name="categoryType" value="UE">
+			<form id="formExCat" action="/category/create" method="POST">
+			<p id="infoCat"> </p>
+			<input id="catT" type="hidden" class="form-control"  name="categoryType" value="UE">
 			  <div class="form-group">
 				<label for="expenseCategory" class="col-form-label">New expense category</label>
-				<input type="text" class="form-control" id="expenseCategory" name="category" placeholder="Expense Category" required>
+				<input id="exCat" type="text" class="form-control" id="expenseCategory" name="category" placeholder="Expense Category">
 			  </div>
 			  <div class="form-group">
 			   <label for="addExpenseLimit" class="col-form-label">Set monthly expenses limit</label>
@@ -117,7 +110,7 @@
 			  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="submit" class="btn btn-warning">Save category</button>
+			<button id="btnExCat" type="submit" class="btn btn-warning" name="submit">Save category</button>
 		  </div>
 		 </form></div>
 		</div>
@@ -135,15 +128,16 @@
 			</button>
 		  </div>
 		  <div class="modal-body">
-			<form action="/category/create" method="post">
-			<input type="hidden" class="form-control"  name="categoryType" value="UP">
+			<form id="addPaymentTypeForm" action="/category/create" method="post">
+			<p id="infoCatP"> </p>
+			<input type="hidden" class="form-control"  name="categoryType" id="categoryType"   value="UP">
 			  <div class="form-group">
 				<label for="paymentCategory" class="col-form-label">New payment type</label>
 				<input type="text" class="form-control" id="paymentCategory" name="category" placeholder="Payment type" required>
 			  </div>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="submit" class="btn btn-warning">Save payment type</button>
+			<button id="btnPayCat" type="submit" class="btn btn-warning">Save payment type</button>
 		  </div>
 		 </form></div>
 		</div>

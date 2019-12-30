@@ -62,7 +62,7 @@ class Transaction extends \Core\Model{
   
   if(empty($this->errors)){
    	 $transactionDate=filter_input(INPUT_POST,'transactionDate',FILTER_SANITIZE_STRING);
-	 $amount=filter_input(INPUT_POST,'amount',FILTER_SANITIZE_NUMBER_INT);
+	 $amount=filter_input(INPUT_POST,'amount',FILTER_SANITIZE_NUMBER_FLOAT);
 	 $description=filter_input(INPUT_POST,'description',FILTER_SANITIZE_STRING);
 	 $userId=$_SESSION['idUser'];
 	
@@ -104,6 +104,7 @@ class Transaction extends \Core\Model{
 	if(!is_string($this->description)){
 		$this->errors[] = 'In description you can use just alphanumeric characters';
 	}
+
  }
  
  public function getIncomesCM(){
@@ -358,6 +359,17 @@ class Transaction extends \Core\Model{
 	 JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) 
 	 WHERE e.idUser={$_SESSION['idUser']}
      GROUP BY e.idExpensesCat";
+	 
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+	 $stmt->execute();
+	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+     return $result;
+ }
+ 
+ public static function groupedExpensesCM(){
+	 $sql="SELECT e.idExpensesCat, SUM(e.expenseAmount) AS totalE, u.nameUserCatEx, u.UExLimit FROM expenses e JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) WHERE e.idUser={$_SESSION['idUser']} AND e.idExpensesCat>30 AND e.expenseDate >= '$this->currentYM' GROUP BY e.idExpensesCat ";
 	 
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);

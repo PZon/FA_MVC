@@ -2,6 +2,10 @@
 
 {% block title %}Add Income{% endblock %}
 
+{%block js%} 
+
+{%endblock%}
+
 {% block content %}
 <main>
 <div id="mainPage" class="container">
@@ -70,7 +74,7 @@
 	 </div>
 	</form>
 
-<!--- add income category -->
+<!--- add income category modal-->
 	<div class="modal fade" id="addIncomeCatModal" tabindex="-1" role="dialog" aria-labelledby="incomeModal" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
@@ -82,7 +86,8 @@
 		  </div>
 		  <div class="modal-body">
 			<form action="/category/create" method="post">
-			<input type="hidden" class="form-control"  name="categoryType" value="UI">
+			<p id="infoCatI"> </p>
+			<input type="hidden" class="form-control"  name="categoryType" id="categoryType" value="UI">
 			  <div class="form-group">
 				<label for="incomeCategory" class="col-form-label">New income category</label>
 				<input type="text" class="form-control" id="incomeCategory" name="category" placeholder="Income Category" required>
@@ -90,7 +95,7 @@
 
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="submit" class="btn btn-warning">Save category</button>
+			<button id="btnIncCat" type="submit" class="btn btn-warning">Save category</button>
 		  </div>
 		 </form></div>
 		</div>
