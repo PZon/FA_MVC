@@ -31,9 +31,9 @@ class Transaction extends \Core\Model{
  }
  
  public static function getExpenseCat(){
-  $sql="SELECT idCatE, nameCatE FROM ex_cat 
+  $sql="SELECT idCatE, nameCatE, Expense_Limit FROM ex_cat 
    UNION 
-   SELECT idUserCatEx, nameUserCatEx FROM user_ex_cat 
+   SELECT idUserCatEx, nameUserCatEx, UExLimit FROM user_ex_cat 
    WHERE idUser={$_SESSION['idUser']}";
 	$db=static::getDB();
 	$stmt=$db->prepare($sql);
@@ -124,7 +124,7 @@ class Transaction extends \Core\Model{
      return $result;
  }
  
- function getExpensesCM(){
+ public function getExpensesCM(){
 	 $sql="SELECT e.idExpenses, e.expenseDate, e.expenseAmount, e.expenseDescr, c.nameCatE, p.nameCatPay FROM expenses e 
 	 JOIN ex_cat c ON (c.idCatE = e.idExpensesCat) 
 	 JOIN pay_cat p ON (p.idCatPay = e.userPayMethId) WHERE e.idUser={$_SESSION['idUser']} AND e.expenseDate >= '$this->currentYM'
@@ -368,14 +368,23 @@ class Transaction extends \Core\Model{
      return $result;
  }
  
- public static function groupedExpensesCM(){
-	 $sql="SELECT e.idExpensesCat, SUM(e.expenseAmount) AS totalE, u.nameUserCatEx, u.UExLimit FROM expenses e JOIN user_ex_cat u ON (u.idUserCatEx = e.idExpensesCat) WHERE e.idUser={$_SESSION['idUser']} AND e.idExpensesCat>30 AND e.expenseDate >= '$this->currentYM' GROUP BY e.idExpensesCat ";
+   public static function groupedExpensesCM($idCat){
+	$period=Period::setCurrentYM();
+	
+	$sql="SELECT idUser, idExpensesCat, SUM(expenseAmount) AS totalE FROM expenses WHERE idUser={$_SESSION['idUser']} AND idExpensesCat=$idCat AND expenseDate >='$period'";
 	 
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
-	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
 	 $stmt->execute();
-	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
-     return $result;
+     return $stmt->fetch();
  }
+ 
+  public static function getUserSingleCat($idCat){
+	 $sql="SELECT idUserCatEx, nameUserCatEx, UExLimit FROM user_ex_cat WHERE idUser= {$_SESSION['idUser']} and idUserCatEx=$idCat";
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->execute();
+     return $stmt->fetch();
+ }
+ 
 }//end class

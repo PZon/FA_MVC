@@ -101,15 +101,5 @@ class UserCategory extends \Core\Model{
 	 }
 	 return false;
  }
- 
- public function getUserExpCat(){
-	 $sql="SELECT * FROM user_ex_cat WHERE idUser={$_SESSION['idUser']}";
-	 $db=static::getDB();
-	 $stmt=$db->prepare($sql);
-	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
-	 $stmt->execute();
-	 $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
-     return $result;
- }
 	
  }//end class
