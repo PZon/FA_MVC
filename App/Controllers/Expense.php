@@ -26,6 +26,7 @@ class Expense extends Authenticated{
    }else{
 	View::renderTemplate('Transaction/AddExpense.html',['expense'=>$expense,'catsE'=>$this->expenseCat,'catsP'=>$this->paymentCat]);  
    }
+   exit;
  }
  
  public function showSingleExpense(){
@@ -59,11 +60,28 @@ class Expense extends Authenticated{
 	$this->redirect('/statement/displayStatement?view=cm');
 	exit();
    }else{
-	$income=Transaction::getSingleTransaction();
+	$expense=Transaction::getSingleTransaction();
 	Flash::addMessage('Error');
 	View::renderTemplate('Transaction/editExpenseForm.html',['expense'=>$expense, 'catsE'=>$this->expenseCat,'catsP'=>$this->paymentCat]);  
    }
  }  
+ 
+ public function verifyCatLimit(){
+	$expAmount=$_POST['amount'];
+	$idCat=$_POST['Category'];
+	$userCat=Transaction::getUserSingleCat($idCat);
+	$totalUserExpenses=Transaction::groupedExpensesCM($idCat);
+	$totalECM=$totalUserExpenses['totalE']+$expAmount;
+	
+   if(isset($expAmount)){ 
+    if($idCat==$userCat['idUserCatEx'] && $userCat['UExLimit']>0){
+	 if($totalECM>$userCat['UExLimit']){
+		 echo '<span class="formWarning">You have exceed your monthly limit for this category</span>';
+		 exit;
+	 }
+	}
+   }
+ }
 
  
 }//end class;

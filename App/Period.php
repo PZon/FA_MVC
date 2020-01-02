@@ -13,6 +13,12 @@ class Period{
 		return date('m');
 	}
 	
+	public static function setPreviousYear(){
+		if(date('m')==1) $prevYear=date('Y')-1;
+		else $prevYear=date('Y');
+		return $prevYear;
+	}
+	
 	public static function setPreviousMonth(){
 		if(date('m')==1) $prevMonth=12;
 		else $prevMonth=date('m')-1;
@@ -25,12 +31,12 @@ class Period{
 	}
 	
 	public static function setPreviousYM(){
-		$prevYM=static::getCurrentYear().'-'.static::setPreviousMonth().'-01';
+		$prevYM=static::setPreviousYear().'-'.static::setPreviousMonth().'-01';
 		return $prevYM;
 	}
 	
 	public static function setPreviousYMEnd(){
-		$prevYMEnd=static::getCurrentYear().'-'.static::setPreviousMonth().'-31';
+		$prevYMEnd=static::setPreviousYear().'-'.static::setPreviousMonth().'-31';
 		return $prevYMEnd;
 	}
 
