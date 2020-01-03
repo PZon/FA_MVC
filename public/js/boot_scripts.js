@@ -127,6 +127,7 @@ $(function(){
  });
  
  /*** Income Cat Modal Validation ***/	
+
  $('#btnIncCat').click(function(){
 	event.preventDefault();
 	var categoryType=$('#categoryType').val();
@@ -166,9 +167,36 @@ $(function(){
 		  }
 		});
 	  } 
+  });
  });
- 
- 
-});	
+
+/***expeses limit verification***/
+$(function(){ 
+  $.fn.verifyLimit = function(){
+	event.preventDefault();
+	var amount=$('#amount').val();
+	var Category=$('#selectCatE').val();
+	if(Category!=0){
+		$.ajax({
+		  url:"/Expense/verifyCatLimit",
+		  method: "POST",
+		  data:{
+		    amount: amount,
+			Category: Category
+		  },
+		  success:function(data){
+		    if(data != 'NoErrors'){
+				$("#infoLimit").html('<span class="modalError">'+data+'</span>');
+			}
+		  }
+		});
+	}else{
+		$("#infoLimit").html('<span class="formWarning">Please choose expense category!</span>');
+	}
+  }
+	$('#amount,#selectCatE').on('input',function(){
+        $.fn.verifyLimit();
+      });
+});
 
 
