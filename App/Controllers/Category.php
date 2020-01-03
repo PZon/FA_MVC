@@ -32,7 +32,6 @@ class Category extends Authenticated{
  }
  
  public function verifyCat(){
-	// print_r($_POST);
 	$category=$_POST['category'];
 	$categoryType=$_POST['categoryType'];
 	$catExist=UserCategory::categoryExist($category, $categoryType);
@@ -40,8 +39,8 @@ class Category extends Authenticated{
 		$expLimit=$_POST['expLimit'];
 	}
 	
-   if(isset($category)){
-	   
+  if(isset($category)){
+
 	if($catExist){
 		echo '<span class="modalError">Category name already exist!</span>'; 
 		exit;
@@ -52,13 +51,21 @@ class Category extends Authenticated{
 			echo '<span class="modalError">Value for expenses category should be set between 0 and 100000</span>';
 			exit;
 		}else if (!empty($expLimit)&&!is_numeric($expLimit)){
-			echo '<span class="modalError">Wrong field value - not a number<span>';
+			echo '<span class="modalError">Wrong value - not a number<span>';
 			exit;
 		}
 	}
 	echo 'NoErrors';
    }
   
+ }
+ 
+ public function showAction(){
+	$incomeCat=UserCategory::userIncomeCat();
+	$expenseCat=UserCategory::userExpenseCat();
+	$paymentCat=UserCategory::userPaymentCat();
+	View::renderTemplate('Category/show.html',['incomeCat'=>$incomeCat, 'expenseCat'=>$expenseCat, 'paymentCat'=>$paymentCat]);
+		
  }
 
 

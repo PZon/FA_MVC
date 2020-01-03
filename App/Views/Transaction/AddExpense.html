@@ -3,36 +3,7 @@
 {% block title %}Add Expese{% endblock %}
 
 {%block js%} 
-<script>
- $(function(){
- 
-  $.fn.verifyLimit = function(){
-	event.preventDefault();
-	var amount=$('#amount').val();
-	var Category=$('#selectCatE').val();
-	if(Category!=0){
-		$.ajax({
-		  url:"/Expense/verifyCatLimit",
-		  method: "POST",
-		  data:{
-		    amount: amount,
-			Category: Category
-		  },
-		  success:function(data){
-		    if(data != 'NoErrors'){
-				$("#infoLimit").html('<span class="modalError">'+data+'</span>');
-			}
-		  }
-		});
-	}else{
-		$("#infoLimit").html('<span class="formWarning">Please choose expense category!</span>');
-	}
-  }
-	$('#amount,#selectCatE').on('input',function(){
-        $.fn.verifyLimit();
-      });
-  });
-</script>
+
 {%endblock%}
 
 {% block content %}
@@ -81,7 +52,12 @@
 		  <select class="custom-select" id="selectCatE" name="Category"  >
 			<option value="0">Choose...</option>
 			{% for catE in catsE %}
-			 <option value="{{catE.idCatE}}">{{catE.nameCatE}} limit:{{catE.Expense_Limit}}</option>
+			 <option value="{{catE.idCatE}}">{{catE.nameCatE}}
+			  {% if catE.Expense_Limit > 0 %}
+			    - limit:{{catE.Expense_Limit}}</option>
+			  {% else %}
+			   </option>
+			  {% endif %}
 			{% endfor %}
 		  </select>
 		</div>

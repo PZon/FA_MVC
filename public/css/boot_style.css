@@ -164,6 +164,7 @@ a:hover{
 table{
 	background-color:#3d3d29;
 }
+
 table tr th, td{
 	color: #ccac77;
 }
@@ -234,6 +235,7 @@ dd {
 #chartI, #chartE{
 	text-shadow:0 0 0;
 }
+
 .modalError{
 	color:#FF0000;
 	font-size: 17px;
@@ -242,5 +244,18 @@ dd {
 .formWarning{
 	color:#ffcc00;
 	font-size: 17px;
+}
+
+.accordion .card-header{
+	background-color:#997300;
+}
+.accordion .card-body{
+	background-color:#3d3d29;
+}
+
+.accordion .card-header .btn{
+	font-family: 'Diplomata SC', cursive;
+	text-shadow:0 0 0;
+	color:#222211;
 }
 

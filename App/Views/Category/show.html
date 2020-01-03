@@ -1,0 +1,257 @@
+{% extends "base_loggedIn.html" %}
+
+{% block title %}User categories{% endblock %}
+
+{%block js%} 
+
+{%endblock%}
+
+{% block content %}
+<main>
+<div id="mainPage" class="container">
+ <div class="row mb-3">
+   <div class="col-sm-12">
+   <h5>
+    {% if current_user %}
+	  Welcome to Finance Assitant: {{current_user.Nick}}<br />
+	 {% else %}
+    {% endif %}
+    </h5>
+   </div>
+  </div>
+   {% block info_fp %}	
+		{% for info in flash_info %}
+		<div class="alert alert-{{info.type}}">{{ info.body }}</div>
+		{% endfor %}
+	{% endblock %}
+  <hr>
+<!--- just edit above -->   
+  <h5>User categories</h5><br>
+  
+  <div class="accordion" id="accordionCategories">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h2 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Incomes Categories
+        </button>
+      </h2>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionCategories">
+      <div class="card-body">
+       
+   <div class="row">
+	<table class="table table-hover table-bordered">
+	  <thead>
+		<tr class="bg-dark">
+		  <th scope="col">Category name</th>
+		  <th scope="col">Options</th>
+		</tr>
+	  </thead>
+	  <tbody>
+  {% for income in incomeCat  %}
+			<tr>
+			 <td>{{income.nameUserCatIn}}</td>
+	<th>
+	<form method="post" id="formEditIncome" action="/Category/showSingleCategory">
+		<input type="hidden" name="incomeId" value="{{income.idUserCatIn}}">
+		<button type="submit" class="btn btn-outline-warning" name="Edit Income">
+		 <i class="fas fa-edit" value="submit"></i>
+		</button>
+	</form></th>
+		</tr>
+		{% endfor %}
+	  </tbody>
+  </table>
+ </div> 
+	   
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Expenses Categories
+        </button>
+      </h2>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionCategories">
+      <div class="card-body">
+	  
+   <div class="row">
+	<table class="table table-hover table-bordered">
+	  <thead>
+		<tr class="bg-dark">
+		  <th scope="col">Category name</th>
+		  <th scope="col">Category limit</th>
+		  <th scope="col">Options</th>
+		</tr>
+	  </thead>
+	  <tbody>
+  {% for expense in expenseCat  %}
+			<tr>
+			 <td>{{expense.nameUserCatEx}}</td>
+			{% if expense.UExLimit > 0 %} 
+			 <td>{{expense.UExLimit}}</td>
+			{% else %}
+			 <td>No Limit</td>
+			{% endif %}
+	<th>
+	<form method="post" id="formEditIncome" action="/Category/showSingleCategory">
+		<input type="hidden" name="expenseId" value="{{expense.idUserCatEx}}">
+		<button type="submit" class="btn btn-outline-warning" name="Edit Income">
+		 <i class="fas fa-edit" value="submit"></i>
+		</button>
+	</form></th>
+		</tr>
+		{% endfor %}
+	  </tbody>
+  </table>
+ </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Payment Type
+        </button>
+      </h2>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionCategories">
+      <div class="card-body">
+  
+  <div class="row">
+	<table class="table table-hover table-bordered">
+	  <thead>
+		<tr class="bg-dark">
+		  <th scope="col">Category name</th>
+		  <th scope="col">Options</th>
+		</tr>
+	  </thead>
+	  <tbody>
+  {% for pay in paymentCat  %}
+			<tr>
+			 <td>{{pay.nameUserCatPay}}</td>
+	<th>
+	<form method="post" id="formEditpayment" action="/Category/showSingleCategory">
+		<input type="hidden" name="incomeId" value="{{income.idUserCatPay}}">
+		<button type="submit" class="btn btn-outline-warning" name="Edit Income">
+		 <i class="fas fa-edit" value="submit"></i>
+		</button>
+	</form></th>
+		</tr>
+		{% endfor %}
+	  </tbody>
+  </table>
+ </div>
+  
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div  class="row justify-content-sm-center">
+ <button type="button" class="btn btn-outline-success col-sm-3 m-md-3" data-toggle="modal" data-target="#addIncomeCatModal">Add income category</button>
+ <button type="button" class="btn btn-outline-danger col-sm-3 m-md-3" data-toggle="modal" data-target="#addExpenseCatModal">Add expense category</button>
+ <button type="button" class="btn btn-outline-warning col-sm-3 m-md-3" data-toggle="modal" data-target="#addPaymentTypeModal">Add payment type</button>
+</div>
+
+<!--- add income category modal-->
+	<div class="modal fade" id="addIncomeCatModal" tabindex="-1" role="dialog" aria-labelledby="incomeModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="registerModalLabel">Add Income Category:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<form action="/category/create" method="post">
+			<p id="infoCatI"> </p>
+			<input type="hidden" class="form-control"  name="categoryType" id="categoryType" value="UI">
+			  <div class="form-group">
+				<label for="incomeCategory" class="col-form-label">New income category</label>
+				<input type="text" class="form-control" id="incomeCategory" name="category" placeholder="Income Category" required>
+			  </div>
+
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button id="btnIncCat" type="submit" class="btn btn-warning">Save category</button>
+		  </div>
+		 </form></div>
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
+<!--- add expense category -->
+	<div class="modal fade" id="addExpenseCatModal" tabindex="-1" role="dialog" aria-labelledby="expenseModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="addExpenseCat">Add expense Category:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<form id="formExCat" action="/category/create" method="POST">
+			<p id="infoCat"> </p>
+			<input id="catT" type="hidden" class="form-control"  name="categoryType" value="UE">
+			  <div class="form-group">
+				<label for="expenseCategory" class="col-form-label">New expense category</label>
+				<input id="exCat" type="text" class="form-control" id="expenseCategory" name="category" placeholder="Expense Category">
+			  </div>
+			  <div class="form-group">
+			   <label for="addExpenseLimit" class="col-form-label">Set monthly expenses limit</label>
+			   <input id="addExpenseLimit" type="checkbox" name="checkboxExp">&nbsp;
+			   <input class="form-control" id="expenseLimit" type="number" name="expLimit" style="display:none" placeholder="0" min="0" max="100000"> 
+			  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button id="btnExCat" type="submit" class="btn btn-warning" name="submit">Save category</button>
+		  </div>
+		 </form></div>
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
+<!--- add payment type -->
+	<div class="modal fade" id="addPaymentTypeModal" tabindex="-1" role="dialog" aria-labelledby="paymentModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="addpaymentType">Add payment type:</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<form id="addPaymentTypeForm" action="/category/create" method="post">
+			<p id="infoCatP"> </p>
+			<input type="hidden" class="form-control"  name="categoryType" id="categoryType"   value="UP">
+			  <div class="form-group">
+				<label for="paymentCategory" class="col-form-label">New payment type</label>
+				<input type="text" class="form-control" id="paymentCategory" name="category" placeholder="Payment type" required>
+			  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button id="btnPayCat" type="submit" class="btn btn-warning">Save payment type</button>
+		  </div>
+		 </form></div>
+		</div>
+	  </div>
+	</div>
+<!--- end modal -->
+
+<!--- do not touch below -->   
+ </div>
+</main>
+
+</div>
+{% endblock %}
