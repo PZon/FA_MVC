@@ -15,7 +15,6 @@ class Category extends Authenticated{
  }
 
  public function createAction(){
-		//$this->verifyCat();
 		$category=new UserCategory($_POST);
 		$type=$_POST['categoryType'];
 	   if($category->saveCategory()){
@@ -57,7 +56,6 @@ class Category extends Authenticated{
 	}
 	echo 'NoErrors';
    }
-  
  }
  
  public function showAction(){
@@ -67,7 +65,32 @@ class Category extends Authenticated{
 	View::renderTemplate('Category/show.html',['incomeCat'=>$incomeCat, 'expenseCat'=>$expenseCat, 'paymentCat'=>$paymentCat]);
 		
  }
-
+ 
+  public function singleUserCat(){
+	  $catType=$_POST['catType'];
+	  $idCat=$_POST['idCat'];
+	  $cat=UserCategory::getUserSingleCat($catType,$idCat);
+	  
+	  if($cat && $catType=='I'){
+		  echo '<p class="text-danger">Category name: '.$cat['nameUserCatIn'].'</p>';
+	  }else if($cat && $catType=='E'){
+		  echo '<p class="text-danger">Category name: '.$cat['nameUserCatEx'].'</p>';
+	  }else if($cat && $catType=='P'){
+		  echo '<p class="text-danger">Category name: '.$cat['nameUserCatPay'].'</p>';
+	  }else echo 'Error';
+  }
+  
+  public function deleteUserCat(){
+	  $catType=$_POST['catType'];
+	  $idCat=$_POST['idCat'];
+	  
+	 if(UserCategory::categoryUsed($catType,$idCat)){
+		Flash::addMessage('You can not remove this category. Category links to some transaction - edit transaction first', Flash::WARNING);  
+	 }else{
+		UserCategory::deleteUserSingleCat($catType,$idCat);
+		Flash::addMessage('Category has been removed', Flash::WARNING);		
+	  }
+  }
 
  
 }//end class;

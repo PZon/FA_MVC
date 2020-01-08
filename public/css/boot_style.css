@@ -258,4 +258,6 @@ dd {
 	text-shadow:0 0 0;
 	color:#222211;
 }
-
+.btn-edit{
+	float:left;
+}

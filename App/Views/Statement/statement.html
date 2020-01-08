@@ -227,6 +227,7 @@
 <!--- end modal -->
 
 <button type="button" class="m-1  btn btn-outline-danger btn-lg col-md-5" data-toggle="modal" data-target="#addExpense">Add expense</button>
+
  <div class="modal fade" id="addExpense" tabindex="-1" role="dialog" aria-labelledby="addExpense" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
@@ -237,16 +238,36 @@
 			</button>
 		  </div>
 		  <div class="modal-body">
+		  <span id="infoLimit"></span>
 		  <form action="/expense/create" method="post">
-			<input type="text" class="form-control" id="transactionType" value="E" name="transactionType"hidden>
+			<input type="text" class="form-control" id="transactionType" value="E" name="transactionType" hidden>
 			  <div class="form-group">
 				<label for="expenseDate" class="col-form-label">Date:</label>
 				<input type="text" class="form-control" id="expenseDate" name="transactionDate">
 			  </div>
+			  
+			  <div class="form-group">
+				<label for="categoryE" class="col-form-label">Category:</label>
+				<div class="input-group">
+				  <select class="custom-select" id="selectCatE" name="Category"  required>
+					<option value="0">Choose...</option>
+					{% for catE in catsE %}
+					 <option value="{{catE.idCatE}}">{{catE.nameCatE}}
+					  {% if catE.Expense_Limit > 0 %}
+						- limit:{{catE.Expense_Limit}}</option>
+					  {% else %}
+					   </option>
+					  {% endif %}
+					{% endfor %}
+				  </select>
+				</div>
+			  </div>
+			  
 			  <div class="form-group">
 				<label for="amountE" class="col-form-label">Amount:</label>
-				<input type="text" class="form-control" id="amountE" name="amount">
+				<input type="text" class="form-control" id="amount" name="amount">
 			  </div>
+			  
 			  <div class="form-group">
 				<label for="payType" class="col-form-label">Payment Type:</label>
 				<div class="input-group">
@@ -258,17 +279,7 @@
 				 </select>
 				</div>
 			  </div>
-			  <div class="form-group">
-				<label for="categoryE" class="col-form-label">Category:</label>
-				<div class="input-group">
-				  <select class="custom-select" id="selectCatE" name="Category"  required>
-					<option value="0">Choose...</option>
-					{% for catE in catsE %}
-					<option value="{{catE.idCatE}}">{{catE.nameCatE}}</option>
-					{% endfor %}
-				  </select>
-				</div>
-			  </div>
+		
 			  <div class="form-group">
 				<label for="descriptionE" class="col-form-label">Description:</label>
 				<input type="text" class="form-control" id="descriptionE" maxlength="50" name="description">
@@ -276,7 +287,7 @@
 			
 			  <div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="submit" class="btn btn-warning">Save expense</button>
+				<button id="" type="submit" class="btn btn-warning">Save expense</button>
 			  </div>
 		  </form>
 		  </div>

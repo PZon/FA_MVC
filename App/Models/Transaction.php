@@ -62,7 +62,7 @@ class Transaction extends \Core\Model{
   
   if(empty($this->errors)){
    	 $transactionDate=filter_input(INPUT_POST,'transactionDate',FILTER_SANITIZE_STRING);
-	 $amount=filter_input(INPUT_POST,'amount',FILTER_SANITIZE_NUMBER_FLOAT);
+	 $amount=filter_input(INPUT_POST,'amount',FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
 	 $description=filter_input(INPUT_POST,'description',FILTER_SANITIZE_STRING);
 	 $userId=$_SESSION['idUser'];
 	
@@ -291,7 +291,7 @@ class Transaction extends \Core\Model{
  
  public static function updateTransaction(){
 	 $transactionDate=filter_input(INPUT_POST,'transactionDate',FILTER_SANITIZE_STRING);
-	 $amount=filter_input(INPUT_POST,'transactionAmount',FILTER_SANITIZE_NUMBER_INT);
+	 $amount=filter_input(INPUT_POST,'transactionAmount',FILTER_SANITIZE_NUMBER_FLOAT,FILTER_FLAG_ALLOW_FRACTION);
 	 $description=filter_input(INPUT_POST,'transactionDescription',FILTER_SANITIZE_STRING);
 	 
 	 if(isset($_SESSION['incomeId'])){
@@ -373,14 +373,6 @@ class Transaction extends \Core\Model{
 	
 	$sql="SELECT idUser, idExpensesCat, SUM(expenseAmount) AS totalE FROM expenses WHERE idUser={$_SESSION['idUser']} AND idExpensesCat=$idCat AND expenseDate >='$period'";
 	 
-	 $db=static::getDB();
-	 $stmt=$db->prepare($sql);
-	 $stmt->execute();
-     return $stmt->fetch();
- }
- 
-  public static function getUserSingleCat($idCat){
-	 $sql="SELECT idUserCatEx, nameUserCatEx, UExLimit FROM user_ex_cat WHERE idUser= {$_SESSION['idUser']} and idUserCatEx=$idCat";
 	 $db=static::getDB();
 	 $stmt=$db->prepare($sql);
 	 $stmt->execute();
