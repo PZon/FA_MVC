@@ -5,6 +5,7 @@ use \Core\View;
 use \App\Auth;
 use \App\Flash;
 use \App\Models\Transaction;
+use \App\Models\UserCategory;
 
 class Expense extends Authenticated{
 	
@@ -69,7 +70,8 @@ class Expense extends Authenticated{
  public function verifyCatLimit(){
 	$expAmount=$_POST['amount'];
 	$idCat=$_POST['Category'];
-	$userCat=Transaction::getUserSingleCat($idCat);
+	$catType='E';
+	$userCat=UserCategory::getUserSingleCat($catType,$idCat);
 	$totalUserExpenses=Transaction::groupedExpensesCM($idCat);
 	$totalECM=$totalUserExpenses['totalE']+$expAmount;
 	

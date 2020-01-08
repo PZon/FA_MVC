@@ -131,5 +131,60 @@ class UserCategory extends \Core\Model{
 	$result=$stmt->fetchAll(PDO::FETCH_ASSOC);
     return $result;
  }
+ 
+   public static function getUserSingleCat($catType,$idCat){
+	if($catType=='E'){
+	 $sql="SELECT * FROM user_ex_cat WHERE idUser= {$_SESSION['idUser']} and idUserCatEx=$idCat";
+	}else if($catType=='I'){
+	 $sql="SELECT * FROM user_in_cat WHERE idUser= {$_SESSION['idUser']} and idUserCatIn=$idCat";
+	}else if($catType=='P'){
+	 $sql="SELECT * FROM user_pay_cat WHERE idUser= {$_SESSION['idUser']} and idUserCatPay=$idCat";
+	}
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->execute();
+     return $stmt->fetch();
+ }
+ 
+ public static function deleteUserSingleCat($catType,$idCat){
+	
+	if($catType=='E'){
+	 $sql="DELETE FROM user_ex_cat WHERE idUser= {$_SESSION['idUser']} and idUserCatEx=$idCat";
+	}else if($catType=='I'){
+	 $sql="DELETE FROM user_in_cat WHERE idUser= {$_SESSION['idUser']} and idUserCatIn=$idCat";
+	}else if($catType=='P'){
+	 $sql="DELETE FROM user_pay_cat WHERE idUser= {$_SESSION['idUser']} and idUserCatPay=$idCat";
+	}
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->execute();
+     return true;
+ }
+ 
+ public static function findTransactionByCatId($catType,$idCat){
+	if($catType=='E'){
+	 $sql="SELECT * FROM expenses WHERE idUser= {$_SESSION['idUser']} and idExpensesCat=$idCat";
+	}else if($catType=='I'){
+	 $sql="SELECT * FROM income WHERE idUser= {$_SESSION['idUser']} and idIncomeCat=$idCat";
+	}else if($catType=='P'){
+	 $sql="SELECT * FROM expenses WHERE idUser= {$_SESSION['idUser']} and userPayMethId=$idCat";
+	}
+	
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 $stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
+	 $stmt->execute();
+	 return $stmt->fetchAll(PDO::FETCH_ASSOC);
+     
+	 
+ }
+ 
+  public static function categoryUsed($catType,$idCat){
+	$catUsed=static::findTransactionByCatId($catType,$idCat);
+	 if($catUsed){
+		return true;
+	 }
+	 return false;
+ }
 	
  }//end class

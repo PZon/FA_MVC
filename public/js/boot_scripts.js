@@ -37,6 +37,11 @@ $(function() {
 	});
    });
    
+ $(function(){  
+   	$("#btnNewCat").click(function(){
+	 $("#editCat").toggle('slow');
+	});
+   });  
 
 $(function(){
 /*** Expense Cat Modal Validation ***/	
@@ -198,5 +203,6 @@ $(function(){
         $.fn.verifyLimit();
       });
 });
+
 
 

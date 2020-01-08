@@ -3,7 +3,107 @@
 {% block title %}User categories{% endblock %}
 
 {%block js%} 
+<script>
+$(function(){
 
+ $('.ModalI').click(function(){
+   var idCat=$(this).attr('id');
+   var catType='I';
+   
+   $.ajax({
+    url:"/Category/singleUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	 $('#catInfoI').html(data);
+	 $('#removeCatIModal').modal("show");
+	}
+   });
+   
+   $('.btnRemoveCatI').click(function(){
+   $.ajax({
+    url:"/Category/deleteUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	  $('#removeCatIModal').modal("hide");
+	  location.reload();
+	}
+   });
+  });  
+ });
+ 
+ $('.ModalE').click(function(){
+   var idCat=$(this).attr('id');
+   var catType='E';
+   
+   $.ajax({
+    url:"/Category/singleUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	 $('#catInfoE').html(data);
+	 $('#removeCatEModal').modal("show");
+	}
+   });
+   
+   $('.btnRemoveCatE').click(function(){
+   $.ajax({
+    url:"/Category/deleteUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	  $('#removeCatEModal').modal("hide");
+	  location.reload();
+	}
+   });
+  }); 
+ });
+ 
+ $('.ModalP').click(function(){
+   var idCat=$(this).attr('id');
+   var catType='P';
+   
+   $.ajax({
+    url:"/Category/singleUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	 $('#catInfoP').html(data);
+	 $('#removeCatPModal').modal("show");
+	}
+   });
+   
+   $('.btnRemoveCatP').click(function(){
+   $.ajax({
+    url:"/Category/deleteUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	  $('#removeCatPModal').modal("hide");
+	  location.reload();
+	}
+   });
+  }); 
+ });
+  
+
+  
+});
+
+</script>
 {%endblock%}
 
 {% block content %}
@@ -50,19 +150,18 @@
 		</tr>
 	  </thead>
 	  <tbody>
+
   {% for income in incomeCat  %}
-			<tr>
-			 <td>{{income.nameUserCatIn}}</td>
-	<th>
-	<form method="post" id="formEditIncome" action="/Category/showSingleCategory">
-		<input type="hidden" name="incomeId" value="{{income.idUserCatIn}}">
-		<button type="submit" class="btn btn-outline-warning" name="Edit Income">
-		 <i class="fas fa-edit" value="submit"></i>
-		</button>
-	</form></th>
-		</tr>
+   <tr>
+	<td class="catName">{{income.nameUserCatIn}}</td>
+	<td>
+	<button type="submit" class="btn btn-outline-warning ModalI" name="viewICat" value="viewICat" id="{{income.idUserCatIn}}">
+	<i class="fas fa-trash-alt" value="submit"></i>
+	</button>
+	</td>
+   </tr>
 		{% endfor %}
-	  </tbody>
+  </tbody>
   </table>
  </div> 
 	   
@@ -91,21 +190,19 @@
 	  </thead>
 	  <tbody>
   {% for expense in expenseCat  %}
-			<tr>
-			 <td>{{expense.nameUserCatEx}}</td>
+	<tr>
+		<td>{{expense.nameUserCatEx}}</td>
 			{% if expense.UExLimit > 0 %} 
-			 <td>{{expense.UExLimit}}</td>
+		<td>{{expense.UExLimit}}</td>
 			{% else %}
-			 <td>No Limit</td>
+		<td>No Limit</td>
 			{% endif %}
-	<th>
-	<form method="post" id="formEditIncome" action="/Category/showSingleCategory">
-		<input type="hidden" name="expenseId" value="{{expense.idUserCatEx}}">
-		<button type="submit" class="btn btn-outline-warning" name="Edit Income">
-		 <i class="fas fa-edit" value="submit"></i>
-		</button>
-	</form></th>
-		</tr>
+	<td>
+	<button type="submit" class="btn btn-outline-warning ModalE" name="viewECat" value="viewECat" id="{{expense.idUserCatEx}}">
+	<i class="fas fa-trash-alt" value="submit"></i>
+	</button>
+	</td>
+	</tr>
 		{% endfor %}
 	  </tbody>
   </table>
@@ -137,13 +234,11 @@
   {% for pay in paymentCat  %}
 			<tr>
 			 <td>{{pay.nameUserCatPay}}</td>
-	<th>
-	<form method="post" id="formEditpayment" action="/Category/showSingleCategory">
-		<input type="hidden" name="incomeId" value="{{income.idUserCatPay}}">
-		<button type="submit" class="btn btn-outline-warning" name="Edit Income">
-		 <i class="fas fa-edit" value="submit"></i>
-		</button>
-	</form></th>
+	<td>
+	<button type="submit" class="btn btn-outline-warning ModalP" name="viewPCat" value="viewPCat" id="{{pay.idUserCatPay}}">
+	<i class="fas fa-trash-alt" value="submit"></i>
+	</button>
+	</td>
 		</tr>
 		{% endfor %}
 	  </tbody>
@@ -247,6 +342,73 @@
 		</div>
 	  </div>
 	</div>
+<!--- end modal -->
+<!--- remove income category modal-->
+	<div class="modal fade" id="removeCatIModal" tabindex="-1" role="dialog" aria-labelledby="paymentModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title">Remove category</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+		  <p id="errorCatI"> </p>
+		  <p class="text-danger">Please confirm you want to remove this category?</p>
+		  <p id="catInfoI"></p>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-danger btnRemoveCatI">Remove category</button>
+		  </div>
+		  </div>
+		 </div>
+		</div>
+	  </div>
+<!--- end modal -->
+<!--- remove expense category modal-->
+	<div class="modal fade" id="removeCatEModal" tabindex="-1" role="dialog" aria-labelledby="paymentModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title">Remove category</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+		  <p class="text-danger">Please confirm you want to remove this category?</p>
+		  <p id="catInfoE"></p>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-danger btnRemoveCatE">Remove category</button>
+		  </div>
+		  </div>
+		 </div>
+		</div>
+	  </div>
+<!--- end modal -->
+<!--- remove expense category modal-->
+	<div class="modal fade" id="removeCatPModal" tabindex="-1" role="dialog" aria-labelledby="paymentModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title">Remove category</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+		  <p class="text-danger">Please confirm you want to remove this category?</p>
+		  <p id="catInfoP"></p>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-danger btnRemoveCatP">Remove category</button>
+		  </div>
+		  </div>
+		 </div>
+		</div>
+	  </div>
 <!--- end modal -->
 
 <!--- do not touch below -->   
