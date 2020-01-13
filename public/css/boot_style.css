@@ -246,8 +246,14 @@ dd {
 	font-size: 17px;
 }
 
-.accordion .card-header{
-	background-color:#997300;
+#headingOne{
+	background-color:#28A745;
+}
+#headingTwo{
+	background-color:#DC3545;
+}
+#headingThree{
+	background-color:#FFC107;
 }
 .accordion .card-body{
 	background-color:#3d3d29;
@@ -258,6 +264,4 @@ dd {
 	text-shadow:0 0 0;
 	color:#222211;
 }
-.btn-edit{
-	float:left;
-}
+

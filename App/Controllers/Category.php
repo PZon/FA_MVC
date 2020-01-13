@@ -19,6 +19,17 @@ class Category extends Authenticated{
 		$type=$_POST['categoryType'];
 	   if($category->saveCategory()){
 		Flash::addMessage('New category has been saved.', Flash::WARNING);
+	   }else{
+		Flash::addMessage('Error: Category not saved', Flash::WARNING);
+		}
+		exit();
+ }
+ 
+  public function createModalAction(){
+		$category=new UserCategory($_POST);
+		$type=$_POST['categoryType'];
+	   if($category->saveCategory()){
+		Flash::addMessage('New category has been saved.', Flash::WARNING);
 		if($type=='UI') $this->redirect('/income/addIncome');
 		else $this->redirect('/expense/addExpense');
 		exit();
@@ -47,7 +58,7 @@ class Category extends Authenticated{
 		
 	if($categoryType=='UE'){
 		if($expLimit < 0 || $expLimit > 100000) {
-			echo '<span class="modalError">Value for expenses category should be set between 0 and 100000</span>';
+			echo '<span class="modalError">Value for expenses category limit should be set between 0 and 100000</span>';
 			exit;
 		}else if (!empty($expLimit)&&!is_numeric($expLimit)){
 			echo '<span class="modalError">Wrong value - not a number<span>';
@@ -62,10 +73,9 @@ class Category extends Authenticated{
 	$incomeCat=UserCategory::userIncomeCat();
 	$expenseCat=UserCategory::userExpenseCat();
 	$paymentCat=UserCategory::userPaymentCat();
-	View::renderTemplate('Category/show.html',['incomeCat'=>$incomeCat, 'expenseCat'=>$expenseCat, 'paymentCat'=>$paymentCat]);
-		
+	View::renderTemplate('Category/show.html',['incomeCat'=>$incomeCat, 'expenseCat'=>$expenseCat, 'paymentCat'=>$paymentCat]);	
  }
- 
+
   public function singleUserCat(){
 	  $catType=$_POST['catType'];
 	  $idCat=$_POST['idCat'];
@@ -85,10 +95,12 @@ class Category extends Authenticated{
 	  $idCat=$_POST['idCat'];
 	  
 	 if(UserCategory::categoryUsed($catType,$idCat)){
-		Flash::addMessage('You can not remove this category. Category links to some transaction - edit transaction first', Flash::WARNING);  
+		Flash::addMessage('You can not remove this category. Category links to some transaction - edit transaction first', Flash::WARNING);
+		exit;
 	 }else{
 		UserCategory::deleteUserSingleCat($catType,$idCat);
-		Flash::addMessage('Category has been removed', Flash::WARNING);		
+		Flash::addMessage('Category has been removed', Flash::WARNING);
+		exit;
 	  }
   }
 
