@@ -3,107 +3,7 @@
 {% block title %}User categories{% endblock %}
 
 {%block js%} 
-<script>
-$(function(){
 
- $('.ModalI').click(function(){
-   var idCat=$(this).attr('id');
-   var catType='I';
-   
-   $.ajax({
-    url:"/Category/singleUserCat",
-	method: "POST",
-	data:{idCat:idCat,
-		  catType:catType
-	},
-	success:function(data){
-	 $('#catInfoI').html(data);
-	 $('#removeCatIModal').modal("show");
-	}
-   });
-   
-   $('.btnRemoveCatI').click(function(){
-   $.ajax({
-    url:"/Category/deleteUserCat",
-	method: "POST",
-	data:{idCat:idCat,
-		  catType:catType
-	},
-	success:function(data){
-	  $('#removeCatIModal').modal("hide");
-	  location.reload();
-	}
-   });
-  });  
- });
- 
- $('.ModalE').click(function(){
-   var idCat=$(this).attr('id');
-   var catType='E';
-   
-   $.ajax({
-    url:"/Category/singleUserCat",
-	method: "POST",
-	data:{idCat:idCat,
-		  catType:catType
-	},
-	success:function(data){
-	 $('#catInfoE').html(data);
-	 $('#removeCatEModal').modal("show");
-	}
-   });
-   
-   $('.btnRemoveCatE').click(function(){
-   $.ajax({
-    url:"/Category/deleteUserCat",
-	method: "POST",
-	data:{idCat:idCat,
-		  catType:catType
-	},
-	success:function(data){
-	  $('#removeCatEModal').modal("hide");
-	  location.reload();
-	}
-   });
-  }); 
- });
- 
- $('.ModalP').click(function(){
-   var idCat=$(this).attr('id');
-   var catType='P';
-   
-   $.ajax({
-    url:"/Category/singleUserCat",
-	method: "POST",
-	data:{idCat:idCat,
-		  catType:catType
-	},
-	success:function(data){
-	 $('#catInfoP').html(data);
-	 $('#removeCatPModal').modal("show");
-	}
-   });
-   
-   $('.btnRemoveCatP').click(function(){
-   $.ajax({
-    url:"/Category/deleteUserCat",
-	method: "POST",
-	data:{idCat:idCat,
-		  catType:catType
-	},
-	success:function(data){
-	  $('#removeCatPModal').modal("hide");
-	  location.reload();
-	}
-   });
-  }); 
- });
-  
-
-  
-});
-
-</script>
 {%endblock%}
 
 {% block content %}
@@ -140,22 +40,26 @@ $(function(){
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionCategories">
       <div class="card-body">
-       
+   <form method="POST" id="newICat" action="/category/create">     
    <div class="row">
-	<table class="table table-hover table-bordered">
+	<table id="catITbl" class="table table-hover table-bordered">
 	  <thead>
 		<tr class="bg-dark">
 		  <th scope="col">Category name</th>
 		  <th scope="col">Options</th>
 		</tr>
 	  </thead>
-	  <tbody>
+	  <tbody class="incomeCats">
 
   {% for income in incomeCat  %}
    <tr>
 	<td class="catName">{{income.nameUserCatIn}}</td>
 	<td>
-	<button type="submit" class="btn btn-outline-warning ModalI" name="viewICat" value="viewICat" id="{{income.idUserCatIn}}">
+	<button type="button" class="btn btn-outline-warning editI" name="editICat" value="editICat" id="{{income.idUserCatIn}}">
+	<i class="fas fa-edit" value="submit"></i>
+	</button>
+	
+	<button type="button" class="btn btn-outline-warning ModalI" name="viewICat" value="viewICat" id="{{income.idUserCatIn}}">
 	<i class="fas fa-trash-alt" value="submit"></i>
 	</button>
 	</td>
@@ -163,7 +67,13 @@ $(function(){
 		{% endfor %}
   </tbody>
   </table>
- </div> 
+ </div></form>
+	<div class="row justify-content-sm-center">
+	 <span class="addClassErrorI"></span>
+	</div>
+  <div class="row justify-content-sm-center">
+    <button type="button" class="btn btn-outline-success col-sm-3 addIC" name="addIC">Add income category</button>
+ </div>	
 	   
       </div>
     </div>
@@ -177,8 +87,8 @@ $(function(){
       </h2>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionCategories">
-      <div class="card-body">
-	  
+   <div class="card-body">
+	<form method="POST" id="newECat" action="/category/create">    
    <div class="row">
 	<table class="table table-hover table-bordered">
 	  <thead>
@@ -188,7 +98,7 @@ $(function(){
 		  <th scope="col">Options</th>
 		</tr>
 	  </thead>
-	  <tbody>
+	  <tbody class="expenseCats">
   {% for expense in expenseCat  %}
 	<tr>
 		<td>{{expense.nameUserCatEx}}</td>
@@ -198,7 +108,11 @@ $(function(){
 		<td>No Limit</td>
 			{% endif %}
 	<td>
-	<button type="submit" class="btn btn-outline-warning ModalE" name="viewECat" value="viewECat" id="{{expense.idUserCatEx}}">
+	<button type="button" class="btn btn-outline-warning editE" name="editECat" value="editECat" id="{{expense.idUserCatEx}}">
+	<i class="fas fa-edit" value="submit"></i>
+	</button>
+	
+	<button type="button" class="btn btn-outline-warning ModalE" name="viewECat" value="viewECat" id="{{expense.idUserCatEx}}">
 	<i class="fas fa-trash-alt" value="submit"></i>
 	</button>
 	</td>
@@ -206,11 +120,17 @@ $(function(){
 		{% endfor %}
 	  </tbody>
   </table>
- </div>
-
+ </div></form>
+	<div class="row justify-content-sm-center">
+	 <span class="addClassErrorE"></span>
+	</div>
+	<div class="row justify-content-sm-center">
+		<button type="button" class="btn btn-outline-danger col-sm-3 addEC" name="addIC">Add expense category</button>
+	</div>
       </div>
     </div>
   </div>
+  
   <div class="card">
     <div class="card-header" id="headingThree">
       <h2 class="mb-0">
@@ -220,22 +140,26 @@ $(function(){
       </h2>
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionCategories">
-      <div class="card-body">
-  
+    <div class="card-body">
+  <form method="POST" id="newPCat" action="/category/create"> 
   <div class="row">
-	<table class="table table-hover table-bordered">
+	<table id="catPTbl" class="table table-hover table-bordered">
 	  <thead>
 		<tr class="bg-dark">
 		  <th scope="col">Category name</th>
 		  <th scope="col">Options</th>
 		</tr>
 	  </thead>
-	  <tbody>
+	  <tbody class="payCats">
   {% for pay in paymentCat  %}
 			<tr>
 			 <td>{{pay.nameUserCatPay}}</td>
 	<td>
-	<button type="submit" class="btn btn-outline-warning ModalP" name="viewPCat" value="viewPCat" id="{{pay.idUserCatPay}}">
+	<button type="button" class="btn btn-outline-warning editP" name="editPCat" value="editPCat" id="{{pay.idUserCatPay}}">
+	<i class="fas fa-edit" value="submit"></i>
+	</button>
+	
+	<button type="button" class="btn btn-outline-warning ModalP" name="viewPCat" value="viewPCat" id="{{pay.idUserCatPay}}">
 	<i class="fas fa-trash-alt" value="submit"></i>
 	</button>
 	</td>
@@ -243,106 +167,18 @@ $(function(){
 		{% endfor %}
 	  </tbody>
   </table>
- </div>
-  
+ </div></form>
+  	<div class="row justify-content-sm-center">
+	 <span class="addClassErrorP"></span>
+	</div>
+  <div class="row justify-content-sm-center">
+    <button type="button" class="btn btn-outline-warning col-sm-3 addPC" name="addPC">Add payment type</button>
+ </div>	
       </div>
     </div>
   </div>
 </div>
-<br>
-<div  class="row justify-content-sm-center">
- <button type="button" class="btn btn-outline-success col-sm-3 m-md-3" data-toggle="modal" data-target="#addIncomeCatModal">Add income category</button>
- <button type="button" class="btn btn-outline-danger col-sm-3 m-md-3" data-toggle="modal" data-target="#addExpenseCatModal">Add expense category</button>
- <button type="button" class="btn btn-outline-warning col-sm-3 m-md-3" data-toggle="modal" data-target="#addPaymentTypeModal">Add payment type</button>
-</div>
 
-<!--- add income category modal-->
-	<div class="modal fade" id="addIncomeCatModal" tabindex="-1" role="dialog" aria-labelledby="incomeModal" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="registerModalLabel">Add Income Category:</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-			<form action="/category/create" method="post">
-			<p id="infoCatI"> </p>
-			<input type="hidden" class="form-control"  name="categoryType" id="categoryType" value="UI">
-			  <div class="form-group">
-				<label for="incomeCategory" class="col-form-label">New income category</label>
-				<input type="text" class="form-control" id="incomeCategory" name="category" placeholder="Income Category" required>
-			  </div>
-
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button id="btnIncCat" type="submit" class="btn btn-warning">Save category</button>
-		  </div>
-		 </form></div>
-		</div>
-	  </div>
-	</div>
-<!--- end modal -->
-<!--- add expense category -->
-	<div class="modal fade" id="addExpenseCatModal" tabindex="-1" role="dialog" aria-labelledby="expenseModal" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="addExpenseCat">Add expense Category:</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-			<form id="formExCat" action="/category/create" method="POST">
-			<p id="infoCat"> </p>
-			<input id="catT" type="hidden" class="form-control"  name="categoryType" value="UE">
-			  <div class="form-group">
-				<label for="expenseCategory" class="col-form-label">New expense category</label>
-				<input id="exCat" type="text" class="form-control" id="expenseCategory" name="category" placeholder="Expense Category">
-			  </div>
-			  <div class="form-group">
-			   <label for="addExpenseLimit" class="col-form-label">Set monthly expenses limit</label>
-			   <input id="addExpenseLimit" type="checkbox" name="checkboxExp">&nbsp;
-			   <input class="form-control" id="expenseLimit" type="number" name="expLimit" style="display:none" placeholder="0" min="0" max="100000"> 
-			  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button id="btnExCat" type="submit" class="btn btn-warning" name="submit">Save category</button>
-		  </div>
-		 </form></div>
-		</div>
-	  </div>
-	</div>
-<!--- end modal -->
-<!--- add payment type -->
-	<div class="modal fade" id="addPaymentTypeModal" tabindex="-1" role="dialog" aria-labelledby="paymentModal" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="addpaymentType">Add payment type:</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">&times;</span>
-			</button>
-		  </div>
-		  <div class="modal-body">
-			<form id="addPaymentTypeForm" action="/category/create" method="post">
-			<p id="infoCatP"> </p>
-			<input type="hidden" class="form-control"  name="categoryType" id="categoryType"   value="UP">
-			  <div class="form-group">
-				<label for="paymentCategory" class="col-form-label">New payment type</label>
-				<input type="text" class="form-control" id="paymentCategory" name="category" placeholder="Payment type" required>
-			  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button id="btnPayCat" type="submit" class="btn btn-warning">Save payment type</button>
-		  </div>
-		 </form></div>
-		</div>
-	  </div>
-	</div>
-<!--- end modal -->
 <!--- remove income category modal-->
 	<div class="modal fade" id="removeCatIModal" tabindex="-1" role="dialog" aria-labelledby="paymentModal" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
@@ -358,7 +194,7 @@ $(function(){
 		  <p class="text-danger">Please confirm you want to remove this category?</p>
 		  <p id="catInfoI"></p>
 		  <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
 			<button type="button" class="btn btn-danger btnRemoveCatI">Remove category</button>
 		  </div>
 		  </div>

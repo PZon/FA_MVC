@@ -79,7 +79,7 @@ $(function(){
 	  
 	  if(validation==true){
 		$.ajax({
-		  url:"/category/create",
+		  url:"/category/createModal",
 		  method: "POST",
 		  data:{
 		    categoryType: categoryType,
@@ -121,7 +121,7 @@ $(function(){
 	  
 	  if(validation==true){
 	    $.ajax({
-		  url:"/category/create",
+		  url:"/category/createModal",
 		  method: "POST",
 		  data:{
 		    categoryType: categoryType,
@@ -164,7 +164,7 @@ $(function(){
 	  
 	  if(validation==true){
 	    $.ajax({
-		  url:"/category/create",
+		  url:"/category/createModal",
 		  method: "POST",
 		  data:{
 		    categoryType: categoryType,
@@ -203,6 +203,292 @@ $(function(){
         $.fn.verifyLimit();
       });
 });
+
+/*** remove category ***/
+$(function(){
+
+ $('.ModalI').click(function(){
+   var idCat=$(this).attr('id');
+   var catType='I';
+   
+   $.ajax({
+    url:"/Category/singleUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	 $('#catInfoI').html(data);
+	 $('#removeCatIModal').modal("show");
+	}
+   });
+   
+   $('.btnRemoveCatI').click(function(){
+   $.ajax({
+    url:"/Category/deleteUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	  $('#removeCatIModal').modal("hide");
+	  location.reload();
+	}
+   });
+  });
+ });
+ 
+ $('.ModalE').click(function(){
+   var idCat=$(this).attr('id');
+   var catType='E';
+   
+   $.ajax({
+    url:"/Category/singleUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	 $('#catInfoE').html(data);
+	 $('#removeCatEModal').modal("show");
+	}
+   });
+   
+   $('.btnRemoveCatE').click(function(){
+   $.ajax({
+    url:"/Category/deleteUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	  $('#removeCatEModal').modal("hide");
+	  location.reload();
+	}
+   });
+  }); 
+ });
+ 
+ $('.ModalP').click(function(){
+   var idCat=$(this).attr('id');
+   var catType='P';
+   
+   $.ajax({
+    url:"/Category/singleUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	 $('#catInfoP').html(data);
+	 $('#removeCatPModal').modal("show");
+	}
+   });
+   
+   $('.btnRemoveCatP').click(function(){
+   $.ajax({
+    url:"/Category/deleteUserCat",
+	method: "POST",
+	data:{idCat:idCat,
+		  catType:catType
+	},
+	success:function(data){
+	  $('#removeCatPModal').modal("hide");
+	  location.reload();
+	}
+   });
+  }); 
+ }); 
+});
+
+/***cat settings add new income category***/
+$(function(){
+ var nrRowI=0;
+//dlaczego działa tylko poniższy zapis???
+ $('.addIC').on('click', function(){
+  nrRowI++
+  var html='';
+  if(nrRowI==1){
+   html+='<tr id="rowI">';
+   html+='<td><input type="text" name="cat_name" class="form-control cat_name"/></td>';
+   html+='<td> <button type="button" name="removeRowI" class="btn btn-outline-danger mr-sm-1 removeRowI"> <i class="fas fa-minus "></i> </button> <input type="button" id="saveICat" name="submitICat" class="btn btn-outline-success " value="Save" /> </td>';
+   html+='</tr>';
+   $('.incomeCats').append(html);
+  }else{
+	$('.addClassErrorI').html('<span class="modalError">Error. Add new category already active. </span>');
+  }
+ });
+
+	//a tutaj tylko ten???
+ $(document).on('click', '.removeRowI', function(){
+ //$('.removeRowI').on('click', function(){
+ //$('.removeRowI').click( function(){
+   $('#rowI').remove();
+   nrRowI=0;
+   $('.addClassErrorI').html('');
+ });
+
+ $(document).on('click','#saveICat', function(){
+ //$('#saveICat').click(function(){
+	 event.preventDefault();
+	 var category=$('.cat_name').val();
+	 var categoryType='UI';
+	 var validation=false;
+	 if(category!=''){
+	  $.ajax({
+		  url:"/Category/verifyCat",
+		  method: "POST",
+		  data:{
+		    categoryType: categoryType,
+			category:category
+		  },
+		  success:function(data){
+		    if(data != 'NoErrors'){
+				$(".addClassErrorI").html('<span class="modalError">'+data+'</span>');
+			}else if(data == 'NoErrors'){
+			  $.ajax({
+				url:"/Category/create",
+				method: "POST",
+				data:{
+				 categoryType: categoryType,
+				 category:category
+				 },
+				 success:function(data){
+				  location.reload();
+	             }
+			  });
+			}
+		  } 
+		});
+	 }else{
+		$('.addClassErrorI').html('<span class="modalError">Category name is required!</span>'); 
+	 }
+	});
+ });
+ 
+ /***cat settings add new expense category***/
+$(function(){
+ var nrRowE=0;
+ $('.addEC').on('click', function(){
+  nrRowE++
+  var html='';
+  if(nrRowE==1){
+   html+='<tr id="rowE">';
+   html+='<td><input type="text" name="cat_name" class="form-control cat_name"/></td>';
+   html+='<td><input type="number" name="catLimit" class="form-control catLimit" min="0" max="100000" placeholder="0"/></td>';
+   html+='<td> <button type="button" name="removeRowE" class="btn btn-outline-danger mr-sm-1 removeRowE"> <i class="fas fa-minus "></i> </button> <input type="button" id="saveECat" name="submitECat" class="btn btn-outline-success " value="Save" /> </td>';
+   html+='</tr>';
+   $('.expenseCats').append(html);
+  }else{
+	$('.addClassErrorE').html('<span class="modalError">Error. Add new category already active. </span>');
+  }
+ });
+
+ $(document).on('click', '.removeRowE', function(){
+   $('#rowE').remove();
+   nrRowE=0;
+   $('.addClassErrorE').html('');
+ });
+
+ $(document).on('click','#saveECat', function(){
+	 event.preventDefault();
+	 var category=$('.cat_name').val();
+	 var expLimit=$('.catLimit').val();
+	 var categoryType='UE';
+	 var validation=false;
+	 if(category!=''){
+	  $.ajax({
+		  url:"/Category/verifyCat",
+		  method: "POST",
+		  data:{
+		    categoryType: categoryType,
+			category:category,
+			expLimit:expLimit
+		  },
+		  success:function(data){
+		    if(data != 'NoErrors'){
+				$(".addClassErrorE").html('<span class="modalError">'+data+'</span>');
+			}else if(data == 'NoErrors'){
+			  $.ajax({
+				url:"/Category/create",
+				method: "POST",
+				data:{
+				 categoryType: categoryType,
+				 category:category,
+				 expLimit:expLimit
+				 },
+				 success:function(data){
+				  location.reload();
+	             }
+			  });
+			}
+		  } 
+		});
+	 }else{
+		$('.addClassErrorE').html('<span class="modalError">Category name is required!</span>'); 
+	 }
+	});
+ });
+ 
+/***cat settings add new payment category***/
+$(function(){
+ var nrRowP=0;
+ $('.addPC').on('click', function(){
+  nrRowP++
+  var html='';
+  if(nrRowP==1){
+   html+='<tr id="rowP">';
+   html+='<td><input type="text" name="cat_name" class="form-control cat_name"/></td>';
+   html+='<td> <button type="button" name="removeRowP" class="btn btn-outline-danger mr-sm-1 removeRowP"> <i class="fas fa-minus "></i> </button> <input type="button" id="savePCat" name="submitPCat" class="btn btn-outline-success " value="Save" /> </td>';
+   html+='</tr>';
+   $('.payCats').append(html);
+  }else{
+	$('.addClassErrorP').html('<span class="modalError">Error. Add new category already active. </span>');
+  }
+ });
+
+ $(document).on('click', '.removeRowP', function(){
+   $('#rowP').remove();
+   nrRowP=0;
+   $('.addClassErrorP').html('');
+ });
+
+ $(document).on('click','#savePCat', function(){
+	 event.preventDefault();
+	 var category=$('.cat_name').val();
+	 var categoryType='UP';
+	 var validation=false;
+	 if(category!=''){
+	  $.ajax({
+		  url:"/Category/verifyCat",
+		  method: "POST",
+		  data:{
+		    categoryType: categoryType,
+			category:category
+		  },
+		  success:function(data){
+		    if(data != 'NoErrors'){
+				$(".addClassErrorP").html('<span class="modalError">'+data+'</span>');
+			}else if(data == 'NoErrors'){
+			  $.ajax({
+				url:"/Category/create",
+				method: "POST",
+				data:{
+				 categoryType: categoryType,
+				 category:category
+				 },
+				 success:function(data){
+				  location.reload();
+	             }
+			  });
+			}
+		  } 
+		});
+	 }else{
+		$('.addClassErrorP').html('<span class="modalError">Category name is required!</span>'); 
+	 }
+	});
+ });
 
 
 
