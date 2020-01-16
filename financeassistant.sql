@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2019 at 11:26 AM
+-- Generation Time: Jan 16, 2020 at 05:26 PM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.1.33
 
@@ -67,25 +67,24 @@ CREATE TABLE `ex_cat` (
 --
 
 INSERT INTO `ex_cat` (`idCatE`, `nameCatE`, `Expense_Limit`) VALUES
-(1, 'Food', NULL),
-(2, 'Transport', NULL),
-(3, 'Home', NULL),
-(4, 'Phone & Internet', NULL),
-(5, 'Clothes', NULL),
-(6, 'Health care', NULL),
-(7, 'Clothes', NULL),
-(8, 'Kids', NULL),
-(9, 'Entertainment', NULL),
-(10, 'Travel', NULL),
-(11, 'Holiday', NULL),
-(12, 'Education', NULL),
-(13, 'Books', NULL),
-(14, 'Savings', NULL),
-(15, 'Pension', NULL),
-(16, 'Mortgage', NULL),
-(17, 'Loans', NULL),
-(18, 'Gift', NULL),
-(19, 'Other', NULL);
+(1, 'FOOD', NULL),
+(2, 'TRANSPORT', NULL),
+(3, 'HOME', NULL),
+(4, 'PHONE & INTERNET', NULL),
+(5, 'CLOTHES', NULL),
+(6, 'HEALTH CARE', NULL),
+(8, 'KIDS', NULL),
+(9, 'ENTERTAINMENT', NULL),
+(10, 'TRAVEL', NULL),
+(11, 'HOLIDAY', NULL),
+(12, 'EDUCATION', NULL),
+(13, 'BOOKS', NULL),
+(14, 'SAVINGS', NULL),
+(15, 'PENSION', NULL),
+(16, 'MORTGAGE', NULL),
+(17, 'LOANS', NULL),
+(18, 'GIFT', NULL),
+(19, 'OTHER', NULL);
 
 -- --------------------------------------------------------
 
@@ -132,10 +131,10 @@ CREATE TABLE `in_cat` (
 --
 
 INSERT INTO `in_cat` (`idCatI`, `nameCatI`) VALUES
-(1, 'Salary'),
-(2, 'Interests'),
-(3, 'Ebay sales'),
-(4, 'Other');
+(1, 'SALARY'),
+(2, 'INTERESTS'),
+(3, 'EBAY SALES'),
+(4, 'OTHER');
 
 -- --------------------------------------------------------
 
@@ -153,9 +152,9 @@ CREATE TABLE `pay_cat` (
 --
 
 INSERT INTO `pay_cat` (`idCatPay`, `nameCatPay`) VALUES
-(1, 'Cash'),
-(2, 'Debit Card'),
-(3, 'Credit Card'),
+(1, 'CASH'),
+(2, 'DEBIT CARD'),
+(3, 'CREDIT CARD'),
 (4, 'PayPal');
 
 -- --------------------------------------------------------
@@ -194,17 +193,18 @@ CREATE TABLE `user_ex_cat` (
   `idUserCatEx` smallint(4) NOT NULL,
   `idUser` smallint(6) NOT NULL,
   `nameUserCatEx` char(20) NOT NULL,
-  `UEx_Limit` int(11) DEFAULT NULL
+  `UExLimit` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user_ex_cat`
 --
 
-INSERT INTO `user_ex_cat` (`idUserCatEx`, `idUser`, `nameUserCatEx`, `UEx_Limit`) VALUES
+INSERT INTO `user_ex_cat` (`idUserCatEx`, `idUser`, `nameUserCatEx`, `UExLimit`) VALUES
 (30, 1, 'ADMIN-DON\'T TOUCH', NULL),
-(31, 34, 'ex_testowa', NULL),
-(37, 34, 'EX CATEGORY', NULL);
+(31, 34, 'CAT_1E', 100),
+(37, 34, 'EX CATEGORY', 0),
+(39, 34, 'CAT_LIMIT', 100);
 
 -- --------------------------------------------------------
 
@@ -224,8 +224,8 @@ CREATE TABLE `user_in_cat` (
 
 INSERT INTO `user_in_cat` (`idUserCatIn`, `idUser`, `nameUserCatIn`) VALUES
 (30, 1, 'ADMIN-DON\'T TOUCH'),
-(31, 34, 'income_testowa'),
-(38, 34, 'INCOME CATEGORY');
+(31, 34, 'CAT_2'),
+(38, 34, 'CAT_1');
 
 -- --------------------------------------------------------
 
@@ -245,8 +245,8 @@ CREATE TABLE `user_pay_cat` (
 
 INSERT INTO `user_pay_cat` (`idUserCatPay`, `idUser`, `nameUserCatPay`) VALUES
 (30, 1, 'ADMIN-DON\'T TOUCH'),
-(34, 34, 'pay_testowa'),
-(37, 34, 'PAYMENT TYPE USER');
+(34, 34, 'CAT_TESTOWA'),
+(37, 34, ' USER PAYMENT TYPE');
 
 -- --------------------------------------------------------
 
@@ -372,19 +372,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_ex_cat`
 --
 ALTER TABLE `user_ex_cat`
-  MODIFY `idUserCatEx` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `idUserCatEx` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `user_in_cat`
 --
 ALTER TABLE `user_in_cat`
-  MODIFY `idUserCatIn` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `idUserCatIn` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `user_pay_cat`
 --
 ALTER TABLE `user_pay_cat`
-  MODIFY `idUserCatPay` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `idUserCatPay` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
