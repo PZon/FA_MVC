@@ -78,11 +78,11 @@ class UserCategory extends \Core\Model{
 	 WHERE idUser= {$_SESSION['idUser']} AND nameUserCatPay=:catName";
 	 $db=static::getDB();
 	 
-	 if($type=='UI'){
+	 if($type=='UI'||$type=="I"){
 		$stmt=$db->prepare($sqlI);
-	 }else if($type=='UE'){
+	 }else if($type=='UE'||$type=="E"){
 		$stmt=$db->prepare($sqlE);
-	 }else if($type=='UP'){
+	 }else if($type=='UP'||$type=="P"){
 		$stmt=$db->prepare($sqlP);
 	 }
 	 
@@ -185,6 +185,33 @@ class UserCategory extends \Core\Model{
 		return true;
 	 }
 	 return false;
+ }
+ 
+ public function updateUserCategory(){
+	 $categoryType=filter_input(INPUT_POST,'categoryType',FILTER_SANITIZE_STRING);
+	 $idCat=filter_input(INPUT_POST,'idCat',FILTER_SANITIZE_NUMBER_INT);
+	 $category=filter_input(INPUT_POST,'category',FILTER_SANITIZE_STRING);
+	 if($categoryType=='E'){
+		$expLimit=filter_input(INPUT_POST,'expLimit',FILTER_SANITIZE_NUMBER_INT);
+	}
+	$category=strtoupper($category);
+	 
+	 if($categoryType=='I'){
+	  $sql="UPDATE user_in_cat SET nameUserCatIn = :category WHERE idUserCatIn = :idCat and idUser={$_SESSION['idUser']}";
+	 }else if($categoryType=='E'){
+	  $sql="UPDATE user_ex_cat SET nameUserCatEx = :category, UExLimit=:expLimit WHERE idUserCatEx = :idCat and idUser={$_SESSION['idUser']}"; 
+	 }else if($categoryType=='P'){
+	  $sql="UPDATE user_pay_cat SET nameUserCatPay = :category WHERE idUserCatPay = :idCat and idUser={$_SESSION['idUser']}"; 
+	 }
+	 
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 if($categoryType=='E'){
+	  $stmt->bindValue('expLimit', $expLimit, PDO::PARAM_INT);
+	 }
+      $stmt->bindValue(':category', $category, PDO::PARAM_STR);
+      $stmt->bindValue('idCat', $idCat, PDO::PARAM_INT);
+		return $stmt->execute();
  }
 	
  }//end class
