@@ -45,7 +45,7 @@ class Category extends Authenticated{
 	$category=$_POST['category'];
 	$categoryType=$_POST['categoryType'];
 	$catExist=UserCategory::categoryExist($category, $categoryType);
-	if($categoryType=='UE'){
+	if($categoryType=='UE'||$categoryType=='E'){
 		$expLimit=$_POST['expLimit'];
 	}
 	
@@ -56,11 +56,11 @@ class Category extends Authenticated{
 		exit;
 	}
 		
-	if($categoryType=='UE'){
-		if($expLimit < 0 || $expLimit > 100000) {
-			echo '<span class="modalError">Value for expenses category limit should be set between 0 and 100000</span>';
+	if($categoryType=='UE' || $categoryType=='E'){
+		if($expLimit < 0 || $expLimit > 10000) {
+			echo '<span class="modalError">Value for expenses category limit should be set between 0 and 10000</span>';
 			exit;
-		}else if (!empty($expLimit)&&!is_numeric($expLimit)){
+		}else if (!is_numeric($expLimit)){
 			echo '<span class="modalError">Wrong value - not a number<span>';
 			exit;
 		}
@@ -90,8 +90,16 @@ class Category extends Authenticated{
 	  }else echo 'Error';
   }
   
+    public function singleUserCatJSON(){
+	  $catType=$_POST['categoryType'];
+	  $idCat=$_POST['idCat'];
+	  $cat=UserCategory::getUserSingleCat($catType,$idCat);
+	  
+	  echo json_encode($cat) ;
+  }
+  
   public function deleteUserCat(){
-	  $catType=$_POST['catType'];
+	  $catType=$_POST['categoryType'];
 	  $idCat=$_POST['idCat'];
 	  
 	 if(UserCategory::categoryUsed($catType,$idCat)){
@@ -102,6 +110,13 @@ class Category extends Authenticated{
 		Flash::addMessage('Category has been removed', Flash::WARNING);
 		exit;
 	  }
+  }
+  
+  public function updateCategory(){
+	$category=new UserCategory($_POST);
+	 if($category->updateUserCategory()){
+		Flash::addMessage('Category has been updated.', Flash::WARNING);
+	   }
   }
 
  

@@ -21,7 +21,8 @@
   </div>
    {% block info_fp %}	
 		{% for info in flash_info %}
-		<div class="alert alert-{{info.type}}">{{ info.body }}</div>
+		<div class="alert alert-{{info.type}}">
+			{{ info.body }} </div>
 		{% endfor %}
 	{% endblock %}
   <hr>
@@ -55,7 +56,7 @@
    <tr>
 	<td class="catName">{{income.nameUserCatIn}}</td>
 	<td>
-	<button type="button" class="btn btn-outline-warning editI" name="editICat" value="editICat" id="{{income.idUserCatIn}}">
+	<button type="button" class="btn btn-outline-warning btnEditIC" name="btnEditIC" value="btnEditIC" id="{{income.idUserCatIn}}">
 	<i class="fas fa-edit" value="submit"></i>
 	</button>
 	
@@ -74,10 +75,10 @@
   <div class="row justify-content-sm-center">
     <button type="button" class="btn btn-outline-success col-sm-3 addIC" name="addIC">Add income category</button>
  </div>	
-	   
       </div>
     </div>
   </div>
+  
   <div class="card">
     <div class="card-header" id="headingTwo">
       <h2 class="mb-0">
@@ -93,9 +94,9 @@
 	<table class="table table-hover table-bordered">
 	  <thead>
 		<tr class="bg-dark">
-		  <th scope="col">Category name</th>
-		  <th scope="col">Category limit</th>
-		  <th scope="col">Options</th>
+		  <th width="50%" scope="col">Category name</th>
+		  <th width="25%" scope="col">Category limit</th>
+		  <th width="25%" scope="col">Options</th>
 		</tr>
 	  </thead>
 	  <tbody class="expenseCats">
@@ -108,7 +109,7 @@
 		<td>No Limit</td>
 			{% endif %}
 	<td>
-	<button type="button" class="btn btn-outline-warning editE" name="editECat" value="editECat" id="{{expense.idUserCatEx}}">
+	<button type="button" class="btn btn-outline-warning btnEditEC" name="btnEditEC" value="btnEditEC" id="{{expense.idUserCatEx}}">
 	<i class="fas fa-edit" value="submit"></i>
 	</button>
 	
@@ -143,7 +144,7 @@
     <div class="card-body">
   <form method="POST" id="newPCat" action="/category/create"> 
   <div class="row">
-	<table id="catPTbl" class="table table-hover table-bordered">
+	<table class="table table-hover table-bordered">
 	  <thead>
 		<tr class="bg-dark">
 		  <th scope="col">Category name</th>
@@ -155,7 +156,7 @@
 			<tr>
 			 <td>{{pay.nameUserCatPay}}</td>
 	<td>
-	<button type="button" class="btn btn-outline-warning editP" name="editPCat" value="editPCat" id="{{pay.idUserCatPay}}">
+	<button type="button" class="btn btn-outline-warning btnEditPC" name="btnEditPC" value="btnEditPC" id="{{pay.idUserCatPay}}">
 	<i class="fas fa-edit" value="submit"></i>
 	</button>
 	
@@ -190,12 +191,14 @@
 			</button>
 		  </div>
 		  <div class="modal-body">
-		  <p id="errorCatI"> </p>
 		  <p class="text-danger">Please confirm you want to remove this category?</p>
-		  <p id="catInfoI"></p>
+		  <p class="text-danger" id="catInfoI"></p>
+		  <form method="POST" >
+		  <input type="hidden" class="form-control" id="idCatIDel" name="idCatIDel">
+		  </form>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-danger btnRemoveCatI">Remove category</button>
+			<button type="button" class="btn btn-danger" id="btnRemoveCatI">Remove category</button>
 		  </div>
 		  </div>
 		 </div>
@@ -214,17 +217,20 @@
 		  </div>
 		  <div class="modal-body">
 		  <p class="text-danger">Please confirm you want to remove this category?</p>
-		  <p id="catInfoE"></p>
+		  <p class="text-danger" id="catInfoE"></p>
+		  <form method="POST" >
+		  <input type="hidden" class="form-control" id="idCatEDel" name="idCatEDel">
+		  </form>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-danger btnRemoveCatE">Remove category</button>
+			<button type="button" class="btn btn-danger" id="btnRemoveCatE">Remove category</button>
 		  </div>
 		  </div>
 		 </div>
 		</div>
 	  </div>
 <!--- end modal -->
-<!--- remove expense category modal-->
+<!--- remove pay category modal-->
 	<div class="modal fade" id="removeCatPModal" tabindex="-1" role="dialog" aria-labelledby="paymentModal" aria-hidden="true">
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
@@ -236,10 +242,101 @@
 		  </div>
 		  <div class="modal-body">
 		  <p class="text-danger">Please confirm you want to remove this category?</p>
-		  <p id="catInfoP"></p>
+		  <p class="text-danger" id="catInfoP"></p>
+		  <form method="POST" >
+		  <input type="hidden" class="form-control" id="idCatPDel" name="idCatPDel">
+		  </form>
 		  <div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-danger btnRemoveCatP">Remove category</button>
+			<button type="button" class="btn btn-danger" id="btnRemoveCatP">Remove category</button>
+		  </div>
+		  </div>
+		 </div>
+		</div>
+	  </div>
+<!--- end modal -->
+<!--- edit income category modal-->
+	<div class="modal fade" id="editCatIModal" tabindex="-1" role="dialog" aria-labelledby="editCatIModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title">Edit category</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+		  <form method="POST" id="updateCatFormI">
+		   <input type="hidden" class="form-control" id="idCatI" name="idCatI">
+			<div class="form-group">
+			 <label for="inputCat" class="col-form-label">Category name</label>
+			 <input type="text" class="form-control" id="catNameI" name="category" required class="form-control">
+			</div>  
+		  </form>
+		  
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
+			<button type="button" id="submitEditCatI" class="btn btn-success">Update category</button>
+		  </div>
+		  </div>
+		 </div>
+		</div>
+	  </div>
+<!--- end modal -->
+<!--- edit expense category modal-->
+	<div class="modal fade" id="editCatEModal" tabindex="-1" role="dialog" aria-labelledby="editCatEModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title">Edit category</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+		  <form method="POST" id="updateCatFormE">
+		   <input type="hidden" class="form-control" id="idCatE" name="idCatE">
+			<div class="form-group">
+			 <label for="inputCat" class="col-form-label">Category name</label>
+			 <input type="text" class="form-control" id="catNameE" name="category" required class="form-control">
+			</div> 
+			<div class="form-group">
+			 <label for="inputLimit" class="col-form-label">Limit</label>
+			 <input type="number" class="form-control" id="expLimitEdit" name="expLimit" required class="form-control">
+			</div>
+		  </form>
+		  
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
+			<button type="button" id="submitEditCatE" class="btn btn-success">Update category</button>
+		  </div>
+		  </div>
+		 </div>
+		</div>
+	  </div>
+<!--- end modal -->
+<!--- edit payment category modal-->
+	<div class="modal fade" id="editCatPModal" tabindex="-1" role="dialog" aria-labelledby="editCatPModal" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title">Edit category</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+		  <form method="POST" id="updateCatFormP">
+		   <input type="hidden" class="form-control" id="idCatP" name="idCatP">
+			<div class="form-group">
+			 <label for="inputCat" class="col-form-label">Category name</label>
+			 <input type="text" class="form-control" id="catNameP" name="category" required class="form-control">
+			</div>  
+		  </form>
+		  
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
+			<button type="button" id="submitEditCatP" class="btn btn-success">Update category</button>
 		  </div>
 		  </div>
 		 </div>
