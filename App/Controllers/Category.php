@@ -60,7 +60,7 @@ class Category extends Authenticated{
 		if($expLimit < 0 || $expLimit > 10000) {
 			echo '<span class="modalError">Value for expenses category limit should be set between 0 and 10000</span>';
 			exit;
-		}else if (!is_numeric($expLimit)){
+		}else if ($expLimit!=''&&!is_numeric($expLimit)){
 			echo '<span class="modalError">Wrong value - not a number<span>';
 			exit;
 		}
