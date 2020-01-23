@@ -204,7 +204,7 @@
 				<option value="0">Choose...</option>
 				 
 				 {% for catI in catsI %}
-				 <option value="{{catI.idCatI}}">{{catI.nameCatI}}</option>
+				 <option value="{{catI.idUserCatIn}}">{{catI.nameUserCatIn}}</option>
 				 {% endfor %}
 				
 				 </select>
@@ -252,9 +252,9 @@
 				  <select class="custom-select" id="selectCatE" name="Category"  required>
 					<option value="0">Choose...</option>
 					{% for catE in catsE %}
-					 <option value="{{catE.idCatE}}">{{catE.nameCatE}}
-					  {% if catE.Expense_Limit > 0 %}
-						- limit:{{catE.Expense_Limit}}</option>
+					 <option value="{{catE.idUserCatEx}}">{{catE.nameUserCatEx}}
+					  {% if catE.UExLimit > 0 %}
+						- limit:{{catE.UExLimit}}</option>
 					  {% else %}
 					   </option>
 					  {% endif %}
@@ -274,7 +274,7 @@
 				 <select class="custom-select" id="PayType" name="payType" >
 				 <option value="0">Choose...</option>
 				 {% for catP in catsP %}
-				 <option value="{{catP.idCatPay}}">{{catP.nameCatPay}}</option>
+				 <option value="{{catP.idUserCatPay}}">{{catP.nameUserCatPay}}</option>
 				 {% endfor %}
 				 </select>
 				</div>
