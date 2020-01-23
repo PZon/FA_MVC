@@ -65,17 +65,20 @@ class UserCategory extends \Core\Model{
  
  public static function findByCatName($catName, $type){
 	 $cat=strtoupper($catName);
-	 $sqlE="SELECT idCatE, nameCatE FROM ex_cat WHERE nameCatE = :catName
+	/* $sqlE_old="SELECT idCatE, nameCatE FROM ex_cat WHERE nameCatE = :catName
 	 UNION 
 	 SELECT idUserCatEx, nameUserCatEx FROM user_ex_cat 
-	 WHERE idUser={$_SESSION['idUser']} AND nameUserCatEx = :catName ";
-	 $sqlI="SELECT idCatI, nameCatI FROM in_cat WHERE nameCatI=:catName 
+	 WHERE idUser={$_SESSION['idUser']} AND nameUserCatEx = :catName ";*/
+	 $sqlE="SELECT idUserCatEx, nameUserCatEx FROM user_ex_cat WHERE idUser={$_SESSION['idUser']} AND nameUserCatEx = :catName ";
+	/* $sqlI_old="SELECT idCatI, nameCatI FROM in_cat WHERE nameCatI=:catName 
 	 UNION 
-	 SELECT idUserCatIn, nameUserCatIn FROM user_in_cat WHERE idUser={$_SESSION['idUser']} AND nameUserCatIn=:catName ";
-	 $sqlP="SELECT idCatPay, nameCatPay FROM pay_cat WHERE nameCatPay=:catName
+	 SELECT idUserCatIn, nameUserCatIn FROM user_in_cat WHERE idUser={$_SESSION['idUser']} AND nameUserCatIn=:catName ";*/
+	 $sqlI="SELECT idUserCatIn, nameUserCatIn FROM user_in_cat WHERE idUser={$_SESSION['idUser']} AND nameUserCatIn=:catName ";
+	 /*$sqlP_old="SELECT idCatPay, nameCatPay FROM pay_cat WHERE nameCatPay=:catName
 	 UNION 
 	 SELECT idUserCatPay, nameUserCatPay FROM user_pay_cat 
-	 WHERE idUser= {$_SESSION['idUser']} AND nameUserCatPay=:catName";
+	 WHERE idUser= {$_SESSION['idUser']} AND nameUserCatPay=:catName";*/
+	 $sqlP="SELECT idUserCatPay, nameUserCatPay FROM user_pay_cat WHERE idUser= {$_SESSION['idUser']} AND nameUserCatPay=:catName";
 	 $db=static::getDB();
 	 
 	 if($type=='UI'||$type=="I"){
@@ -212,6 +215,23 @@ class UserCategory extends \Core\Model{
       $stmt->bindValue(':category', $category, PDO::PARAM_STR);
       $stmt->bindValue('idCat', $idCat, PDO::PARAM_INT);
 		return $stmt->execute();
+ }
+ 
+ public static function createUserCats($idUser){
+	 $sql="
+	 INSERT INTO user_pay_cat(nameUserCatPay)SELECT nameCatPay FROM pay_cat;
+	 UPDATE user_pay_cat SET idUser = $idUser WHERE idUser is null;
+
+	 INSERT INTO user_in_cat(nameUserCatIn)SELECT nameCatI FROM in_cat;
+	 UPDATE user_in_cat SET idUser = $idUser WHERE idUser is null;
+
+	 INSERT INTO user_ex_cat(nameUserCatEx)SELECT nameCatE FROM ex_cat;
+	 UPDATE user_ex_cat SET idUser = $idUser WHERE idUser is null; 
+	 ";
+	 $db=static::getDB();
+	 $stmt=$db->prepare($sql);
+	 return $stmt->execute();
+	 
  }
 	
  }//end class

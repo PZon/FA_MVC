@@ -18,10 +18,11 @@ class Transaction extends \Core\Model{
  }
  
  public static function getIncomeCat(){
-	$sql="SELECT idCatI, nameCatI FROM in_cat 
+	$sql_old="SELECT idCatI, nameCatI FROM in_cat 
 	 UNION 
 	 SELECT idUserCatIn, nameUserCatIn FROM user_in_cat 
 	 WHERE idUser={$_SESSION['idUser']}";
+	 $sql="SELECT idUserCatIn, nameUserCatIn FROM user_in_cat WHERE idUser={$_SESSION['idUser']}";
 	$db=static::getDB();
 	$stmt=$db->prepare($sql);
 	$stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
@@ -31,10 +32,11 @@ class Transaction extends \Core\Model{
  }
  
  public static function getExpenseCat(){
-  $sql="SELECT idCatE, nameCatE, Expense_Limit FROM ex_cat 
+  $sql_old="SELECT idCatE, nameCatE, Expense_Limit FROM ex_cat 
    UNION 
    SELECT idUserCatEx, nameUserCatEx, UExLimit FROM user_ex_cat 
    WHERE idUser={$_SESSION['idUser']}";
+   $sql="SELECT idUserCatEx, nameUserCatEx, UExLimit FROM user_ex_cat WHERE idUser={$_SESSION['idUser']}";
 	$db=static::getDB();
 	$stmt=$db->prepare($sql);
 	$stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());
@@ -44,10 +46,11 @@ class Transaction extends \Core\Model{
 }
 
  public static function getPayCat(){
- $sql="SELECT idCatPay, nameCatPay FROM pay_cat
+ $sql_old="SELECT idCatPay, nameCatPay FROM pay_cat
  UNION 
  SELECT idUserCatPay, nameUserCatPay FROM user_pay_cat 
  WHERE idUser={$_SESSION['idUser']}";
+ $sql="SELECT idUserCatPay, nameUserCatPay FROM user_pay_cat WHERE idUser={$_SESSION['idUser']}";
 	$db=static::getDB();
 	$stmt=$db->prepare($sql);
 	$stmt->setFetchMode(PDO::FETCH_CLASS, get_called_class());

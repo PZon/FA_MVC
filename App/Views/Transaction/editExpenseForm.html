@@ -64,7 +64,7 @@
 		  <select class="custom-select" id="selectCatE" name="expenseCategory">
 			<option value="{{expense.idExpensesCat}}">{{expense.nameCatE}}</option>
 			 {% for catE in catsE %}
-				<option value="{{catE.idCatE}}">{{catE.nameCatE}}</option>
+				<option value="{{catE.idUserCatEx}}">{{catE.nameUserCatEx}}</option>
 			{% endfor %}
 		  </select>
 		</div>
@@ -77,7 +77,7 @@
 		  <select class="custom-select" id="payCategory" name="payCategory">
 			<option value="{{expense.userPayMethId}}">{{expense.nameCatPay}}</option>
 			 {% for catP in catsP %}
-				<option value="{{catP.idCatPay}}">{{catP.nameCatPay}}</option>
+				<option value="{{catP.idUserCatPay}}">{{catP.nameUserCatPay}}</option>
 			{% endfor %}
 		  </select>
 		</div>

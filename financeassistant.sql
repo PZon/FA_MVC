@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2020 at 05:26 PM
+-- Generation Time: Jan 23, 2020 at 10:36 AM
 -- Server version: 10.4.10-MariaDB
 -- PHP Version: 7.1.33
 
@@ -45,10 +45,10 @@ CREATE TABLE `expenses` (
 INSERT INTO `expenses` (`idExpenses`, `idUser`, `idExpensesCat`, `userPayMethId`, `expenseDate`, `expenseAmount`, `expenseDescr`) VALUES
 (8, 34, 37, 34, '2019-11-07', '13.00', 'modal'),
 (12, 34, 37, 37, '2019-11-14', '12.00', 'edit'),
-(16, 34, 31, 3, '2019-10-09', '13.00', 'test'),
-(17, 34, 18, 4, '2019-11-12', '45.56', 'gift'),
-(18, 34, 18, 34, '2019-11-06', '12.56', 'gift'),
-(19, 34, 12, 3, '2019-12-04', '130.00', 'test');
+(16, 34, 31, 41, '2019-10-09', '13.00', 'test'),
+(17, 34, 42, 42, '2019-11-12', '45.56', 'gift'),
+(18, 34, 50, 34, '2019-11-06', '12.56', 'gift'),
+(19, 34, 31, 43, '2019-12-04', '130.00', 'test');
 
 -- --------------------------------------------------------
 
@@ -106,14 +106,14 @@ CREATE TABLE `income` (
 --
 
 INSERT INTO `income` (`idIncome`, `idUser`, `idIncomeCat`, `incomeDate`, `incomeAmount`, `incomeDescr`) VALUES
-(3, 34, 1, '2019-10-01', '123.00', 'some description'),
-(34, 34, 2, '2019-10-13', '13.00', 'pazdziernik'),
+(3, 34, 47, '2019-10-01', '123.00', 'some description'),
+(34, 34, 48, '2019-10-13', '13.00', 'pazdziernik'),
 (35, 34, 31, '2019-10-13', '23.00', '323232'),
-(36, 34, 1, '2019-09-01', '12.00', 'wrzesien'),
+(36, 34, 49, '2019-09-01', '12.00', 'wrzesien'),
 (45, 34, 38, '2019-11-13', '13.00', 'robocza edytowana'),
-(46, 34, 1, '2019-11-13', '13.00', 'edyowana teraz'),
-(47, 34, 1, '2019-11-25', '12.12', 'sdsds'),
-(48, 34, 38, '2019-12-04', '100.00', 'test');
+(46, 34, 49, '2019-11-13', '13.00', 'edytowana teraz'),
+(47, 34, 50, '2019-11-25', '12.12', 'sdsds'),
+(48, 34, 31, '2019-12-04', '100.00', 'test');
 
 -- --------------------------------------------------------
 
@@ -180,8 +180,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`idUser`, `Nick`, `Email`, `Password`, `Password_reset_hash`, `Password_reset_exp`, `activation_hash`, `Active`) VALUES
 (1, 'ADMIN-DON\'T TOUCH', 'admin@admin.pl', '$2y$10$4H4QjRm8GYs5TAA4S2TCFO404zAmIP03ohOgO8T6/zayrLKdXWP0m', NULL, NULL, NULL, 'Y'),
-(34, 'NICK', 'nick@nick.pl', '$2y$10$tmSrfCQh7/ONObDk.bj1EOJkTM10rgzD8ixZ82YQ85DazhcIowyQG', NULL, NULL, NULL, 'Y'),
-(38, 'TEST', 'test@test.pl', '$2y$10$pu/RxB6uZsU8cq.7FmlEkeSrrzHM.kqITS1r6MVzNhqrH31Rv3IYO', NULL, NULL, NULL, 'Y');
+(34, 'NICK', 'nick@nick.pl', '$2y$10$tmSrfCQh7/ONObDk.bj1EOJkTM10rgzD8ixZ82YQ85DazhcIowyQG', NULL, NULL, NULL, 'Y');
 
 -- --------------------------------------------------------
 
@@ -191,7 +190,7 @@ INSERT INTO `users` (`idUser`, `Nick`, `Email`, `Password`, `Password_reset_hash
 
 CREATE TABLE `user_ex_cat` (
   `idUserCatEx` smallint(4) NOT NULL,
-  `idUser` smallint(6) NOT NULL,
+  `idUser` smallint(6) DEFAULT NULL,
   `nameUserCatEx` char(20) NOT NULL,
   `UExLimit` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -204,7 +203,25 @@ INSERT INTO `user_ex_cat` (`idUserCatEx`, `idUser`, `nameUserCatEx`, `UExLimit`)
 (30, 1, 'ADMIN-DON\'T TOUCH', NULL),
 (31, 34, 'CAT_1E', 100),
 (37, 34, 'EX CATEGORY', 0),
-(39, 34, 'CAT_LIMIT', 100);
+(39, 34, 'CAT_LIMIT', 100),
+(42, 34, 'FOOD', NULL),
+(43, 34, 'TRANSPORT', NULL),
+(44, 34, 'HOME', NULL),
+(45, 34, 'PHONE & INTERNET', NULL),
+(46, 34, 'CLOTHES', NULL),
+(47, 34, 'HEALTH CARE', NULL),
+(48, 34, 'KIDS', NULL),
+(49, 34, 'ENTERTAINMENT', NULL),
+(50, 34, 'TRAVEL', NULL),
+(51, 34, 'HOLIDAY', NULL),
+(52, 34, 'EDUCATION', NULL),
+(53, 34, 'BOOKS', NULL),
+(54, 34, 'SAVINGS', NULL),
+(55, 34, 'PENSION', NULL),
+(56, 34, 'MORTGAGE', NULL),
+(57, 34, 'LOANS', NULL),
+(58, 34, 'GIFT', NULL),
+(59, 34, 'OTHER', NULL);
 
 -- --------------------------------------------------------
 
@@ -214,7 +231,7 @@ INSERT INTO `user_ex_cat` (`idUserCatEx`, `idUser`, `nameUserCatEx`, `UExLimit`)
 
 CREATE TABLE `user_in_cat` (
   `idUserCatIn` smallint(4) NOT NULL,
-  `idUser` smallint(6) NOT NULL,
+  `idUser` smallint(6) DEFAULT NULL,
   `nameUserCatIn` char(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -225,7 +242,11 @@ CREATE TABLE `user_in_cat` (
 INSERT INTO `user_in_cat` (`idUserCatIn`, `idUser`, `nameUserCatIn`) VALUES
 (30, 1, 'ADMIN-DON\'T TOUCH'),
 (31, 34, 'CAT_2'),
-(38, 34, 'CAT_1');
+(38, 34, 'CAT_1'),
+(47, 34, 'SALARY'),
+(48, 34, 'INTERESTS'),
+(49, 34, 'EBAY SALES'),
+(50, 34, 'OTHER');
 
 -- --------------------------------------------------------
 
@@ -235,7 +256,7 @@ INSERT INTO `user_in_cat` (`idUserCatIn`, `idUser`, `nameUserCatIn`) VALUES
 
 CREATE TABLE `user_pay_cat` (
   `idUserCatPay` smallint(4) NOT NULL,
-  `idUser` smallint(6) NOT NULL,
+  `idUser` smallint(6) DEFAULT NULL,
   `nameUserCatPay` char(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -246,7 +267,11 @@ CREATE TABLE `user_pay_cat` (
 INSERT INTO `user_pay_cat` (`idUserCatPay`, `idUser`, `nameUserCatPay`) VALUES
 (30, 1, 'ADMIN-DON\'T TOUCH'),
 (34, 34, 'CAT_TESTOWA'),
-(37, 34, ' USER PAYMENT TYPE');
+(37, 34, ' USER PAYMENT TYPE'),
+(41, 34, 'CASH'),
+(42, 34, 'DEBIT CARD'),
+(43, 34, 'CREDIT CARD'),
+(44, 34, 'PayPal');
 
 -- --------------------------------------------------------
 
@@ -366,25 +391,25 @@ ALTER TABLE `pay_cat`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `idUser` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `idUser` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `user_ex_cat`
 --
 ALTER TABLE `user_ex_cat`
-  MODIFY `idUserCatEx` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `idUserCatEx` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT for table `user_in_cat`
 --
 ALTER TABLE `user_in_cat`
-  MODIFY `idUserCatIn` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `idUserCatIn` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `user_pay_cat`
 --
 ALTER TABLE `user_pay_cat`
-  MODIFY `idUserCatPay` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `idUserCatPay` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
