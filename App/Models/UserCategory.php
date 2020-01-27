@@ -50,9 +50,9 @@ class UserCategory extends \Core\Model{
 			$errorEmpty=true;
 	   }*/
 	   
-	 if(static::categoryExist($this->category, $this->categoryType)){
+	/* if(static::categoryExist($this->category, $this->categoryType)){
 		   $this->errors[]='Category name already exist';
-	   }
+	   }*/
 	 if($this->categoryType=='UE'){
 	  if ($this->expLimit < 0 || $this->expLimit > 100000) {
            $this->errors[] = 'Value for expenses category should be set between 0 and 100000';

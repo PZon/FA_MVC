@@ -45,15 +45,29 @@ class Category extends Authenticated{
 	$category=$_POST['category'];
 	$categoryType=$_POST['categoryType'];
 	$catExist=UserCategory::categoryExist($category, $categoryType);
+	
 	if($categoryType=='UE'||$categoryType=='E'){
-		$expLimit=$_POST['expLimit'];
+	 $expLimit=$_POST['expLimit'];
+	 if(!empty($_POST['idCat'])){
+		 $idCatE=$_POST['idCat'];
+		 $idIgnoredCat=UserCategory::findByCatName($category, $categoryType);
+	 }
 	}
 	
   if(isset($category)){
-
-	if($catExist){
+  
+	if(isset($idCatE)){
+	 if($idIgnoredCat->idUserCatEx != $idCatE){
+	  if($catExist){
+		echo '<span class="modalError">ta sama kat -Category name already exist!</span>'; 
+		exit;
+	  }
+	 }
+	}else{
+	 if($catExist){
 		echo '<span class="modalError">Category name already exist!</span>'; 
 		exit;
+	 }
 	}
 		
 	if($categoryType=='UE' || $categoryType=='E'){

@@ -267,6 +267,7 @@ $(function(){
 		idCat='';
 	});*/
 });
+
 /*** edit category expense ***/
 $(function(){
  $('.btnEditEC').on('click', function(){
@@ -302,6 +303,7 @@ $(function(){
 				data:{
 					categoryType: categoryType,
 					category:category,
+					idCat:idCat,
 					expLimit:expLimit
 				},
 				success:function(data){
