@@ -59,7 +59,7 @@ class Category extends Authenticated{
 	if(isset($idCatE)){
 	 if($idIgnoredCat->idUserCatEx != $idCatE){
 	  if($catExist){
-		echo '<span class="modalError">ta sama kat -Category name already exist!</span>'; 
+		echo '<span class="modalError">Category name already exist!</span>'; 
 		exit;
 	  }
 	 }
