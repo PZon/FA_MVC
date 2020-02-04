@@ -1,0 +1,31 @@
+# Remove index.php from the request but maintain the query string
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?$1 [L,QSA]
+
+# Redirect to domain without www.
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule .* https://%1%{REQUEST_URI} [R=301,L]
+# Same for HTTPS:
+RewriteCond %{HTTPS} on
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule .* https://%1%{REQUEST_URI} [R=301,L]
+
+# Redirect to another domain: financeassistant.pzon.it.
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} !^(www\.)?financeassistant\.pzon\.it$ [NC]
+RewriteRule .* https://financeassistant.pzon.it%{REQUEST_URI} [R=301,L]
+# Same for HTTPS:
+RewriteCond %{HTTPS} on
+RewriteCond %{HTTP_HOST} !^(www\.)?financeassistant\.pzon\.it$ [NC]
+RewriteRule .* https://financeassistant.pzon.it%{REQUEST_URI} [R=301,L]
+
+# 301 Redirect URLs.
+Redirect 301 /financeassistant.pzon.it https://financeassistant.pzon.it
+
+RewriteCond %{HTTP_HOST} financeassistant\.pzon\.it [NC]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://financeassistant.pzon.it/$1 [R,L]
